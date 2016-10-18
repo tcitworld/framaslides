@@ -1,11 +1,13 @@
 /*
 @author Matt Crinklaw-Vogt
 */
-define(['libs/backbone', 'libs/imgup'],
-function(Backbone, Imgup) {
+define(['libs/backbone', 'libs/lutim'],
+function(Backbone, Lutim) {
 	var modalCache = {};
 	var reg = /[a-z]+:/;
-	var imgup = new Imgup('847de02274cba30');
+	// With a slash at the end !
+	let lutimAdress = 'http://127.0.0.1:8080/';
+	var lutim = new Lutim(lutimAdress);
 
 	var ignoredVals = {
 		'http:': true,
@@ -49,21 +51,21 @@ function(Backbone, Imgup) {
 			this._switchToProgress();
 			this.item.src = '';
 
-			imgup.upload(f).progress(function(ratio) {
+			lutim.upload(f).progress(function(ratio) {
 				_this._updateProgress(ratio);
 			}).then(function(result) {
 				_this._switchToThumbnail();
-				_this.$input.val(result.data.link);
+				_this.$input.val(lutimAdress + result.msg.short);
 				_this.urlChanged({
 					which: -1
 				});
 			}, function() {
 				_this._updateProgress(0);
 				_this._switchToThumbnail();
-				_this.$input.val('Failed to upload image to imgur');
+				_this.$input.val('Failed to upload image to lutim');
 			});
 
-			
+
 			// reader = new FileReader();
 			// reader.onload = function(e) {
 			//   _this.$input.val(e.target.result);

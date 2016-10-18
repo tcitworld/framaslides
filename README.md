@@ -40,6 +40,11 @@ To build your own version of Strut you'll need Grunt v0.4.0 or later.
 To make a production build of Strut run `grunt build`.
 The resulting build will be located in `Strut/dist`.  
 
+### Uploading pictures
+
+In order to add pictures to your presentations, you need a [lutim](https://framagit.org/luc/lutim) instance running.
+The default address is to change in the `app/bundles/common/tantaman.web.widgets/ItemImportModal.js` file.
+
 ### RELEASE NOTES ###
 
 v0.5.3 - Positioning and transformations of components in edit mode
@@ -61,13 +66,13 @@ You can take a look at the `RemoteStorage` bundle for an example: https://github
 
 If a service is missing `Strut` continues to run without the functionality provided by that service.
 
-New development that isn't essential to the core of Strut should follow this pattern in order to keep the code 
+New development that isn't essential to the core of Strut should follow this pattern in order to keep the code
 modular and allow the removal of features that don't pan out or can only exist in specific environments.  For example,
 `RemoteStorage` can't be loaded if `Strut` is being served from a `file://` url.
 
 The `ServiceRegistry` also allows for runtime modularity.  I.e., services can be added and removed at runtime and `Strut`
 will update to reflect the current set of features & services that are isntalled.  Try to keep in mind the
-fact that services won't necessarily be present or if they are present they might go away.  This 
+fact that services won't necessarily be present or if they are present they might go away.  This
 approach allows the user to add and remove plugins from 3rd parties at runtime.
 
 ### Acknowledgements ###

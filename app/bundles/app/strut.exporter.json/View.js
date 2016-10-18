@@ -25,10 +25,7 @@ function(Backbone, FileUtils, lang) {
 				this._makeDownloadable($ok);
 			} else {
 				$ok.html('');
-				if (window.hasFlash)
-					this._populateDownloadify();
-				else
-					this._populateTextArea();
+				this._populateTextArea();
 			}
 
 			$container.append(this.$el);
@@ -53,41 +50,6 @@ function(Backbone, FileUtils, lang) {
 			}
 
 			$txt.val(JSON.stringify(this._exportable.export()));
-		},
-
-		_populateDownloadify: function() {
-			var $dlify = this.$el.find('#downloadify');
-			if ($dlify.length == 0) {
-				$dlify = $('<p id="downloadify"></p>');
-				this.$el.append($dlify);
-				console.log('Puplating downloadify');
-				var self = this;
-				setTimeout(function() {
-					Downloadify.create($dlify[0], {
-					    filename: function(){
-					      return self._exportable.identifier() + '.json';
-					    },
-					    data: function(){ 
-					      return JSON.stringify(self._exportable.export(), null, 2);
-					    },
-					    onComplete: function(){ 
-					       
-					    },
-					    onCancel: function(){ 
-					      
-					    },
-					    onError: function(){ 
-					      alert('Error exporting'); 
-					    },
-					    swf: 'preview_export/download_assist/downloadify.swf',
-					    downloadImage: 'preview_export/download_assist/download.png',
-					    width: 100,
-					    height: 30,
-					    transparent: false,
-					    append: false
-					  });
-				}, 0);
-			}
 		},
 
 		hide: function() {

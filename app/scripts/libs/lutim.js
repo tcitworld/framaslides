@@ -1,22 +1,18 @@
 // Author tantaman
 // License MIT
-// http://github.com/tantaman/imgup
+// originally http://github.com/tantaman/imgup
 define(function() {
 	var root = {};
-	
+
 ;(function(root) {
 	'use strict';
-
-	var routes = {
-		upload: 'https://api.imgur.com/3/upload'
-	};
 
 	function UploadHandler(xhr) {
 		this._xhr = xhr;
 
 		xhr.onload = handlerCallbacks.onload.bind(this);
 		xhr.upload.onabort = xhr.onabort =
-			xhr.upload.onerror = xhr.onerror = 
+			xhr.upload.onerror = xhr.onerror =
 				xhr.ontimeout = handlerCallbacks.onerror.bind(this);
 
 		xhr.upload.onprogress = handlerCallbacks.onprogress.bind(this);
@@ -81,18 +77,19 @@ define(function() {
 		}
 	};
 
-	function Imgup(clientId) {
-		this.clientId = clientId;
+	function Lutim(lutimAdress) {
+		this.lutimAdress = lutimAdress;
 	}
 
-	Imgup.prototype = {
+	Lutim.prototype = {
 		upload: function(file) {
 			var form = new FormData();
-			form.append('image', file);
+			form.append('file', file);
+			form.append('format', 'json');
+			form.append('delete-day', 0);
 
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', routes.upload);
-			xhr.setRequestHeader('Authorization', 'Client-ID ' + this.clientId);
+			xhr.open('POST', this.lutimAdress);
 
 			var self = this;
 			var handler = new UploadHandler(xhr);
@@ -103,8 +100,8 @@ define(function() {
 		}
 	};
 
-	root.Imgup = Imgup;
+	root.Lutim = Lutim;
 })(root);
 
-	return root.Imgup;
+	return root.Lutim;
 });
