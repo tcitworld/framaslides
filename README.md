@@ -32,7 +32,7 @@ To build your own version of Strut you'll need Grunt v0.4.0 or later.
 
 
 1. Install the latest Grunt: `npm install -g grunt-cli`
-2. Clone Strut: `git clone git://github.com/tantaman/Strut.git`
+2. Clone Strut: `git clone git@framagit.org:framasoft/framaslides.git`
 3. `cd Strut`
 4. Install Strut's development dependencies: `npm install`
 5. Run Strut: `grunt server` (the server runs at localhost:9000)

@@ -75,7 +75,7 @@ define(["./ComponentView", './Mixers'],
 			render: function() {
 				var object, scale;
 				ComponentView.prototype.render.call(this);
-				object = '<object width="425" height="344"><param name="movie" value="http://www.youtube.com/v/' + this.model.get('shortSrc') + '&hl=en&fs=1"><param name="allowFullScreen" value="true"><embed src="http://www.youtube.com/v/' + this.model.get('shortSrc') + '&hl=en&fs=1" type="application/x-shockwave-flash" allowfullscreen="true" width="425" height="344"></object>';
+				object = '<iframe width="425" height="344" src="https://www.youtube.com/embed/' + this.model.get('shortSrc') + '" frameborder="0" allowfullscreen></iframe>';
 				this.$object = $(object);
 				this.$embed = this.$object.find('embed');
 				scale = this.model.get("scale");
