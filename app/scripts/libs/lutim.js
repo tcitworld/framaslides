@@ -77,8 +77,8 @@ define(function() {
 		}
 	};
 
-	function Lutim(lutimAdress) {
-		this.lutimAdress = lutimAdress;
+	function Lutim(lutimAddress) {
+		this.lutimAddress = lutimAddress;
 	}
 
 	Lutim.prototype = {
@@ -89,7 +89,7 @@ define(function() {
 			form.append('delete-day', 0);
 
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', this.lutimAdress);
+			xhr.open('POST', this.lutimAddress);
 
 			var self = this;
 			var handler = new UploadHandler(xhr);

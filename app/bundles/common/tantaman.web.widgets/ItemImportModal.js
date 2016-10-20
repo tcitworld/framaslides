@@ -6,8 +6,8 @@ function(Backbone, Lutim) {
 	var modalCache = {};
 	var reg = /[a-z]+:/;
 	// With a slash at the end !
-	let lutimAdress = 'http://127.0.0.1:8080/';
-	var lutim = new Lutim(lutimAdress);
+	var lutimAddress = 'http://127.0.0.1:8080/';
+	var lutim = new Lutim(lutimAddress);
 
 	var ignoredVals = {
 		'http:': true,
@@ -55,7 +55,7 @@ function(Backbone, Lutim) {
 				_this._updateProgress(ratio);
 			}).then(function(result) {
 				_this._switchToThumbnail();
-				_this.$input.val(lutimAdress + result.msg.short);
+				_this.$input.val(lutimAddress + result.msg.short);
 				_this.urlChanged({
 					which: -1
 				});
