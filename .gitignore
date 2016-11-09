@@ -13,4 +13,6 @@ psd-export/
 .project
 .buildpath
 .tern-port
+vendor/
 
+composer.lock
