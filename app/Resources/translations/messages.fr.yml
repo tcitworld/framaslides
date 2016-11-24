@@ -1,0 +1,22 @@
+app.name: Framaslides
+app.presentation: "Framaslides est un service d'édition de présentations en ligne"
+
+menu.newpresentation: 'Nouvelle présentation'
+menu.mypresentations: 'Mes présentations'
+menu.templates: Modèles
+menu.disconnect: 'Se déconnecter'
+menu.login: 'Se connecter'
+menu.register: 'S''inscrire'
+
+presentations.nbversions: '%nbversions% versions'
+presentations.createdAt: 'Présentation créée le %createdAt%'
+presentations.updatedAt: 'Dernière version %updatedAt%'
+presentations.empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
+
+security.login.register: "S'inscrire"
+security.login.submit: 'Se connecter'
+security.login.forgot_password: 'Mot de passe oublié ?'
+
+profile.edit: 'Éditer les paramètres de mon compte'
+profile.delete: 'Supprimer mon compte'
+profile.edit.cancel: "Annuler l'édition"

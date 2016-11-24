@@ -1,91 +1,68 @@
-**Note:** I've been working on Strut2.0: https://github.com/tantaman/strut2
+Symfony Standard Edition
+========================
 
-Strut
-=======
+Welcome to the Symfony Standard Edition - a fully-functional Symfony
+application that you can use as the skeleton for your new applications.
 
-[![Facelift](https://f.cloud.github.com/assets/1009003/515405/f1003c6a-be74-11e2-84b9-14776c652afb.png)](http://strut.io)
+For details on how to download and get started with Symfony, see the
+[Installation][1] chapter of the Symfony Documentation.
 
-#### A GUI / Authoring Tool for ImpressJS and Bespoke.js ####
+What's inside?
+--------------
 
-Don't know what ImpressJS is?  Check out the ImpressJS demo presentation: http://bartaz.github.com/impress.js/#/bored
+The Symfony Standard Edition is configured with the following defaults:
 
-### Start using Strut! http://strut.io/editor/
-(works in Firefox, Chrome and Safari with basic support for IE10)
+  * An AppBundle you can use to start coding;
 
-### Official Website: http://strut.io ###
+  * Twig as the only configured template engine;
 
-#### Learn a bit about Strut
-* http://www.youtube.com/watch?v=TTpiDXEIulg
-* previous video: http://www.youtube.com/watch?v=zA5s8wwme44
+  * Doctrine ORM/DBAL;
 
+  * Swiftmailer;
 
+  * Annotations enabled for everything.
 
+It comes pre-configured with the following bundles:
 
-### Twitter: [@StrutPresents](https://twitter.com/strutpresents)
+  * **FrameworkBundle** - The core Symfony framework bundle
 
+  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
+    template and routing annotation capability
 
-### Mailing List ###
-strut-presentation-editor@googlegroups.com
+  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
 
-### Development/Building ###
-To build your own version of Strut you'll need Grunt v0.4.0 or later.
+  * [**TwigBundle**][8] - Adds support for the Twig templating engine
 
+  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
+    component
 
-1. Install the latest Grunt: `npm install -g grunt-cli`
-2. Clone Strut: `git clone git@framagit.org:framasoft/framaslides.git`
-3. `cd Strut`
-4. Install Strut's development dependencies: `npm install`
-5. Run Strut: `grunt server` (the server runs at localhost:9000)
+  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
+    sending emails
 
-To make a production build of Strut run `grunt build`.
-The resulting build will be located in `Strut/dist`.  
+  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
 
-### Uploading pictures
+  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
+    the web debug toolbar
 
-In order to add pictures to your presentations, you need a [lutim](https://framagit.org/luc/lutim) instance running.
-The default address is to change in the `app/bundles/common/tantaman.web.widgets/ItemImportModal.js` file.
+  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
+    configuring and working with Symfony distributions
 
-### RELEASE NOTES ###
+  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
+    capabilities
 
-v0.5.3 - Positioning and transformations of components in edit mode
-now exactly match the positioning and transformations of components in the final presentation.
+  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
+    integration
 
-### Contributing ###
+All libraries and bundles included in the Symfony Standard Edition are
+released under the MIT or BSD license.
 
+Enjoy!
 
-`Strut` is composed of several bundles which provide distinct features to `Strut`.  The set of bundles that compose
-`Strut` are defined in https://github.com/tantaman/Strut/blob/master/app/scripts/features.js
-
-This design allows features to be added and removed from `Strut` just by adding or removing bundles from the list
- in features.js.  E.g., if you wanted a build of Strut without `RemoteStorage` you can just remove
-the `RemoteStorage` bundle from features.js.  If you didn't want any slide components for some reason then you can remove
-`strut/slide_components/main` from features.js.
-
-Bundles contribute functionality to `Strut` by registering that functionality with the `ServiceRegistry`.
-You can take a look at the `RemoteStorage` bundle for an example: https://github.com/tantaman/Strut/blob/master/app/bundles/common/tantaman.web.remote_storage/main.js
-
-If a service is missing `Strut` continues to run without the functionality provided by that service.
-
-New development that isn't essential to the core of Strut should follow this pattern in order to keep the code
-modular and allow the removal of features that don't pan out or can only exist in specific environments.  For example,
-`RemoteStorage` can't be loaded if `Strut` is being served from a `file://` url.
-
-The `ServiceRegistry` also allows for runtime modularity.  I.e., services can be added and removed at runtime and `Strut`
-will update to reflect the current set of features & services that are isntalled.  Try to keep in mind the
-fact that services won't necessarily be present or if they are present they might go away.  This
-approach allows the user to add and remove plugins from 3rd parties at runtime.
-
-### Acknowledgements ###
-
-* ImpressJS https://github.com/bartaz/impress.js/
-* Bespoke.js https://github.com/markdalgleish/bespoke.js
-* BackboneJS http://documentcloud.github.com/backbone/
-* Spectrum https://github.com/bgrins/spectrum
-* Etch http://etchjs.com/
-* Bootstrap http://twitter.github.io/bootstrap/
-* lodash http://lodash.com/
-* mousetrap http://craig.is/killing/mice
-* RequireJS http://requirejs.org/
-* JQuery http://jquery.com/
-* HandlebarsJS http://handlebarsjs.com/
-* Grunt http://gruntjs.com/
+[1]:  https://symfony.com/doc/3.0/book/installation.html
+[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
+[7]:  https://symfony.com/doc/3.0/book/doctrine.html
+[8]:  https://symfony.com/doc/3.0/book/templating.html
+[9]:  https://symfony.com/doc/3.0/book/security.html
+[10]: https://symfony.com/doc/3.0/cookbook/email.html
+[11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
+[13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html

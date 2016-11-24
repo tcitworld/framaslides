@@ -1,6 +1,6 @@
 define(['tantaman/web/css_manip/CssManip'],
-function(CassManip) {
-	var el = CassManip.getStyleElem({
+function(CssManip) {
+	var el = CssManip.getStyleElem({
 		id: 'customBackgrounds',
 		create: true
 	});

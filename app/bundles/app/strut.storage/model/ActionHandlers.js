@@ -12,6 +12,7 @@ function() {
 				function () {
 					storageInterface.load(filename, function(data, err) {
 						if (!err) {
+							console.log(data);
 							model.importPresentation(data);
 						} else {
 							console.log(err);

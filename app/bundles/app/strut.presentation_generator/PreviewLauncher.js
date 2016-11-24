@@ -12,18 +12,31 @@ define(function() {
 				window.previewWind.close();
 
 			this._editorModel.trigger('launch:preview', null);
+			var editorModel = this._editorModel;
 
 			var previewStr = generator.generate(this._editorModel.deck());
+
+			$.ajax({
+				type: 'POST',
+				url: '/save-preview/' + editorModel.fileName(),
+				data: {
+					previewData: previewStr,
+				},
+			}).success(function() {
+				window.previewWind = window.open(
+					'/preview/' + editorModel.fileName() + '/' + generator.id + generator.getSlideHash(editorModel),
+					window.location.href);
+
+				var sourceWind = window;
+			});
 
 			localStorage.setItem('preview-string', previewStr);
 			localStorage.setItem('preview-config', JSON.stringify({
 				surface: this._editorModel.deck().get('surface')
 			}));
 
-			window.previewWind = window.open(
-				'preview_export/' + generator.id + '.html' + generator.getSlideHash(this._editorModel),
-				window.location.href);
-			var sourceWind = window;
+
+
 		}
 	};
 

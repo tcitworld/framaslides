@@ -1,0 +1,21 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+  strut.presentation_repository:
+          class: Strut\StrutBundle\Repository\PresentationRepository
+          factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
+          arguments:
+              - Strut:Presentation
+
+  twig.extension.date:
+          class: Twig_Extensions_Extension_Date
+          arguments:
+              - "@translator.default"
+          tags:
+              - { name: twig.extension }

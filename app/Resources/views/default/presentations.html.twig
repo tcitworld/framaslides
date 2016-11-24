@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .item-hidden {
+            transition: opacity .4s ease-out;
+            opacity: 0;
+            width: 0;
+        }
+        .play {
+            width: 30px;
+            height: 30px;
+        }
+
+        .play > i {
+            line-height: 30px;
+        }
+    </style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+    {% if presentations | length > 0 %}
+    <ul>
+    {% for presentation in presentations %}
+        <li>
+                <div class="col s6 m4">
+                    <div class="card blue-grey darken-1">
+                        <div class="card-content white-text">
+                            <span class="card-title">{{ presentation.title }}</span>
+                            <p>{{ 'presentations.nbversions' | trans({ '%nbversions%': presentation.versions | length }) }}.
+                            {{ 'presentations.createdAt' | trans({ '%createdAt%': presentation.createdAt | date("d/m/Y") }) }}
+                            {{ 'presentations.updatedAt' | trans({ '%updatedAt%': presentation.getLastVersionDate | time_diff }) }}</p>
+                            <code>
+                                presentations.rendered | raw
+                            </code>
+                        </div>
+                        <div class="card-action">
+                            <a href="#" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons">edit</i></a>
+                            <a href="delete-presentation/{{ presentation.title }}" class="delete" data-presentation="{{ presentation.title }}"><i class="material-icons">delete</i></a>
+                            <a href="#" class="publish" data-presentation="{{ presentation.title }}"><i class="material-icons">publish</i></a>
+                            <a href="#" class="download-json"  data-presentation="{{ presentation.title }}"><i class="material-icons">file_download</i></a>
+                            <a class="play btn-floating waves-effect waves-light red right" href="#"><i class="material-icons">play_arrow</i></a>
+                        </div>
+                    </div>
+                </div>
+        </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        {% if app.user %}
+            {{ 'presentations.empty' | trans }}
+        {% else %}
+            <div class="col s12 m7">
+                <img class="responsive-img" src="{{ asset('img/strut.png') }}">
+            </div>
+            <div class="col s12 m4">
+                <h2>{{ 'app.presentation' | trans }}</h2>
+                <p>Earum eum eveniet itaque praesentium quia reiciendis sit vitae? Accusantium, assumenda dolore dolorum
+                    ducimus ea, et excepturi exercitationem expedita placeat porro quasi quo, veritatis voluptas?
+                    Ducimus minus necessitatibus quis voluptas!</p>
+                <p>Accusamus animi dolor eveniet iure iusto laboriosam, molestiae numquam quam sed voluptate. Ipsam
+                    officiis provident qui? Adipisci animi expedita facilis hic illum natus, nostrum, obcaecati officiis
+                    placeat temporibus unde veritatis.</p>
+            </div>
+        {% endif %}
+    {% endif %}
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+    {{ parent() }}
+    <script>
+    $('.delete').click(function(event) {
+        event.preventDefault();
+        let elem = $(this);
+        $.ajax({
+            url: 'delete-presentation/' + elem.attr('data-presentation')
+        }).success(function() {
+            let card = elem.closest('.col');
+            card.addClass('item-hidden').delay(400).remove();
+        })
+    })
+    </script>
+{% endblock js %}

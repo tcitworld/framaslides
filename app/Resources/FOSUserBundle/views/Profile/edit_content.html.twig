@@ -1,0 +1,41 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{{ form_start(form, { 'action': path('fos_user_profile_edit'), 'attr': { 'class': 'fos_user_profile_edit' } }) }}
+<div class="card-content">
+    <div class="row">
+
+        {{ form_widget(form._token) }}
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <span class="black-text"><p>{{ flashMessage }}</p></span>
+        {% endfor %}
+
+        <div class="input-field col s12">
+            {{ form_errors(form.email) }}
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email) }}
+        </div>
+
+        <div class="input-field col s12">
+            {{ form_errors(form.username) }}
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username) }}
+        </div>
+
+        <div class="input-field col s12">
+            {{ form_errors(form.current_password) }}
+            {{ form_label(form.current_password) }}
+            {{ form_widget(form.current_password) }}
+        </div>
+    </div>
+</div>
+<div class="card-action center">
+    <a class="btn waves-effect waves-light btn-flat" href="{{ path('fos_user_profile_show') }}">
+        {{ 'profile.edit.cancel'|trans({}, 'messages') }}
+    </a>
+    <button class="btn waves-effect waves-light" type="submit" name="send">
+        {{ 'profile.edit.submit'|trans }}
+        <i class="material-icons right">send</i>
+    </button>
+</div>
+{{ form_end(form) }}

@@ -58,17 +58,17 @@ function(StorageProviders) {
 		},
 
 		listPresentations: function(path, cb) {
-			this.currentProvider().ls(path, /.*\.strut$/, cb)
+			this.currentProvider().ls(path, cb)
 			return this;
 		},
 
 		savePresentation: function(identifier, data, cb) {
-			var idx = identifier.indexOf('.strut');
+			/*var idx = identifier.indexOf('.strut');
 			if (idx == -1 || (idx + '.strut'.length != identifier.length)) {
 				identifier += '.strut';
 			}
 			window.sessionMeta.lastPresentation = identifier;
-
+			*/
 			this.store(identifier, data, cb);
 		}
 	};
