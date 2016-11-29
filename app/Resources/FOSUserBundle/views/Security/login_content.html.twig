@@ -1,7 +1,8 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
+<div class="card">
 <form action="{{ path("fos_user_security_check") }}" method="post">
-    <div class="card-content">
+    <div class="card-block">
         {% if error %}
             <div class="alert alert-warning" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
         {% endif %}
@@ -10,35 +11,28 @@
             <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
         {% endif %}
 
-        <div class="row">
-            <div class="input-field col s12">
-                <label for="username">{{ 'security.login.username'|trans }}</label>
-                <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
-            </div>
-
-            <div class="input-field col s12">
-                <label for="password">{{ 'security.login.password'|trans }}</label>
-                <input type="password" id="password" name="_password" required="required" />
-            </div>
-
-            <div class="input-field col s12">
-                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
-            </div>
-
+        <div class="form-group">
+            <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+            <input class="form-control" type="text" id="username" name="_username" placeholder="Votre nom d'utilisateur" value="{{ last_username is defined ? last_username }}" required="required" />
         </div>
+
+        <div class="form-group">
+            <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+            <input class="form-control" type="password" id="password" name="_password" required="required" placeholder="Votre mot de passe"/>
+        </div>
+
+        <div class="form-check">
+            <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" value="on" />
+                {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
+            </label>
+        </div>
+
     </div>
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+    <a href="{{ path('fos_user_registration_register') }}" class="btn btn-secondary">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
+    <button class="btn btn-primary" type="submit" name="send">{{ 'security.login.submit'|trans }}</button>
     <div class="card-action center">
-        <div class="card-action center">
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
-            <a href="{{ path('fos_user_registration_register') }}" class="waves-effect waves-light grey btn">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
-            <button class="btn waves-effect waves-light" type="submit" name="send">
-                {{ 'security.login.submit'|trans }}
-                <i class="material-icons right">send</i>
-            </button>
-        </div>
-        <div class="card-action center">
-            <a href="{{ path('fos_user_resetting_request') }}">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</a>
-        </div>
+        <a href="{{ path('fos_user_resetting_request') }}">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</a>
     </div>
 </form>

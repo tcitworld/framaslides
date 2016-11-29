@@ -51,13 +51,14 @@ define(function() {
 			return this;
 		},
 
-		setContents: function(path, data, cb) {
+		setContents: function(path, data, cb, saveAction) {
 			$.ajax({
 				method: 'POST',
 				url: '/new-presentation',
 				data: {
 					presentation: path,
-					data: JSON.stringify(data)
+					data: JSON.stringify(data),
+					newEntry: (saveAction !== undefined) ? 1 : 0
 				}
 			}).success(function (data, status, xhr) {
 				console.log(xhr.status);

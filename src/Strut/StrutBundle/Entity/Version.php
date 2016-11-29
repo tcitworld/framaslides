@@ -4,6 +4,7 @@ namespace Strut\StrutBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Strut\StrutBundle\Entity\Presentation;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Class Version
@@ -41,7 +42,8 @@ class Version
     private $updatedAt;
 
     /**
-     *
+     * @var Presentation
+     * @Exclude
      * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\Presentation", inversedBy="versions")
      */
     private $presentation;

@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container ombre">
+    <h1>Modèles</h1>
+    <ul class="nav nav-pills">
+        {% set currentRoute = app.request.attributes.get('_route') %}
+        <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.mine' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-published' %}class="active"{% endif %}><a href="{{ path('templates-published') }}">{{ 'templates.published' | trans }}</a></li>
+    </ul>
+    <div class="row">
+    {% for presentation in templates %}
+        <div class="col-xs-12 col-sm-4">
+            <div class="card" data-presentation="{{ presentation.id }}">
+                <div class="card-block">
+                    <h4 class="card-title"><span class="title">{{ presentation.title }}</span></h4>
+                    <p class="card-text">{{ 'presentations.createdAt' | trans({ '%createdAt%': presentation.createdAt | date("d/m/Y") }) }}
+                        {{ 'presentations.updatedAt' | trans({ '%updatedAt%': presentation.getLastVersionDate | time_diff }) }}
+                        Nb slides : {{ presentation.getNbSlides }}</p>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons">edit</i></a>
+                    <a href="delete-presentation/{{ presentation.title }}" class="delete" data-presentation="{{ presentation.title }}"><i class="material-icons">delete</i></a>
+                    <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="material-icons">publish</i></a>
+                    <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="material-icons">file_download</i></a>
+                    {% if presentation.rendered %}<a class="play btn-floating waves-effect waves-light red right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="material-icons">play_arrow</i></a>{% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock content %}

@@ -37,8 +37,8 @@ function(StorageProviders) {
 			return this._providers.on.apply(this._providers, arguments);
 		},
 
-		store: function(identifier, data, cb) {
-			this.currentProvider().setContents(identifier, data, cb);
+		store: function(identifier, data, cb, saveAction) {
+			this.currentProvider().setContents(identifier, data, cb, saveAction);
 			return this;
 		},
 
@@ -62,14 +62,14 @@ function(StorageProviders) {
 			return this;
 		},
 
-		savePresentation: function(identifier, data, cb) {
+		savePresentation: function(identifier, data, cb, saveAction) {
 			/*var idx = identifier.indexOf('.strut');
 			if (idx == -1 || (idx + '.strut'.length != identifier.length)) {
 				identifier += '.strut';
 			}
 			window.sessionMeta.lastPresentation = identifier;
 			*/
-			this.store(identifier, data, cb);
+			this.store(identifier, data, cb, saveAction);
 		}
 	};
 

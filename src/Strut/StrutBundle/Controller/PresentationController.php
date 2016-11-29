@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 class PresentationController extends Controller
 {
@@ -30,6 +31,19 @@ class PresentationController extends Controller
         $presentations = $repository->findByUser($this->getUser());
         return $this->render(':default:presentations.html.twig', ['presentations' => $presentations]);
     }
+
+    /**
+     * @route("/versions/{presentation}", name="versions")
+     * @param Presentation $presentation
+     * @return JsonResponse
+     */
+    public function getPresentationVersions(Presentation $presentation) {
+        $versions = $presentation->getVersions();
+        $json = $this->get('jms_serializer')->serialize($versions, 'json');
+        return (new JsonResponse())->setJson($json);
+    }
+
+    /** API Stuff */
 
     /**
      * @route("/presentations-json", name="presentations-json")
@@ -49,7 +63,7 @@ class PresentationController extends Controller
      * @return JsonResponse
      */
     public function getPresentationDataAction(Presentation $presentation) {
-        $this->checkUserAction($presentation);
+        $this->checkUserPresentationAction($presentation);
         $presentationData = $presentation->getLastVersion()->getContent();
         $json = $this->get('jms_serializer')->serialize($presentationData, 'json');
         return (new JsonResponse())->setJson($json);
@@ -61,12 +75,52 @@ class PresentationController extends Controller
      * @return JsonResponse
      */
     public function deletePresentation(Presentation $presentation) {
-        $this->checkUserAction($presentation);
+        $this->checkUserPresentationAction($presentation);
         $em = $this->getDoctrine()->getManager();
         $em->remove($presentation);
         $em->flush();
 
         return new JsonResponse($presentation);
+    }
+
+    /**
+     * @route("/delete-version/{version}", name="delete-version")
+     * @param Version $version
+     * @return JsonResponse
+     */
+    public function deleteVersion(Version $version) {
+        $this->checkUserVersionAction($version);
+        $em = $this->getDoctrine()->getManager();
+        $version->getPresentation()->removeVersion($version);
+        $em->remove($version);
+        $em->flush();
+
+        return new JsonResponse($version);
+    }
+
+    /**
+     * @route("/restore-version/{version}", name="restore-version")
+     * @param Version $version
+     * @return JsonResponse
+     */
+    public function restoreVersion(Version $version) {
+        $this->checkUserVersionAction($version);
+        $em = $this->getDoctrine()->getManager();
+
+        $presentation = $version->getPresentation();
+
+        $newVersion = new Version($presentation);
+        $newVersion->setContent($version->getContent());
+
+        $presentation->addVersion($newVersion);
+
+        $em->persist($newVersion);
+        $em->flush();
+
+        $versions = $presentation->getVersions();
+        $json = $this->get('jms_serializer')->serialize($versions, 'json');
+
+        return (new JsonResponse())->setJson($json);
     }
 
     /**
@@ -76,9 +130,11 @@ class PresentationController extends Controller
      */
     public function saveAction(Request $request) {
         $data = $request->get('data');
+        $newEntry = (bool) $request->get('newEntry', 0);
         $name = $request->get('presentation');
 
         $em = $this->getDoctrine()->getManager();
+        $logger = $this->get('logger');
 
         /** @var Presentation $presentation */
         $presentation = $this->get('strut.presentation_repository')->findOneBy(
@@ -88,6 +144,7 @@ class PresentationController extends Controller
             ]);
 
         if ($presentation && $data === $presentation->getLastVersion()->getContent()) {
+            $logger->info("Tried to save but there's no change for presentation " . $presentation->getId());
             $json = $this->get('jms_serializer')->serialize($presentation, 'json');
             return new JsonResponse($json, 304, [], true);
         }
@@ -95,21 +152,27 @@ class PresentationController extends Controller
         $version = new Version();
         $version->setContent($data);
         $em->persist($version);
+        $logger->info("Created version " . $version->getId());
 
 
         if ($presentation) { // If the presentation already exists, just add a new version
+            $logger->info("Version  " . $version->getId() . " has been added to presentation " . $presentation->getId());
             $presentation->addVersion($version);
-        } else { // otherwise, let's create an new presentation
+        } else if ($newEntry) { // otherwise, let's create an new presentation
             $presentation = new Presentation($this->getUser());
             $presentation->setTitle($name);
             $presentation->addVersion($version);
+            $logger->info("A new presentation has been created" . $presentation->getTitle());
             $em->persist($presentation);
-
+        } else {
+            return new JsonResponse([]);
         }
 
         $em->flush();
 
-        return new JsonResponse($presentation);
+        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
+
+        return (new JsonResponse())->setJson($json);
 
     }
 
@@ -159,13 +222,61 @@ class PresentationController extends Controller
     }
 
     /**
+     * @route("/export-presentation/{presentation}", name="export-presentation")
+     * @param Presentation $presentation
+     * @return Response
+     */
+    public function exportPresentation(Presentation $presentation) {
+        $response = new Response($presentation->getLastVersion()->getContent());
+
+        $response->headers->set('Content-Type', 'text/plain');
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $presentation->getTitle() . '.json'
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+        return $response;
+    }
+
+    /**
+     * @route("/export-version/{version}", name="export-version")
+     * @param Version $version
+     * @return Response
+     */
+    public function exportVersion(Version $version) {
+        $response = new Response($version->getContent());
+
+        $response->headers->set('Content-Type', 'text/plain');
+        $disposition = $response->headers->makeDisposition(
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            $version->getPresentation()->getTitle() . '-' . $version->getUpdatedAt()->format('d-m-Y H:i:s') . '.json'
+        );
+
+        $response->headers->set('Content-Disposition', $disposition);
+        return $response;
+    }
+
+    /**
      * Check if the logged user can manage the given entry.
      *
      * @param Presentation $presentation
      */
-    private function checkUserAction(Presentation $presentation)
+    private function checkUserPresentationAction(Presentation $presentation)
     {
         if (null === $this->getUser() || $this->getUser()->getId() != $presentation->getUser()->getId()) {
+            throw $this->createAccessDeniedException('You can not access this presentation.');
+        }
+    }
+
+    /**
+     * Check if the logged user can manage the given entry.
+     *
+     * @param Version $version
+     */
+    private function checkUserVersionAction(Version $version)
+    {
+        if (null === $this->getUser() || $this->getUser()->getId() != $version->getPresentation()->getUser()->getId()) {
             throw $this->createAccessDeniedException('You can not access this presentation.');
         }
     }

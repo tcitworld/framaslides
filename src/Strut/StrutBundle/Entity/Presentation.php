@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\Exclude;
 
 /**
  * Presentation.
@@ -56,13 +57,20 @@ class Presentation
     /**
      * @var bool
      *
+     * @ORM\Column(name="is_template", type="boolean", nullable=true, options={"default" = false})
+     */
+    private $isTemplate;
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="is_public", type="boolean", nullable=true, options={"default" = false})
      *
      */
     private $isPublic;
 
     /**
-     *
+     * @Exclude
      * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="presentations")
      *
      */
@@ -182,11 +190,17 @@ class Presentation
      * @throws \Exception
      */
     public function getLastVersion() {
-        $lastVersion = $this->versions->last();
+        $lastVersion = $this->versions->first();
         if (!$lastVersion) {
             throw new \Exception('No version found for this presentation');
         }
         return $lastVersion;
+    }
+
+    public function getNbSlides() {
+        $lastVersionContent = $this->getLastVersion()->getContent();
+        $nbSlides = count(json_decode($lastVersionContent)->slides);
+        return $nbSlides;
     }
 
     /**
@@ -229,5 +243,21 @@ class Presentation
     public function removeVersion(Version $version)
     {
         $this->versions->removeElement($version);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getIsTemplate()
+    {
+        return $this->isTemplate;
+    }
+
+    /**
+     * @param boolean $isTemplate
+     */
+    public function setIsTemplate($isTemplate)
+    {
+        $this->isTemplate = $isTemplate;
     }
 }

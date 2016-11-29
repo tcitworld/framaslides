@@ -13,6 +13,12 @@ services:
           arguments:
               - Strut:Presentation
 
+  strut.version_repository:
+            class: Strut\StrutBundle\Repository\VersionRepository
+            factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
+            arguments:
+                - Strut:Version
+
   twig.extension.date:
           class: Twig_Extensions_Extension_Date
           arguments:
