@@ -70,6 +70,14 @@ class Presentation
     private $isPublic;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="uuid", type="text", nullable=true)
+     *
+     */
+    private $uuid;
+
+    /**
      * @Exclude
      * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="presentations")
      *
@@ -259,5 +267,38 @@ class Presentation
     public function setIsTemplate($isTemplate)
     {
         $this->isTemplate = $isTemplate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
+    }
+
+    /**
+     * @param string $uuid
+     *
+     * @return Presentation
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function generateUuid()
+    {
+        if (null === $this->uuid) {
+            // @see http://blog.kevingomez.fr/til/2015/07/26/why-is-uniqid-slow/ for true parameter
+            $this->uuid = uniqid('', true);
+        }
+    }
+
+    public function cleanUuid()
+    {
+        $this->uuid = null;
     }
 }

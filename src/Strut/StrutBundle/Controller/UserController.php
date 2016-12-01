@@ -5,20 +5,34 @@ namespace Strut\StrutBundle\Controller;
 use Strut\StrutBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Strut\StrutBundle\Entity\Presentation;
-use Strut\StrutBundle\Entity\Version;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller {
 
     /**
-     * @route("/user-locale/", name="user-locale")
+     * @route("/user-locale", name="get-user-locale")
      * @return JsonResponse
      */
-    public function getUserLocale(/*User $user*/) {
-        return new JsonResponse('fr');
+    public function getUserLocale() {
+        if ($this->getUser()) {
+            $lang = $this->getUser()->getConfig()->getLang();
+            return new JsonResponse($lang);
+        }
+        return new JsonResponse([], 401);
+    }
+
+    /**
+     * @route("/user-locale/", name="set-user-locale")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function setUserLocale(Request $request) {
+        if ($this->getUser()) {
+            $lang = $request->get('lang');
+            $this->getUser()->getConfig()->setLang($lang);
+            return new JsonResponse($lang);
+        }
+        return new JsonResponse([], 401);
     }
 }

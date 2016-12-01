@@ -11,6 +11,7 @@ namespace Strut\StrutBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -162,7 +163,7 @@ class PresentationController extends Controller
             $presentation = new Presentation($this->getUser());
             $presentation->setTitle($name);
             $presentation->addVersion($version);
-            $logger->info("A new presentation has been created" . $presentation->getTitle());
+            $logger->info("A new presentation has been created " . $presentation->getTitle());
             $em->persist($presentation);
         } else {
             return new JsonResponse([]);
@@ -279,5 +280,72 @@ class PresentationController extends Controller
         if (null === $this->getUser() || $this->getUser()->getId() != $version->getPresentation()->getUser()->getId()) {
             throw $this->createAccessDeniedException('You can not access this presentation.');
         }
+    }
+
+    /**
+     * Get public URL for entry (and generate it if necessary).
+     *
+     * @param Presentation $presentation
+     *
+     * @Route("/share/{id}", requirements={"id" = "\d+"}, name="share")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function shareAction(Presentation $presentation)
+    {
+        $this->checkUserPresentationAction($presentation);
+
+        if (null === $presentation->getUuid()) {
+            $presentation->generateUuid();
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($presentation);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('share_entry', [
+            'uuid' => $presentation->getUuid(),
+        ]));
+    }
+
+    /**
+     * Disable public sharing for an entry.
+     *
+     * @param Presentation $presentation
+     *
+     * @Route("/share/delete/{id}", requirements={"id" = "\d+"}, name="delete_share")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteShareAction(Presentation $presentation)
+    {
+        $this->checkUserPresentationAction($presentation);
+
+        $presentation->cleanUuid();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($presentation);
+        $em->flush();
+
+        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
+
+        return (new JsonResponse())->setJson($json);
+    }
+
+    /**
+     * Ability to view a content publicly.
+     *
+     * @param Presentation $presentation
+     *
+     * @Route("/share/{uuid}", requirements={"uuid" = ".+"}, name="share_entry")
+     * @Cache(maxage="25200", smaxage="25200", public=true)
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function sharePresentationAction(Presentation $presentation)
+    {
+        return $this->render('@Strut/preview_export/impress.html', [
+            'presentation' => $presentation
+        ]);
     }
 }

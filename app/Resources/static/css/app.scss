@@ -2,10 +2,13 @@ body {
   display: flex;
   min-height: 100vh;
   flex-direction: column;
-}
+  opacity: 1;
+  transition: 0.7s opacity;
 
-main {
-  flex: 1 0 auto;
+  .fade {
+    opacity: 0;
+    transition: none;
+  }
 }
 
 h2 {
@@ -16,39 +19,19 @@ h2 {
   cursor: pointer;
 }
 
-/* Rules for sizing the icon. */
-.material-icons {
-  .md-18 {
-    font-size: 18px;
+.item-hidden {
+  transition: opacity .4s ease-out;
+  opacity: 0;
+  width: 0;
+}
+
+.card-footer {
+
+  .glyphicon {
+    font-size: 2.5rem;
   }
+}
 
-  .md-24 {
-    font-size: 24px;
-  }
-
-  .md-36 {
-    font-size: 36px;
-  }
-
-  .md-48 {
-    font-size: 48px;
-  }
-
-  /* Rules for using icons as black on a light background. */
-  .md-dark {
-    color: rgba(0, 0, 0, 0.54);
-
-    .md-inactive {
-      color: rgba(0, 0, 0, 0.26);
-    }
-  }
-
-  /* Rules for using icons as white on a dark background. */
-  .md-light {
-    color: rgba(255, 255, 255, 1);
-
-    .md-inactive {
-      color: rgba(255, 255, 255, 0.3);
-    }
-  }
+.icon {
+  margin: 0 5px;
 }

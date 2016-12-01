@@ -1,42 +1,59 @@
 app.name: <span class="frama">Frama</span><span class="services">slides</span>
 app.presentation: "appName est un service d'édition de présentations en ligne"
 
-menu.newpresentation: 'Nouvelle présentation'
-menu.mypresentations: 'Mes présentations'
-menu.templates: Modèles
-menu.disconnect: 'Se déconnecter'
-menu.login: 'Se connecter'
-menu.register: 'S''inscrire'
+menu:
+  newpresentation: 'Nouvelle présentation'
+  mypresentations: 'Mes présentations'
+  templates: Modèles
+  disconnect: 'Se déconnecter'
+  login: 'Se connecter'
+  register: 'S''inscrire'
 
-presentations.nbversions: 'une version|%count% versions'
-presentations.createdAt: 'Présentation créée le %createdAt%'
-presentations.updatedAt: 'Dernière version %updatedAt%'
-presentations.empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
-presentation.isTemplate: Modèle
-presentation.isPublic: Public
+presentations:
+  nbversions: 'une version|%count% versions'
+  createdAt: 'Présentation créée le %createdAt%'
+  updatedAt: 'Dernière version %updatedAt%'
+  empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
+  isTemplate: Modèle
+  isPublic: Public
 
-security.login.register: "S'inscrire"
-security.login.submit: 'Se connecter'
-security.login.forgot_password: 'Mot de passe oublié ?'
+security:
+  login:
+    register: "S'inscrire"
+    submit: 'Se connecter'
+    forgot_password: 'Mot de passe oublié ?'
 
-profile.edit: 'Éditer les paramètres de mon compte'
-profile.delete: 'Supprimer mon compte'
-profile.edit.cancel: "Annuler l'édition"
+profile:
+  edit: 'Éditer les paramètres de mon compte'
+  delete: 'Supprimer mon compte'
+  edit.cancel: "Annuler l'édition"
 
-version: Version
-version.lastnotdelete: La dernière version n'est pas supprimable.
-version.delete: Supprimer cette version
-version.restore: Restaurer cette version (crée une nouvelle version)
-version.download: Télécharger cette version
+version:
+  title: Version
+  lastnotdelete: La dernière version n'est pas supprimable.
+  delete: Supprimer cette version
+  restore: Restaurer cette version (crée une nouvelle version)
+  download: Télécharger cette version
 
 errors.default: Erreur
-info.default: Information
-info.version.restaured.title: Version restaurée
-info.version.restaured.desc: Une nouvelle version correspondante a été créée.
+info:
+  default: Information
+  version:
+    restaured:
+      title: Version restaurée
+      desc: Une nouvelle version correspondante a été créée.
 
-template: Modèle
-template.form.maketemplate: Faire de cette présentation un modèle
-template.form.makepublic: Rendre ce modèle public
-templates.mine: Mes modèles (privés)
-templates.public: Modèles publics
-templates.published: Mes modèles publiés
+templates:
+  title: Modèle
+  form:
+    maketemplate: Faire de cette présentation un modèle
+    makepublic: Rendre ce modèle public
+  fork:
+    presentationtitle: Titre de la nouvelle présentation
+    presentationtitle.short: Titre
+    newpresentation: Nouvelle présentation
+    newpresentation.desc: Vous allez créer une nouvelle présentation basée sur ce modèle
+  mine: "Mes modèles (privés)"
+  public: "Modèles publics"
+  published: "Mes modèles publiés"
+  author: "publié par author"

@@ -47,6 +47,13 @@ class User extends BaseUser
      */
     protected $presentations;
 
+    /**
+     * @var Config
+     *
+     * @ORM\OneToMany(targetEntity="Strut\StrutBundle\Entity\Config", mappedBy="user", cascade={"remove"})
+     */
+    protected $config;
+
     public function __construct()
     {
         parent::__construct();
@@ -141,26 +148,23 @@ class User extends BaseUser
      *
      * @return User
      */
-    /*
+
     public function setConfig(Config $config = null)
     {
         $this->config = $config;
 
         return $this;
     }
-    */
 
     /**
      * Get config.
      *
      * @return Config
      */
-    /*
     public function getConfig()
     {
         return $this->config;
     }
-    */
 
     /**
      * Set createdAt

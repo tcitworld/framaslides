@@ -4,7 +4,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="templateModalTitle">{{ 'template' | trans }}</h4>
+                <h4 class="modal-title" id="templateModalTitle">{{ 'templates.title' | trans }}</h4>
                 <div class="alert alert-warning alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'errors.default' | trans }}</strong> </div>
                 <div class="alert alert-info alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'info.default' | trans }}</strong> <span class="desc"></span></div>
             </div>
@@ -13,13 +13,13 @@
                     <div class="checkbox">
                         <label>
                             <input type="checkbox" value="" name="maketemplate" id="maketemplate">
-                            {{ 'template.form.maketemplate' | trans }}
+                            {{ 'templates.form.maketemplate' | trans }}
                         </label>
                     </div>
                     <div class="checkbox disabled">
                         <label>
                             <input type="checkbox" value="" disabled name="makepublic" id="makepublic">
-                            {{ 'template.form.makepublic' | trans }}
+                            {{ 'templates.form.makepublic' | trans }}
                         </label>
                     </div>
                 </form>

@@ -1,0 +1,24 @@
+<!-- Template Modal -->
+<div class="modal fade" id="forkModal" tabindex="-1" role="dialog" aria-labelledby="forkModalTitle">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="forkModalTitle">{{ 'templates.fork.newpresentation' | trans }}</h4>
+                <div class="alert alert-warning alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'errors.default' | trans }}</strong> </div>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info alert-dismissible fade in" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button><span class="desc">{{ 'templates.fork.newpresentation.desc' | trans }}</span></div>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="presentationtitle">{{ 'templates.fork.presentationtitle' | trans }}</label>
+                        <input type="text" name="presentationtitle" id="presentationtitle" class="form-control" placeholder="{{ 'templates.fork.presentationtitle.short' | trans }}">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="fork-save" data-dismiss="modal">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+</div>
