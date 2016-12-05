@@ -36,6 +36,8 @@ composer.lock
 /app/config/parameters.yml
 
 # Assets and user uploads
-/web/*
+web/*
+!web/app.php
+!web/app_dev.php
 !web/bundles
 web/bundles/*
