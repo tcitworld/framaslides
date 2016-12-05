@@ -151,21 +151,6 @@ $(() => {
     }
   }
 
-  /**
-   * Publish presentation
-   */
-  $('.publish').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(event.target);
-    const templateModal = $('#templateModal');
-    templateModal.find('.modal-title').text(`Sauvegarder « ${elem.parents('.card').find('.title').text()} » en modèle`);
-    templateModal.attr('data-presentation', elem.parents('.card').attr('data-presentation'));
-    templateModal.find('#maketemplate').prop('checked', elem.parents('.card').attr('data-template') === '1');
-    publicIfTemplate();
-    templateModal.find('#makepublic').prop('checked', elem.parents('.card').attr('data-public') === '1');
-    templateModal.modal();
-  });
-
   $('#maketemplate').change(() => {
     publicIfTemplate();
   });

@@ -21,7 +21,7 @@
                         Nb slides : {{ presentation.getNbSlides }}</p>
                     </div>
                     <div class="card-footer">
-                        <a href="{{ path('app') }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit"></i></a>
                         <a href="delete-presentation/{{ presentation.title }}" class="delete" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-trash"></i></a>
                         <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark"></i></a>
                         <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt"></i></a>
