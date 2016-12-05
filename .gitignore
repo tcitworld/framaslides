@@ -40,4 +40,5 @@ web/*
 !web/app_dev.php
 !web/config.php
 !web/bundles
+!web/img
 web/bundles/*
