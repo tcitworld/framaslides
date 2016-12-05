@@ -12,7 +12,7 @@
     <div class="row">
         {% for presentation in presentations %}
             <div class="col-xs-12 col-sm-4">
-                <div class="card" data-presentation="{{ presentation.id }}">
+                <div class="card" data-presentation="{{ presentation.id }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
                     <div class="card-block">
                         <h4 class="card-title"><span class="title">{{ presentation.title }}</span></h4>
                         <p><span class="label label-default versions">{{ 'presentations.nbversions' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>

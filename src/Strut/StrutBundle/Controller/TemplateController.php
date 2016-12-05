@@ -25,6 +25,25 @@ class TemplateController extends Controller {
     }
 
     /**
+     * @route("/make-template/{id}", name="make-template", requirements={"id" = "\d+"})
+     * @param Request $request
+     * @param Presentation $presentation
+     * @return JsonResponse
+     */
+    public function makeTemplateAction(Request $request, Presentation $presentation) {
+        $em = $this->getDoctrine()->getManager();
+        $template = $request->get('template', false) === 'true';
+        $public = $request->get('public', false) === 'true';
+        $presentation->setIsTemplate($template);
+        $presentation->setIsPublic($public);
+        $em->flush();
+
+        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
+
+        return (new JsonResponse())->setJson($json);
+    }
+
+    /**
      * @route("/create-template/{id}", name="create-template", requirements={"id" = "\d+"})
      * @param Presentation $presentation
      * @return JsonResponse

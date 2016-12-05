@@ -45,17 +45,6 @@ $(() => {
   });
 
   /**
-   * Publish presentation
-   */
-  $('.publish').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(this);
-    const templateModal = $('#templateModal');
-    templateModal.attr('data-presentation', elem.attr('data-presentation'));
-    templateModal.modal();
-  });
-
-  /**
    * Fork presentation
    */
   $('.fork').on('click', (event) => {
@@ -83,8 +72,8 @@ $(() => {
   $('.label.versions').on('click', (event) => {
     event.preventDefault();
     const elem = $(event.target);
-    $('.modal-title').text(`Versions pour la présentation « ${elem.closest('.card-title .title').text()} »`);
-    $('.modal-body > .list-group').empty();
+    $('#versionModal .modal-title').text(`Versions pour la présentation « ${elem.closest('.card-title .title').text()} »`);
+    $('#versionModal .modal-body > .list-group').empty();
     $.ajax({
       url: `versions/${elem.closest('.card').attr('data-presentation')}`,
       success: (versions) => {
@@ -151,7 +140,7 @@ $(() => {
   /**
    * Disable making a template public is presentation is not template
    */
-  $('#maketemplate').change(() => {
+  function publicIfTemplate() {
     const makepublic = $('#makepublic');
     if (makepublic.attr('disabled')) {
       makepublic.removeAttr('disabled');
@@ -160,6 +149,25 @@ $(() => {
       makepublic.attr('disabled', 'true');
       makepublic.parent().parent().addClass('disabled');
     }
+  }
+
+  /**
+   * Publish presentation
+   */
+  $('.publish').on('click', (event) => {
+    event.preventDefault();
+    const elem = $(event.target);
+    const templateModal = $('#templateModal');
+    templateModal.find('.modal-title').text(`Sauvegarder « ${elem.parents('.card').find('.title').text()} » en modèle`);
+    templateModal.attr('data-presentation', elem.parents('.card').attr('data-presentation'));
+    templateModal.find('#maketemplate').prop('checked', elem.parents('.card').attr('data-template') === '1');
+    publicIfTemplate();
+    templateModal.find('#makepublic').prop('checked', elem.parents('.card').attr('data-public') === '1');
+    templateModal.modal();
+  });
+
+  $('#maketemplate').change(() => {
+    publicIfTemplate();
   });
 
   /**
