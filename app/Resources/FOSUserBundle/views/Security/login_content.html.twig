@@ -1,38 +1,85 @@
-{% trans_default_domain 'FOSUserBundle' %}
-
-<div class="card">
-<form action="{{ path("fos_user_security_check") }}" method="post">
-    <div class="card-block">
-        {% if error %}
-            <div class="alert alert-warning" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if csrf_token %}
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-        {% endif %}
-
-        <div class="form-group">
-            <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
-            <input class="form-control" type="text" id="username" name="_username" placeholder="Votre nom d'utilisateur" value="{{ last_username is defined ? last_username }}" required="required" />
-        </div>
-
-        <div class="form-group">
-            <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
-            <input class="form-control" type="password" id="password" name="_password" required="required" placeholder="Votre mot de passe"/>
-        </div>
-
-        <div class="form-check">
-            <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" value="on" />
-                {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
-            </label>
-        </div>
-
+<header role="banner">
+    <div class="pull-right text-right strut-logo">
+        <p>Basé sur <br><a href="https://strut.io"><img src="{{ asset('img/strut-logo.png') }}" alt="Strut"></a></p>
     </div>
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
-    <a href="{{ path('fos_user_registration_register') }}" class="btn btn-secondary">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
-    <button class="btn btn-primary" type="submit" name="send">{{ 'security.login.submit'|trans }}</button>
-    <div class="card-action center">
-        <a href="{{ path('fos_user_resetting_request') }}">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</a>
+    <a href="/" class="logo"><h1>{{ 'app.name' | trans() | raw }}</h1></a>
+    <p class="lead">Éditez vos présentations en ligne</p>
+    <hr class="trait" role="presentation">
+</header>
+<main>
+    <div class="row">
+        <div class="col-md-8 text-center">
+            <p class="ombre">
+                <img src="{{ asset('img/strut.png') }}" style="max-width:100%;">
+            </p>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <h3>{{ 'app.presentation' | trans({ 'appName' : ('app.name' | trans()) }) | raw }}</h3>
+            <form action="{{ path("fos_user_security_check") }}" method="post">
+                <div class="card-block">
+                    {% if error %}
+                        <div class="alert alert-warning" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+
+                    {% if csrf_token %}
+                        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                    {% endif %}
+
+                    <div class="form-group">
+                        <label for="username">{{ 'security.login.username'|trans({}, 'FOSUserBundle') }}</label>
+                        <input class="form-control" type="text" id="username" name="_username" placeholder="Votre nom d'utilisateur" value="{{ last_username is defined ? last_username }}" required="required" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">{{ 'security.login.password'|trans({}, 'FOSUserBundle') }}</label>
+                        <input class="form-control" type="password" id="password" name="_password" required="required" placeholder="Votre mot de passe"/>
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="remember_me" name="_remember_me" value="on" />
+                            {{ 'security.login.remember_me'|trans({}, 'FOSUserBundle') }}
+                        </label>
+                    </div>
+
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
+                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-secondary">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
+                <button class="btn btn-primary" type="submit" name="send">{{ 'security.login.submit'|trans }}</button>
+                <div class="card-action center">
+                    <a href="{{ path('fos_user_resetting_request') }}">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</a>
+                </div>
+            </form>
+        </div>
     </div>
-</form>
+    <hr role="presentation" />
+    <div class="row">
+        <div class="col-md-4" id="tuto-video">
+            <h2>Documentation</h2>
+            <p class="text-center" role="presentation"><span class="glyphicon glyphicon-book"></span></p>
+            Pour vous aider dans l'utilisation de <b class="frama">Frama</b><b class="vert">slides</b> et de la mise en place de la synchronisation sur vos appareils, nous avons rédigé une documentation complète ainsi qu'une FAQ.
+            <p class="text-center"><a href="#" class="btn btn-primary">Lire la documentation</a></p>
+        </div>
+
+
+        <div class="col-md-4" id="le-logiciel">
+            <h2>Le logiciel</h2>
+            <p class="text-center" role="presentation"><span class="glyphicon glyphicon-cloud"></span></p>
+            <p><b class="frama">Frama</b><b class="vert">slides</b> repose en partie sur le logiciel libre
+                <a href="https://owncloud.org">Strut</a>.
+                Les données sont hébergées sur les serveurs de <b class="frama">Frama</b><b class="soft">soft</b>.
+            <p>Strut est sous <a href="https://github.com/owncloud/core/blob/master/COPYING-README">licence <abbr title="Affero General Public License">AGPL</abbr></a>.</p>
+
+        </div>
+
+        <div class="col-md-4" id="jardin">
+            <h2>Cultivez votre jardin</h2>
+            <p class="text-center" role="presentation"><span class="glyphicon glyphicon-tree-deciduous"></span></p>
+            <p>Pour participer au développement du logiciel, proposer des améliorations
+                ou simplement le télécharger, rendez-vous sur <a href="https://github.com/owncloud/">le site de développement</a>.</p>
+            <br>
+            <p>Si vous souhaitez installer ce logiciel pour votre propre usage et ainsi gagner en autonomie, nous vous aidons sur :</p>
+            <p class="text-center"><a href="http://framacloud.org/cultiver-son-jardin/installation-de-owncloud/" class="btn btn-success"><span class="glyphicon glyphicon-tree-deciduous"></span> framacloud.org</a></p>
+        </div>
+    </div>
+</main>

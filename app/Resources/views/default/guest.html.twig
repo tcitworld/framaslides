@@ -1,8 +1,8 @@
 <header role="banner">
-    <div class="pull-right text-right">
-        <p>Basé sur <br><a href="https://strut.io"><img src="" alt="Strut"></a></p>
+    <div class="pull-right text-right strut-logo">
+        <p>Basé sur <br><a href="https://strut.io"><img src="{{ asset('img/strut-logo.png') }}" alt="Strut"></a></p>
     </div>
-    <a href="/"><h1>{{ 'app.name' | trans() | raw }}</h1></a>
+    <a href="/" class="logo"><h1>{{ 'app.name' | trans() | raw }}</h1></a>
     <p class="lead">Éditez vos présentations en ligne</p>
     <hr class="trait" role="presentation">
 </header>

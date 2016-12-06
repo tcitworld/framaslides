@@ -13,19 +13,35 @@ security:
             id: fos_user.user_provider.username
 
     firewalls:
-        main:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        login_firewall:
+            pattern: ^/login$
+            anonymous:  ~
+
+        secured_area:
             pattern: ^/
             form_login:
                 provider: fos_userbundle
                 csrf_token_generator: security.csrf.token_manager
-                # if you are using Symfony < 2.8, use the following config instead:
-                # csrf_provider: form.csrf_provider
 
-            logout:       true
-            anonymous:    true
+            anonymous: true
+            remember_me:
+                secret: "%secret%"
+                lifetime: 31536000
+                path: /
+                domain: ~
+
+            logout:
+                path:   /logout
+                target: /
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/share, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_USER }

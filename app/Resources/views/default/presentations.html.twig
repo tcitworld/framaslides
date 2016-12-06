@@ -6,9 +6,6 @@
 
 {% block content %}
 <div class="container ombre">
-    {% if not app.user %}
-        {% include 'default/guest.html.twig' %}
-    {% else %}
     <div class="row">
         {% for presentation in presentations %}
             <div class="col-xs-12 col-sm-4">
@@ -31,9 +28,7 @@
             </div>
         {% endfor %}
     </div>
-    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }}
-    {% endif %}
-    </div>
+    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }}</div>
 </div>
 {% include 'default/modals/template.html.twig' %}
 {% include 'default/modals/versions.html.twig' %}

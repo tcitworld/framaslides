@@ -81,3 +81,17 @@ fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: Strut\StrutBundle\Entity\User
+    registration:
+        confirmation:
+            enabled: true
+        from_email:
+            address:        inscription@framaslides.org
+            sender_name:    Framaslides
+    resetting:
+        email:
+            from_email:
+                address:        reinitialisation@framaslides.org
+                sender_name:    Framaslides
+    from_email:
+        address:        nepasrepondre@framaslides.org
+        sender_name:    Framaslides

@@ -11,6 +11,30 @@ body {
   }
 }
 
+header {
+
+  .strut-logo img {
+    height: 58px;
+  }
+
+  a.logo {
+    text-decoration: none;
+
+    h1 {
+      font-size: 48px;
+    }
+  }
+}
+
+nav.navbar {
+  background-color:#B49CD9;
+
+  a.navbar-brand {
+    text-decoration: none;
+    font-size: 40px;
+  }
+}
+
 h2 {
   font-size: 2.5rem;
 }

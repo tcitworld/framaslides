@@ -6,7 +6,7 @@
         <p class="card-text">{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
     </div>
     <div class="card-footer">
-        <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ 'profile.edit'|trans({}, 'messages' ) }}" href="{{ path('fos_user_profile_edit') }}"><i class="material-icons">mode_edit</i></a>
-        <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ 'profile.delete'|trans({}, 'messages' ) }}" href=""><i class="material-icons">delete</i></a>
+        <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ 'profile.edit'|trans({}, 'messages' ) }}" href="{{ path('fos_user_profile_edit') }}"><i class="glyphicon glyphicon-pencil"></i></a>
+        <a class="tooltipped" data-position="bottom" data-delay="50" data-tooltip="{{ 'profile.delete'|trans({}, 'messages' ) }}" href=""><i class="glyphicon glyphicon-trash"></i></a>
     </div>
 </div>

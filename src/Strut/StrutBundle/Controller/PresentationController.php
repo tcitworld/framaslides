@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class PresentationController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @Route("/", name="presentations")
      * @param Request $request
      * @return Response
      */
