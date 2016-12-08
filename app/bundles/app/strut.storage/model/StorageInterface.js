@@ -1,5 +1,5 @@
-define(['tantaman/web/storage/StorageProvidersWrapper'],
-function(StorageProviders) {
+define(['tantaman/web/storage/StorageProvidersWrapper', 'strut/presentation_generator/PreviewLauncher'],
+function(StorageProviders, PreviewLauncher) {
 	'use strict';
 
 	// TODO: update to use ServiceCollection
@@ -62,14 +62,14 @@ function(StorageProviders) {
 			return this;
 		},
 
-		savePresentation: function(identifier, data, cb, saveAction) {
-			/*var idx = identifier.indexOf('.strut');
-			if (idx == -1 || (idx + '.strut'.length != identifier.length)) {
-				identifier += '.strut';
-			}
-			window.sessionMeta.lastPresentation = identifier;
-			*/
+		savePresentation: function(identifier, data, cb, saveAction, model) {
 			this.store(identifier, data, cb, saveAction);
+
+      /** Also save preview */
+      var previewLauncher = new PreviewLauncher(model);
+      var generators = model.registry
+        .getBest('strut.presentation_generator.GeneratorCollection');
+      previewLauncher.launch(generators[0], true);
 		}
 	};
 

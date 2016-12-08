@@ -185,7 +185,10 @@ class PresentationController extends Controller
     public function savePreview(Request $request, Presentation $presentation) {
         //$this->checkUserAction($presentation);
         $previewData = $request->get('previewData');
+        $previewConfig = $request->get('previewConfig');
+
         $presentation->setRendered($previewData);
+        $presentation->setPreviewConfig($previewConfig);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
         return new JSONResponse();

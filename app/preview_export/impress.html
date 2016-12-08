@@ -129,12 +129,12 @@ $(document).ready(function() {
     ready(function () {
         if (document.getElementById('launched-placeholder')) {
             var presentation = "{% spaceless %}{{ presentation.rendered | e('js') }}{% endspaceless %}";
-            var config = JSON.parse(localStorage.getItem('preview-config'));
+            var config = JSON.parse('{% spaceless %}{{ presentation.previewConfig | e('js') }}{% endspaceless %}');
         }
 
         if (presentation) {
             document.body.innerHTML = presentation;
-            //	document.body.className = config.surface + " " + document.body.className;
+            document.body.className = config.surface + " " + document.body.className;
         }
 
         if (!window.presStarted) {

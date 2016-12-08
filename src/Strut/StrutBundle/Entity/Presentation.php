@@ -61,6 +61,13 @@ class Presentation
     private $rendered;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="preview_config", type="text", nullable=true)
+     */
+    private $previewConfig;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="is_template", type="boolean", nullable=true, options={"default" = false})
@@ -174,6 +181,22 @@ class Presentation
     public function setRendered($rendered)
     {
         $this->rendered = $rendered;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPreviewConfig()
+    {
+        return $this->previewConfig;
+    }
+
+    /**
+     * @param string $previewConfig
+     */
+    public function setPreviewConfig($previewConfig)
+    {
+        $this->previewConfig = $previewConfig;
     }
 
     /**

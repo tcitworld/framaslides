@@ -7,7 +7,8 @@ define(function() {
 	};
 
 	PreviewLauncher.prototype = {
-		launch: function(generator) {
+		launch: function(generator, _openWindow) {
+		  var openWindow = _openWindow || false;
 			if (window.previewWind)
 				window.previewWind.close();
 
@@ -15,28 +16,26 @@ define(function() {
 			var editorModel = this._editorModel;
 
 			var previewStr = generator.generate(this._editorModel.deck());
+			var previewConfig = JSON.stringify({
+        surface: this._editorModel.deck().get('surface')
+      });
 
 			$.ajax({
 				type: 'POST',
 				url: '/save-preview/' + editorModel.fileName(),
 				data: {
 					previewData: previewStr,
+          previewConfig: previewConfig
 				},
 			}).success(function() {
-				window.previewWind = window.open(
-					'/preview/' + editorModel.fileName() + '/' + generator.id + generator.getSlideHash(editorModel),
-					window.location.href);
+			  if (!openWindow) {
+          window.previewWind = window.open(
+            '/preview/' + editorModel.fileName() + '/' + generator.id + generator.getSlideHash(editorModel),
+            window.location.href);
 
-				var sourceWind = window;
+          var sourceWind = window;
+        }
 			});
-
-			localStorage.setItem('preview-string', previewStr);
-			localStorage.setItem('preview-config', JSON.stringify({
-				surface: this._editorModel.deck().get('surface')
-			}));
-
-
-
 		}
 	};
 
