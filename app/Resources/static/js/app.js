@@ -45,6 +45,7 @@ $(() => {
   $('.share').on('click', (event) => {
     event.preventDefault();
     const elem = $(event.target).parents('.card');
+    const shareModal = $('#shareModal');
 
     fetch(`share/${elem.attr('data-presentation')}`, {
       credentials: 'same-origin',
@@ -52,7 +53,19 @@ $(() => {
       if (response.ok) {
         $('#presentationshareurl').val(response.url);
         $('#btn-external').attr('href', response.url);
-        $('#shareModal').modal();
+        shareModal.attr('data-presentation', elem.attr('data-presentation'));
+        shareModal.modal();
+      }
+    });
+  });
+
+  $('#deleteshare').on('click', () => {
+    const shareModal = $('#shareModal');
+    fetch(`share/delete/${shareModal.attr('data-presentation')}`, {
+      credentials: 'same-origin',
+    }).then((response) => {
+      if (response.ok) {
+        shareModal.modal('hide');
       }
     });
   });

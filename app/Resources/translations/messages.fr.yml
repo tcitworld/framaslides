@@ -18,7 +18,10 @@ presentations:
   isPublic: Public
   share:
     title: Publier la présentation
+    title.details: Publier la présentation génère un lien unique permettant à tout le monde de visualiser votre présentation
     input: URL publique de la présentation
+    delete: Supprimer le lien public de la présentation
+    delete.details: En supprimant le lien public de la présentation, il ne sera plus possible d'y accéder par lien public
 
 security:
   login:
