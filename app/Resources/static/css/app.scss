@@ -4,11 +4,6 @@ body {
   flex-direction: column;
   opacity: 1;
   transition: 0.7s opacity;
-
-  .fade {
-    opacity: 0;
-    transition: none;
-  }
 }
 
 header {
