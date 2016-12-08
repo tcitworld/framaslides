@@ -7,6 +7,7 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    pictures_directory: '%kernel.root_dir%/../web/assets/pics'
 
 framework:
     #esi:             ~
@@ -84,14 +85,6 @@ fos_user:
     registration:
         confirmation:
             enabled: true
-        from_email:
-            address:        inscription@framaslides.org
-            sender_name:    Framaslides
-    resetting:
-        email:
-            from_email:
-                address:        reinitialisation@framaslides.org
-                sender_name:    Framaslides
     from_email:
-        address:        nepasrepondre@framaslides.org
+        address:        nepasrepondre@framasoft.org
         sender_name:    Framaslides

@@ -48,10 +48,9 @@ class PresentationController extends Controller
 
     /**
      * @route("/presentations-json", name="presentations-json")
-     * @param Request $request
      * @return JSONResponse
      */
-    public function getPresentationsJson(Request $request) {
+    public function getPresentationsJson() {
         $repository = $this->get('strut.presentation_repository');
         $presentations = $repository->findByUser($this->getUser());
         $json = $this->get('jms_serializer')->serialize($presentations, 'json');

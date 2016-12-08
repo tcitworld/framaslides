@@ -2,6 +2,7 @@ import jQuery from 'jquery';
 import moment from 'moment';
 import 'moment/locale/fr';
 import bootstrap from 'bootstrap'; // eslint-disable-line no-unused-vars
+import Clipboard from 'clipboard';
 import cachedFetched from './cachedFetched';
 
 /**
@@ -27,16 +28,45 @@ cachedFetched('/user-locale')
  */
 $(() => {
   /**
+   * Initialize all tooltips
+   */
+  $(() => {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+
+  /**
+   * Initialize copy/paste
+   */
+  new Clipboard('.btn-copy'); // eslint-disable-line no-new
+
+  /**
+   * Share stuff
+   */
+  $('.share').on('click', (event) => {
+    event.preventDefault();
+    const elem = $(event.target).parents('.card');
+
+    fetch(`share/${elem.attr('data-presentation')}`, {
+      credentials: 'same-origin',
+    }).then((response) => {
+      if (response.ok) {
+        $('#presentationshareurl').val(response.url);
+        $('#btn-external').attr('href', response.url);
+        $('#shareModal').modal();
+      }
+    });
+  });
+
+  /**
    * Delete presentation
    */
   $('.delete').on('click', (event) => {
     event.preventDefault();
-    const elem = $(this);
+    const elem = $(event.target).parents('.card');
     $.ajax({
-      url: `delete-presentation/${elem.attr('data-presentation')}`,
+      url: `delete-presentation/${elem.attr('data-presentation-title')}`,
       success: () => {
-        const card = elem.closest('.card').parent();
-        card.addClass('item-hidden').delay(400).remove();
+        elem.addClass('item-hidden').delay(400).remove();
         if ($('.card').length === 0) {
           $('.no-presentations-message').show();
         }
@@ -150,6 +180,21 @@ $(() => {
       makepublic.parent().parent().addClass('disabled');
     }
   }
+
+  /**
+   * Publish presentation
+   */
+  $('.publish').on('click', (event) => {
+    event.preventDefault();
+    const elem = $(event.target);
+    const templateModal = $('#templateModal');
+    templateModal.find('.modal-title').text(`Sauvegarder « ${elem.parents('.card').find('.title').text()} » en modèle`);
+    templateModal.attr('data-presentation', elem.parents('.card').attr('data-presentation'));
+    templateModal.find('#maketemplate').prop('checked', elem.parents('.card').attr('data-template') === '1');
+    publicIfTemplate();
+    templateModal.find('#makepublic').prop('checked', elem.parents('.card').attr('data-public') === '1');
+    templateModal.modal();
+  });
 
   $('#maketemplate').change(() => {
     publicIfTemplate();

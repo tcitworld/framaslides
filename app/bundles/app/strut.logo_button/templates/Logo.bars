@@ -1,5 +1,5 @@
 <a class="btn logo btn-plast dropdown-toggle" data-toggle="dropdown">
-	<span class="logo-bg"></span>
+	<span class="logo-bg"><span class="frama">Frama</span><span class="services">slides</span></span>
     <span class="caret"></span>
 </a>
 <ul class="dropdown-menu">

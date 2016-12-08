@@ -16,6 +16,9 @@ presentations:
   empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
   isTemplate: Modèle
   isPublic: Public
+  share:
+    title: Publier la présentation
+    input: URL publique de la présentation
 
 security:
   login:
@@ -47,7 +50,9 @@ templates:
   title: Modèle
   form:
     maketemplate: Faire de cette présentation un modèle
+    maketemplate.tooltip: Cette présentation sera accessible comme base pour d'autres présentations dans « Vos modèles »
     makepublic: Rendre ce modèle public
+    makepublic.tooltip: Cette présentation sera accessible comme base pour d'autres présentations par tout le monde.
   fork:
     presentationtitle: Titre de la nouvelle présentation
     presentationtitle.short: Titre

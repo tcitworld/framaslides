@@ -38,6 +38,8 @@ define(['libs/backbone',
 
 				this.exportable.adapted = this;
 
+				this.filename = this._deck.get('fileName');
+
 				var savers = this.registry.getBest('tantaman.web.saver.AutoSavers');
 				if (savers) {
 					var storageInterface = this.registry.getBest('strut.StorageInterface');

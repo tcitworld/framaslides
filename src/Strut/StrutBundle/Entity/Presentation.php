@@ -48,6 +48,12 @@ class Presentation
     private $versions;
 
     /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="Picture", mappedBy="presentation", cascade={"remove"})
+     */
+    private $pictures;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="rendered", type="text", nullable=true)
@@ -91,6 +97,7 @@ class Presentation
     {
         $this->user = $user;
         $this->versions = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
         $this->createdAt = new \DateTime();
     }
 
@@ -300,5 +307,26 @@ class Presentation
     public function cleanUuid()
     {
         $this->uuid = null;
+    }
+
+    /**
+     * @return ArrayCollection<Picture>
+     */
+    public function getPictures()
+    {
+        return $this->pictures;
+    }
+
+    /**
+     * @param mixed $pictures
+     */
+    public function setPictures($pictures)
+    {
+        $this->pictures = $pictures;
+    }
+
+    public function addPicture(Picture $picture) {
+        $this->pictures[] = $picture;
+        $picture->setPresentation($this);
     }
 }

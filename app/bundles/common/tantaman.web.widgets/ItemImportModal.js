@@ -1,13 +1,15 @@
 /*
 @author Matt Crinklaw-Vogt
 */
-define(['libs/backbone', 'libs/lutim'],
-function(Backbone, Lutim) {
+define(['libs/backbone', 'libs/lutim', 'libs/uploadPicture'],
+function(Backbone, Lutim, UploadPicture) {
 	var modalCache = {};
 	var reg = /[a-z]+:/;
 	// With a slash at the end !
-	var lutimAddress = 'http://127.0.0.1:8080/';
-	var lutim = new Lutim(lutimAddress);
+	// var lutimAddress = 'http://127.0.0.1:8080/';
+	// var lutim = new Lutim(lutimAddress);
+  var address = '/picture';
+  var uploadPicture = new UploadPicture(address);
 
 	var ignoredVals = {
 		'http:': true,
@@ -32,6 +34,7 @@ function(Backbone, Lutim) {
 			this.loadItem = _.debounce(this.loadItem.bind(this), 200);
 		},
 		show: function(cb) {
+
 			this.cb = cb;
 			return this.$el.modal('show');
 		},
@@ -42,27 +45,28 @@ function(Backbone, Lutim) {
 			}
 		},
 		fileChosen: function(e) {
-			var f, reader,
-				_this = this;
-			f = e.target.files[0];
+			var f = e.target.files[0];
+      var _this = this;
 			if (!f.type.match('image.*'))
 				return;
 
 			this._switchToProgress();
 			this.item.src = '';
-
-			lutim.upload(f).progress(function(ratio) {
+			var fileName = this.options.editorModel._deck.get('fileName');
+      console.log(fileName);
+			uploadPicture.setPresentationTitle(fileName);
+      uploadPicture.upload(f).progress(function(ratio) {
 				_this._updateProgress(ratio);
 			}).then(function(result) {
 				_this._switchToThumbnail();
-				_this.$input.val(lutimAddress + result.msg.short);
+				_this.$input.val(window.location.origin + address + '/' + result.uuid);
 				_this.urlChanged({
 					which: -1
 				});
 			}, function() {
 				_this._updateProgress(0);
 				_this._switchToThumbnail();
-				_this.$input.val('Failed to upload image to lutim');
+				_this.$input.val("Impossible de téléverser l'image");
 			});
 
 
@@ -133,7 +137,7 @@ function(Backbone, Lutim) {
 			this.$el.modal("hide");
 			this.item = this.$el.find(this.options.tag)[0];
 			if (this.options.tag === "video") {
-				this.$el.find(".modal-body").prepend("<div class='alert alert-success'>Supports <strong>webm & YouTube</strong>.<br/>Try out: http://www.youtube.com/watch?v=vHUsdkmr-SM</div>");
+				this.$el.find(".modal-body").prepend("<div class='alert alert-success'>Supporte <strong>webm & YouTube</strong>.<br/>Try out: http://www.youtube.com/watch?v=vHUsdkmr-SM</div>");
 			}
 			if (!this.options.ignoreErrors) {
 				this.item.onerror = function() {
@@ -151,8 +155,8 @@ function(Backbone, Lutim) {
 			return this.$el;
 		},
 		constructor: function ItemImportModal() {
-		Backbone.View.prototype.constructor.apply(this, arguments);
-	}
+		  Backbone.View.prototype.constructor.apply(this, arguments);
+	  }
 	});
 
 	return {
