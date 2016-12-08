@@ -20,7 +20,6 @@ define(function() {
 				url: '/presentations-json',
 
 			}).success(function(data) {
-				console.log(data);
 				var presentations = data.map(function(elem) {
 					return elem.title;
 				});
@@ -34,7 +33,6 @@ define(function() {
 				method: 'GET',
 				url: '/delete-presentation/' + path
 			}).success(function (data) {
-				console.log(data);
 				cb(JSON.parse(data));
 			});
 			return this;
@@ -45,7 +43,6 @@ define(function() {
 				method: 'GET',
 				url: '/presentation/' + path,
 			}).success(function (data) {
-				console.log(data);
 				cb(JSON.parse(data));
 			});
 			return this;
@@ -61,7 +58,6 @@ define(function() {
 					newEntry: (saveAction !== undefined) ? 1 : 0
 				}
 			}).success(function (data, status, xhr) {
-				console.log(xhr.status);
 				if (cb) {
 					cb(true);
 				}
