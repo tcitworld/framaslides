@@ -88,17 +88,6 @@ $(() => {
   });
 
   /**
-   * Fork presentation
-   */
-  $('.fork').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(this);
-    const templateModal = $('#forkModal');
-    templateModal.attr('data-presentation', elem.attr('data-presentation'));
-    templateModal.modal();
-  });
-
-  /**
    * Generate versions body from version list
    * @param versions
    */
@@ -229,14 +218,27 @@ $(() => {
     });
   });
 
+
+  /**
+   * Fork presentation
+   */
+  $('.fork').on('click', (event) => {
+    event.preventDefault();
+    const elem = $(event.target).parents('.card');
+    const templateModal = $('#forkModal');
+    templateModal.attr('data-presentation', elem.attr('data-presentation'));
+    templateModal.modal();
+  });
+
   /**
    * Save fork stuff
    */
   body.on('click', '#fork-save', () => {
     $.ajax({
+      method: 'POST',
       url: `create-from-template/${$('#forkModal').attr('data-presentation')}`,
       data: {
-        title: $('presentationtitle').val(),
+        title: $('#presentationtitle').val(),
       },
       success: () => {
         $('#forkModal').modal('hide');

@@ -44,36 +44,6 @@ class TemplateController extends Controller {
     }
 
     /**
-     * @route("/create-template/{id}", name="create-template", requirements={"id" = "\d+"})
-     * @param Presentation $presentation
-     * @return JsonResponse
-     */
-    public function createTemplate(Presentation $presentation = null) {
-        $em = $this->getDoctrine()->getManager();
-        $presentation->setIsTemplate(true);
-        $em->flush();
-
-        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
-
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
-     * @route("/create-public/{presentation}", name="create-public")
-     * @param Presentation $presentation
-     * @return JsonResponse
-     */
-    public function createPublic(Presentation $presentation) {
-        $em = $this->getDoctrine()->getManager();
-        $presentation->setIsPublic(true);
-        $em->flush();
-
-        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
-
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
      * @route("/templates-public", name="templates-public")
      */
     public function showPublicTemplatesAction() {
@@ -92,7 +62,7 @@ class TemplateController extends Controller {
     }
 
     /**
-     * @route("create-from-template/{presentation}", name="create-from-template")
+     * @route("create-from-template/{id}", name="create-from-template")
      * @param Request $request
      * @param Presentation $presentation
      * @return JsonResponse
@@ -109,10 +79,15 @@ class TemplateController extends Controller {
             throw new InvalidArgumentException();
         }
 
+        if (!$request->request->has('title')) {
+            $logger->warn('Title missing for forking template');
+            throw new InvalidArgumentException();
+        }
+        $title = $request->request->get('title');
+
         $em = $this->getDoctrine()->getManager();
 
         $content = $presentation->getLastVersion()->getContent();
-        $title = $request->get('title');
 
         $logger->info("A new version has been created for presentation " . $presentation->getTitle());
         $version = new Version();
@@ -122,8 +97,8 @@ class TemplateController extends Controller {
         $newPresentation = new Presentation($this->getUser());
         $newPresentation->setTitle($title);
         $newPresentation->addVersion($version);
-        $logger->info("A new presentation has been created " . $presentation->getTitle());
-        $em->persist($presentation);
+        $logger->info("A new presentation has been created " . $newPresentation->getTitle());
+        $em->persist($newPresentation);
 
         $em->flush();
 

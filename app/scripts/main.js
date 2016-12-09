@@ -34,6 +34,7 @@ require.config({
     	'strut/header': '../bundles/app/strut.header',
     	'strut/importer': '../bundles/app/strut.importer',
     	'strut/importer/json': '../bundles/app/strut.importer.json',
+      'strut/presentations': '../bundles/app/strut.presentations',
     	'strut/presentation_generator/impress': '../bundles/app/strut.presentation_generator.impress',
     	'strut/logo_button': '../bundles/app/strut.logo_button',
     	'strut/presentation_generator': '../bundles/app/strut.presentation_generator',
