@@ -41,6 +41,8 @@ twig:
     strict_variables: "%kernel.debug%"
     paths:
         "%kernel.root_dir%/../dist/": Strut
+    form_themes:
+        - "bootstrap_3_layout.html.twig"
 
 assetic:
     debug:          '%kernel.debug%'

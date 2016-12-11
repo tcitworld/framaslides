@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             new JMS\SerializerBundle\JMSSerializerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
+            new WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle(),
             new Strut\StrutBundle\Strut(),
         ];
 

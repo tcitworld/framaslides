@@ -75,7 +75,7 @@ class Picture
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -83,7 +83,7 @@ class Picture
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -99,7 +99,7 @@ class Picture
     /**
      * @return Presentation
      */
-    public function getPresentation()
+    public function getPresentation(): Presentation
     {
         return $this->presentation;
     }
@@ -107,7 +107,7 @@ class Picture
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -120,12 +120,12 @@ class Picture
         $this->createdAt = $createAt;
     }
 
-    public function setFileName($fileName)
+    public function setFileName(string $fileName)
     {
         $this->fileName = $fileName;
     }
 
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -133,7 +133,7 @@ class Picture
     /**
      * @return string
      */
-    public function getUuid()
+    public function getUuid(): string
     {
         return $this->uuid;
     }
@@ -141,7 +141,7 @@ class Picture
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return $this->extension;
     }
@@ -149,7 +149,7 @@ class Picture
     /**
      * @param string $extension
      */
-    public function setExtension($extension)
+    public function setExtension(string $extension)
     {
         $this->extension = $extension;
     }

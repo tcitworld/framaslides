@@ -8,6 +8,7 @@ menu:
   disconnect: 'Se déconnecter'
   login: 'Se connecter'
   register: 'S''inscrire'
+  admin: Admin
 
 presentations:
   nbversions: 'une version|%count% versions'
@@ -65,3 +66,34 @@ templates:
   public: "Modèles publics"
   published: "Mes modèles publiés"
   author: "publié par author"
+
+flashes.user.notice.added: Utilisateur %username% ajouté
+flashes.user.notice.updated: Utilisateur %username% mis à jour
+flashes.user.notice.deleted: Utilisateur %username% supprimé
+
+# Admin stuff
+
+user:
+  manage:
+    field:
+      last_login: Dernière connexion
+      email: Email
+      username: Nom d'utilisateur
+    page_title: Gestion des utilisateurs
+    create_new_one: Créer un nouvel utilisateur
+    edit_action: Éditer l'utilisateur
+    action: Action
+    description: Ici vous pouvez gérer vos utilisateurs (ajout, édition et suppression)
+  page_title: Gestion des utilisateurs
+  edit_user: Éditer un utilisateur existant
+  new_user: Créer un nouvel utilisateur
+  form:
+    email_label: Email
+    username_label: Nom d'utilisateur
+    enabled_label: Activé
+    back_to_list: Retour à la liste
+    delete_confirm: Confirmer la suppression ?
+    delete: Supprimer l'utilisateur
+    save: Enregistrer
+    password_label: Mot de passe
+    repeat_new_password_label: Répéter le mot de passe

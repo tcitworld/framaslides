@@ -2,5 +2,18 @@ app:
     resource: "@Strut/Controller/"
     type:     annotation
 
+homepage:
+    path: "/{page}"
+    defaults:
+        _controller: Strut:Presentation:getPresentations
+        page : 1
+    requirements:
+        page: \d+
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+wallabag_user:
+    resource: "@Strut/Controller/ManageController.php"
+    type: annotation
+    prefix: /users

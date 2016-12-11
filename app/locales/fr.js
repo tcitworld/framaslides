@@ -34,5 +34,5 @@ define({
 	},
 	background: 'Fond',
 	surface: 'Surface',
-  return: "Retourner à la liste des présentations"
+  return: "Retourner aux présentations"
 });

@@ -31,6 +31,9 @@
                 <li class="nav-item"><a class="nav-link" href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
                 <li class="nav-item"><a class="nav-link " href="{{ path('templates') }}">{{ 'menu.templates' | trans }}</a></li>
                 <li class="nav-item"><a class="nav-link glyphicon glyphicon-user" href="{{ path('fos_user_profile_show') }}">{{ app.user }}</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item"><a class="nav-link" href="{{ path('user_index') }}">{{ 'menu.admin' | trans }}</a></li>
+                {% endif %}
                 <li class="nav-item"><a class="nav-link" href="{{ path('fos_user_security_logout') }}"><i title="{{ 'menu.disconnect' | trans }}" class="glyphicon glyphicon-log-out"></i></a></li>
             </ul>
         </div>

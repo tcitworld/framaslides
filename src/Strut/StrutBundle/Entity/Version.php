@@ -62,7 +62,7 @@ class Version
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -70,7 +70,7 @@ class Version
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -78,7 +78,7 @@ class Version
     /**
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -86,7 +86,7 @@ class Version
     /**
      * @param string $content
      */
-    public function setContent($content)
+    public function setContent(string $content)
     {
         $this->content = $content;
     }
@@ -94,7 +94,7 @@ class Version
     /**
      * @return \DateTime
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
@@ -102,7 +102,7 @@ class Version
     /**
      * @param \DateTime $updatedAt
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
     }
@@ -126,7 +126,7 @@ class Version
      *
      * @return Presentation
      */
-    public function getPresentation()
+    public function getPresentation(): Presentation
     {
         return $this->presentation;
     }

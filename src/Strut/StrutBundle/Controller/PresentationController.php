@@ -9,12 +9,17 @@
 namespace Strut\StrutBundle\Controller;
 
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
+use Pagerfanta\Pagerfanta;
+use Patchwork\Utf8;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,14 +28,28 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class PresentationController extends Controller
 {
     /**
-     * @Route("/", name="presentations")
+     * @Route("/presentations/{page}", name="presentations", defaults={"page" = "1"})
      * @param Request $request
+     * @param int $page
      * @return Response
      */
-    public function getPresentations(Request $request) {
+    public function getPresentationsAction(Request $request, int $page) {
         $repository = $this->get('strut.presentation_repository');
-        $presentations = $repository->findByUser($this->getUser());
-        return $this->render(':default:presentations.html.twig', ['presentations' => $presentations]);
+        $presentations = $repository->getBuilderByUser($this->getUser());
+
+        $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery());
+        $pagerFanta = new Pagerfanta($pagerAdapter);
+        $pagerFanta->setMaxPerPage(9);
+
+        try {
+            $pagerFanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $e) {
+            if ($page > 1) {
+                return $this->redirect($this->generateUrl('presentations', ['page' => $pagerFanta->getNbPages()]), 302);
+            }
+        }
+
+        return $this->render(':default:presentations.html.twig', ['presentations' => $pagerFanta, 'currentPage' => $page]);
     }
 
     /**
@@ -232,10 +251,10 @@ class PresentationController extends Controller
     public function exportPresentation(Presentation $presentation) {
         $response = new Response($presentation->getLastVersion()->getContent());
 
-        $response->headers->set('Content-Type', 'text/plain');
+        // $response->headers->set('Content-Type', 'text/plain');
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $presentation->getTitle() . '.json'
+            Utf8::toAscii($presentation->getTitle()) . '.json'
         );
 
         $response->headers->set('Content-Disposition', $disposition);
@@ -250,10 +269,10 @@ class PresentationController extends Controller
     public function exportVersion(Version $version) {
         $response = new Response($version->getContent());
 
-        $response->headers->set('Content-Type', 'text/plain');
+        // $response->headers->set('Content-Type', 'text/plain');
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            $version->getPresentation()->getTitle() . '-' . $version->getUpdatedAt()->format('d-m-Y H:i:s') . '.json'
+            Utf8::toAscii($version->getPresentation()->getTitle()) . '-' . $version->getUpdatedAt()->format('d-m-Y H:i:s') . '.json'
         );
 
         $response->headers->set('Content-Disposition', $disposition);

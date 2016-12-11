@@ -27,7 +27,7 @@ class PresentationRepository extends EntityRepository
         return $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
             ->where('u.id = :userId')->setParameter('userId', $userId)
-            ->orderBy('e.createdAt', 'desc')
+            ->orderBy('p.createdAt', 'desc')
             ;
     }
 
@@ -36,6 +36,7 @@ class PresentationRepository extends EntityRepository
             ->leftJoin('p.user', 'u')
             ->where('u.id = :userId')->setParameter('userId', $user->getId())
             ->andWhere('p.isTemplate = :isTemplate')->setParameter('isTemplate', true)
+            ->andWhere('p.isPublic = :isPublic')->setParameter('isPublic', false)
             ->orderBy('p.createdAt', 'desc')
             ->getQuery()
             ;

@@ -3,6 +3,7 @@
 namespace Strut\StrutBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Doctrine\UserManager;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
@@ -82,7 +83,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setName($name)
+    public function setName($name): User
     {
         $this->name = $name;
 
@@ -94,7 +95,7 @@ class User extends BaseUser
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -102,7 +103,7 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): string
     {
         return $this->createdAt;
     }
@@ -110,7 +111,7 @@ class User extends BaseUser
     /**
      * @return string
      */
-    public function getUpdatedAt()
+    public function getUpdatedAt(): string
     {
         return $this->updatedAt;
     }
@@ -120,7 +121,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function addPresentation(Presentation $entry)
+    public function addPresentation(Presentation $entry): User
     {
         $this->presentations[] = $entry;
 
@@ -130,12 +131,16 @@ class User extends BaseUser
     /**
      * @return ArrayCollection<Entry>
      */
-    public function getPresentations()
+    public function getPresentations(): ArrayCollection
     {
         return $this->presentations;
     }
 
-    public function isEqualTo(UserInterface $user)
+    /**
+     * @param UserInterface $user
+     * @return bool
+     */
+    public function isEqualTo(UserInterface $user): bool
     {
         return $this->username === $user->getUsername();
     }
@@ -161,7 +166,7 @@ class User extends BaseUser
      *
      * @return Config
      */
-    public function getConfig()
+    public function getConfig(): Config
     {
         return $this->config;
     }
@@ -173,7 +178,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt): User
     {
         $this->createdAt = $createdAt;
 
@@ -187,7 +192,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt): User
     {
         $this->updatedAt = $updatedAt;
 

@@ -30,6 +30,11 @@
             </div>
         {% endfor %}
     </div>
+    <div class="pull-right">
+        {% if presentations.getNbPages > 1 %}
+            {{ pagerfanta(presentations, 'twitter_bootstrap3', {'proximity': 1}) }}
+        {% endif %}
+    </div>
     <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }}</div>
 </div>
 {% include 'default/modals/template.html.twig' %}

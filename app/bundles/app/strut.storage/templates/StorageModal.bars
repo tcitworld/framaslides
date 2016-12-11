@@ -3,6 +3,9 @@
 	<h3 class="title">{{title}}</h3>
 </div>
 <div class="modal-body" style="overflow: hidden">
+    <span class="alert alert-info">
+        Évitez les accents et autres caractères spéciaux dans vos noms de fichiers.
+    </span>
 	<ul class="nav nav-tabs">
 		{{#tabs}}
 			<li class="providerTab"><a data-provider="{{id}}">{{name}}</a></li>

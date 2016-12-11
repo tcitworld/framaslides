@@ -4,6 +4,7 @@ namespace Strut\StrutBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Exclude;
@@ -43,6 +44,7 @@ class Presentation
     private $createdAt;
 
     /**
+     * @var PersistentCollection
      * @ORM\OneToMany(targetEntity="Version", mappedBy="presentation", cascade={"remove"})
      */
     private $versions;
@@ -106,12 +108,14 @@ class Presentation
         $this->versions = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->isTemplate = false;
+        $this->isPublic = false;
     }
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -119,7 +123,7 @@ class Presentation
     /**
      * @param int $id
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
     }
@@ -127,7 +131,7 @@ class Presentation
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -135,15 +139,15 @@ class Presentation
     /**
      * @param string $title
      */
-    public function setTitle($title)
+    public function setTitle(string $title)
     {
         $this->title = $title;
     }
 
     /**
-     * @return ArrayCollection
+     * @return PersistentCollection
      */
-    public function getVersions()
+    public function getVersions(): PersistentCollection
     {
         return $this->versions;
     }
@@ -151,7 +155,7 @@ class Presentation
     /**
      * @param ArrayCollection $versions
      */
-    public function setVersions($versions)
+    public function setVersions(ArrayCollection $versions)
     {
         $this->versions = $versions;
     }
@@ -170,7 +174,7 @@ class Presentation
     /**
      * @return string
      */
-    public function getRendered()
+    public function getRendered(): string
     {
         return $this->rendered;
     }
@@ -178,7 +182,7 @@ class Presentation
     /**
      * @param string $rendered
      */
-    public function setRendered($rendered)
+    public function setRendered(string $rendered)
     {
         $this->rendered = $rendered;
     }
@@ -186,7 +190,7 @@ class Presentation
     /**
      * @return string
      */
-    public function getPreviewConfig()
+    public function getPreviewConfig(): string
     {
         return $this->previewConfig;
     }
@@ -194,7 +198,7 @@ class Presentation
     /**
      * @param string $previewConfig
      */
-    public function setPreviewConfig($previewConfig)
+    public function setPreviewConfig(string $previewConfig)
     {
         $this->previewConfig = $previewConfig;
     }
@@ -202,7 +206,7 @@ class Presentation
     /**
      * @return \DateTime
      */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }
@@ -210,7 +214,7 @@ class Presentation
     /**
      * @param \DateTime $createdAt
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
     }
@@ -218,7 +222,7 @@ class Presentation
     /**
      * @return \DateTime
      */
-    public function getLastVersionDate()
+    public function getLastVersionDate(): \DateTime
     {
         return $this->getLastVersion()->getUpdatedAt();
     }
@@ -227,7 +231,8 @@ class Presentation
      * @return Version
      * @throws \Exception
      */
-    public function getLastVersion() {
+    public function getLastVersion(): Version
+    {
         $lastVersion = $this->versions->first();
         if (!$lastVersion) {
             throw new \Exception('No version found for this presentation');
@@ -235,7 +240,8 @@ class Presentation
         return $lastVersion;
     }
 
-    public function getNbSlides() {
+    public function getNbSlides(): int
+    {
         $lastVersionContent = $this->getLastVersion()->getContent();
         $nbSlides = count(json_decode($lastVersionContent)->slides);
         return $nbSlides;
@@ -244,7 +250,7 @@ class Presentation
     /**
      * @return User
      */
-    public function getUser()
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -252,7 +258,7 @@ class Presentation
     /**
      * @param User $user
      */
-    public function setUser($user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     }
@@ -260,7 +266,7 @@ class Presentation
     /**
      * @return boolean
      */
-    public function getIsPublic()
+    public function getIsPublic(): bool
     {
         return $this->isPublic;
     }
@@ -268,7 +274,7 @@ class Presentation
     /**
      * @param boolean $isPublic
      */
-    public function setIsPublic($isPublic)
+    public function setIsPublic(bool $isPublic)
     {
         $this->isPublic = $isPublic;
     }
@@ -286,7 +292,7 @@ class Presentation
     /**
      * @return boolean
      */
-    public function getIsTemplate()
+    public function getIsTemplate(): bool
     {
         return $this->isTemplate;
     }
@@ -294,7 +300,7 @@ class Presentation
     /**
      * @param boolean $isTemplate
      */
-    public function setIsTemplate($isTemplate)
+    public function setIsTemplate(bool $isTemplate)
     {
         $this->isTemplate = $isTemplate;
     }
@@ -312,7 +318,7 @@ class Presentation
      *
      * @return Presentation
      */
-    public function setUuid($uuid)
+    public function setUuid(string $uuid)
     {
         $this->uuid = $uuid;
 
@@ -335,7 +341,7 @@ class Presentation
     /**
      * @return ArrayCollection<Picture>
      */
-    public function getPictures()
+    public function getPictures(): ArrayCollection
     {
         return $this->pictures;
     }
@@ -343,7 +349,7 @@ class Presentation
     /**
      * @param mixed $pictures
      */
-    public function setPictures($pictures)
+    public function setPictures(ArrayCollection $pictures)
     {
         $this->pictures = $pictures;
     }

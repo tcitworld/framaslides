@@ -40,7 +40,7 @@ class Config
     /**
      * @return string
      */
-    public function getLang()
+    public function getLang(): string
     {
         return $this->lang;
     }
@@ -48,7 +48,7 @@ class Config
     /**
      * @param string $lang
      */
-    public function setLang($lang)
+    public function setLang(string $lang)
     {
         $this->lang = $lang;
     }
