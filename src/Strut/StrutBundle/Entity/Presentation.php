@@ -176,7 +176,7 @@ class Presentation
      */
     public function getRendered(): string
     {
-        return $this->rendered;
+        return $this->rendered ?? '';
     }
 
     /**
@@ -268,7 +268,7 @@ class Presentation
      */
     public function getIsPublic(): bool
     {
-        return $this->isPublic;
+        return $this->isPublic ?? false;
     }
 
     /**
@@ -294,7 +294,7 @@ class Presentation
      */
     public function getIsTemplate(): bool
     {
-        return $this->isTemplate;
+        return $this->isTemplate ?? false;
     }
 
     /**

@@ -5,6 +5,10 @@ namespace Strut\StrutBundle\Controller;
 use FOS\UserBundle\Doctrine\UserManager;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\FOSUserEvents;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -23,17 +27,31 @@ class ManageController extends Controller
     /**
      * Lists all User entities.
      *
-     * @Route("/", name="user_index")
+     * @Route("/{page}", name="user_index", defaults={"page" = "1"}, requirements={"page" = "\d+"})
      * @Method("GET")
+     * @param $page
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction($page)
     {
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('Strut:User')->findAll();
 
+        $pagerAdapter = new ArrayAdapter($users);
+        $pagerFanta = new Pagerfanta($pagerAdapter);
+        $pagerFanta->setMaxPerPage(2);
+
+        try {
+            $pagerFanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $e) {
+            if ($page > 1) {
+                return $this->redirect($this->generateUrl('user_index', ['page' => $pagerFanta->getNbPages()]), 302);
+            }
+        }
+
         return $this->render('default/manage.html.twig', array(
-            'users' => $users,
+            'users' => $pagerFanta,
         ));
     }
 

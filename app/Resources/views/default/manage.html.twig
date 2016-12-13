@@ -26,12 +26,17 @@
                         <td>{{ user.email }}</td>
                         <td>{% if user.lastLogin %}{{ user.lastLogin|date('Y-m-d H:i:s') }}{% endif %}</td>
                         <td>
-                            <a href="{{ path('user_edit', { 'id': user.id }) }}" class="btn btn-default">{{ 'user.manage.edit_action'|trans }}</a>
+                            <a href="{{ path('user_edit', { 'id': user.id }) }}" class="btn btn-default"><i class="glyphicon glyphicon-edit" title="{{ 'user.manage.edit_action'|trans }}"></i></a>
                         </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
+            <div class="pull-right">
+                {% if users.getNbPages > 1 %}
+                    {{ pagerfanta(users, 'twitter_bootstrap3', {'proximity': 1}) }}
+                {% endif %}
+            </div>
             <p>
                 <a href="{{ path('user_new') }}" class="btn btn-success">{{ 'user.manage.create_new_one'|trans }}</a>
             </p>

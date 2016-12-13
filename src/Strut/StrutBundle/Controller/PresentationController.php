@@ -9,6 +9,8 @@
 namespace Strut\StrutBundle\Controller;
 
 
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
@@ -29,11 +31,10 @@ class PresentationController extends Controller
 {
     /**
      * @Route("/presentations/{page}", name="presentations", defaults={"page" = "1"})
-     * @param Request $request
      * @param int $page
      * @return Response
      */
-    public function getPresentationsAction(Request $request, int $page) {
+    public function getPresentationsAction(int $page) {
         $repository = $this->get('strut.presentation_repository');
         $presentations = $repository->getBuilderByUser($this->getUser());
 
@@ -53,13 +54,40 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/versions/{presentation}", name="versions")
+     * @route("/versions/{presentation}/{page}", name="versions", defaults={"page" = "1"})
      * @param Presentation $presentation
      * @return JsonResponse
      */
-    public function getPresentationVersions(Presentation $presentation) {
+    public function getPresentationVersions(Presentation $presentation, int $page) {
         $versions = $presentation->getVersions();
-        $json = $this->get('jms_serializer')->serialize($versions, 'json');
+
+        $pagerAdapter = new DoctrineCollectionAdapter($versions);
+        $pagerFanta = new Pagerfanta($pagerAdapter);
+        $pagerFanta->setMaxPerPage(5);
+
+        try {
+            $pagerFanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $e) {
+            if ($page > 1) {
+                return $this->redirect($this->generateUrl('presentations', ['page' => $pagerFanta->getNbPages()]), 302);
+            }
+        }
+
+        $versionsArray = [];
+        foreach ($pagerFanta->getCurrentPageResults() as $result) {
+            $versionsArray[] = $result;
+        }
+
+        $json = $this->get('jms_serializer')->serialize([
+            'total' => $pagerFanta->getNbResults(),
+            'versions' => $versionsArray,
+            'nbPages' => $pagerFanta->getNbPages(),
+            'haveToPaginate' => $pagerFanta->haveToPaginate(),
+            'hasPreviousPage' => $pagerFanta->hasPreviousPage(),
+            'previousPage' => !$pagerFanta->hasPreviousPage() ?? $pagerFanta->getPreviousPage(),
+            'hasNextPage' => $pagerFanta->hasNextPage(),
+            'nextPage' => !$pagerFanta->hasPreviousPage() ?? $pagerFanta->getNextPage(),
+        ], 'json');
         return (new JsonResponse())->setJson($json);
     }
 

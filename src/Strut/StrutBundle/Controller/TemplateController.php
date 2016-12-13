@@ -70,7 +70,7 @@ class TemplateController extends Controller {
     public function createCopyFromTemplateAction(Request $request, Presentation $presentation) {
         $logger = $this->get('logger');
 
-        if (!$presentation->getIsTemplate()) {
+        if (!$presentation->getIsTemplate() && !$request->request->has('export')) {
             $logger->warn('User ' . $this->getUser()->getName() . ' tried to fork a presentation which is not a template');
             throw new InvalidArgumentException();
         }
@@ -102,7 +102,7 @@ class TemplateController extends Controller {
 
         $em->flush();
 
-        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
+        $json = $this->get('jms_serializer')->serialize($newPresentation, 'json');
 
         return (new JsonResponse())->setJson($json);
     }

@@ -30,6 +30,10 @@ module.exports = {
         },
       },
       {
+        test: /\.twig$/,
+        loader: 'twig-loader',
+      },
+      {
         enforce: 'pre',
         test: /\.js$/,
         loader: 'eslint-loader',

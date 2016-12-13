@@ -13,6 +13,12 @@ services:
           arguments:
               - Strut:Presentation
 
+  strut.users_repository:
+          class: Strut\StrutBundle\Repository\UsersRepository
+          factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
+          arguments:
+              - Strut:User
+
   strut.version_repository:
             class: Strut\StrutBundle\Repository\VersionRepository
             factory: [ "@doctrine.orm.default_entity_manager", getRepository ]

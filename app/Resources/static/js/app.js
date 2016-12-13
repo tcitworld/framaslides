@@ -5,6 +5,8 @@ import bootstrap from 'bootstrap'; // eslint-disable-line no-unused-vars
 import Clipboard from 'clipboard';
 import cachedFetched from './cachedFetched';
 
+const template = require('./views/versions.twig'); // eslint-disable-line
+
 /**
  * CSS Imports
  */
@@ -38,6 +40,8 @@ $(() => {
    * Initialize copy/paste
    */
   new Clipboard('.btn-copy'); // eslint-disable-line no-new
+
+  const body = $('body');
 
   /**
    * Share stuff
@@ -87,15 +91,8 @@ $(() => {
     });
   });
 
-  /**
-   * Generate versions body from version list
-   * @param versions
-   */
-  function generateVersionList(versions) {
-    versions.reverse();
-    versions.forEach((version, idx, array) => {
-      $('.modal-body > .list-group').append(`<li class="list-group-item" data-version="' + version.id + '">${moment(version.updated_at).format('LLLL')}<span class="icon icon-download pull-right" data-toggle="tooltip" data-placement="bottom" title="Télécharger cette version"><a href="export-version/${version.id}"><i class="glyphicon glyphicon-download-alt"></i></a></span>${(idx === array.length - 1 ? '' : '<span class="icon icon-delete pull-right" data-toggle="tooltip" data-placement="bottom" title="Supprimer cette version"><i class="glyphicon glyphicon-trash"></i></span><span class="icon icon-restore pull-right" data-toggle="tooltip" data-placement="bottom" title="Restaurer cette version (crée une nouvelle version)"><i class="glyphicon glyphicon-repeat"></i></span>')}</li>`);
-    });
+  function getVersionsPage(presentation, page = 1) {
+    return $.ajax(`versions/${presentation}/${page}`);
   }
 
   /**
@@ -104,34 +101,72 @@ $(() => {
   $('.label.versions').on('click', (event) => {
     event.preventDefault();
     const elem = $(event.target);
-    $('#versionModal .modal-title').text(`Versions pour la présentation « ${elem.closest('.card-title .title').text()} »`);
-    $('#versionModal .modal-body > .list-group').empty();
-    $.ajax({
-      url: `versions/${elem.closest('.card').attr('data-presentation')}`,
-      success: (versions) => {
-        generateVersionList(versions);
-        $('body').tooltip({
-          selector: '[data-toggle="tooltip"]',
+    $('#versionModal').attr('data-presentation', elem.parents('.card').attr('data-presentation'));
+    $('#versionModal .modal-title').text(`Versions pour la présentation « ${elem.parents('.card').find('.card-title .title').text()} »`);
+    $('#versionModal .modal-body').empty();
+    getVersionsPage(elem.closest('.card').attr('data-presentation')).done((data) => {
+      const versions = data.versions;
+      versions.forEach((version) => {
+        version.updated_at = moment(version.updated_at).format('LLLL'); // eslint-disable-line
+      });
+
+      const html = template(
+        {
+          versions,
+          data,
         });
-        $('#versionModal').modal();
-      },
+
+      $('.modal-body').append(html);
+      $('body').tooltip({
+        selector: '[data-toggle="tooltip"]',
+      });
+      $('#versionModal').modal();
     });
+  });
+
+  function navigationPage(presentation, versionNb, next) {
+    const modifier = next ? 1 : -1;
+    const page = parseInt(versionNb, 10) + parseInt(modifier, 10);
+    getVersionsPage(presentation, page).done((data) => {
+      const versions = data.versions;
+      versions.forEach((version) => {
+        version.updated_at = moment(version.updated_at).format('LLLL'); // eslint-disable-line
+      });
+
+      const html = template(
+        {
+          versions,
+          data,
+        });
+
+      $('.modal-body').empty();
+      $('.modal-body').append(html);
+      $('div.versions').attr('data-page', page);
+      $('#versionModal').modal();
+    });
+  }
+
+  body.on('click', 'a.previous', () => {
+    navigationPage($('#versionModal').attr('data-presentation'), $('div.versions').attr('data-page'), false);
+  });
+
+  body.on('click', 'a.next', () => {
+    navigationPage($('#versionModal').attr('data-presentation'), $('div.versions').attr('data-page'), true);
   });
 
   /**
    * Version stuff
    */
-  const modalBody = $('.modal-body');
-  const body = $('body');
+  const modalBody = $('#versionModal .modal-body');
 
   /**
    * Delete version
    */
   modalBody.on('click', '.icon-delete', (event) => {
     event.preventDefault();
-    const elem = $(this).closest('li');
+    const elem = $(event.target).closest('li');
     $.ajax({
-      url: `delete-version/${$(this).closest('li').attr('data-version')}`,
+      url: `delete-version/${elem.attr('data-version')}`,
       success: () => {
         elem.addClass('item-hidden').delay(400).remove();
       },
@@ -144,16 +179,11 @@ $(() => {
   modalBody.on('click', '.icon-restore', (event) => {
     event.preventDefault();
     $.ajax({
-      url: `restore-version/${$(this).closest('li').attr('data-version')}`,
-      success: (versions) => {
-        $('.modal-body > .list-group').empty();
-        generateVersionList(versions);
-        $('body').tooltip({
-          selector: '[data-toggle="tooltip"]',
-        });
-        $('.modal-header .alert-info strong').text('Version restaurée');
-        $('.modal-header .alert-info .desc').text('Une nouvelle version correspondante a été créée.');
-        $('.modal-header .alert-info').show();
+      url: `restore-version/${$(event.target).closest('li').attr('data-version')}`,
+      success: () => {
+        $('#versionModal .modal-header .alert-info strong').text('Version restaurée');
+        $('#versionModal .modal-header .alert-info .desc').text('Une nouvelle version correspondante a été créée.');
+        $('#versionModal .modal-header .alert-info').toggleClass('hidden');
       },
     });
   });
