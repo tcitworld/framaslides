@@ -20,8 +20,10 @@
                         Nb slides : {{ presentation.getNbSlides }}</p>
                 </div>
                 <div class="card-footer">
+                    {% if app.user == presentation.user %}
                     <a href="{{ path('app') }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit"></i></a>
-                    <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark"></i></a>
+                        <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark"></i></a>
+                    {% endif %}
                     <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt"></i></a>
                     <a href="#" class="fork" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-duplicate"></i></a>
                     {% if presentation.rendered %}<a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="glyphicon glyphicon-play-circle"></i></a>{% endif %}

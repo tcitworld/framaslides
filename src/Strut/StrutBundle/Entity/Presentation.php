@@ -50,7 +50,7 @@ class Presentation
     private $versions;
 
     /**
-     * @var ArrayCollection
+     * @var PersistentCollection
      * @ORM\OneToMany(targetEntity="Picture", mappedBy="presentation", cascade={"remove"})
      */
     private $pictures;
@@ -105,6 +105,7 @@ class Presentation
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->user->addPresentation($this);
         $this->versions = new ArrayCollection();
         $this->pictures = new ArrayCollection();
         $this->createdAt = new \DateTime();
@@ -339,9 +340,9 @@ class Presentation
     }
 
     /**
-     * @return ArrayCollection<Picture>
+     * @return PersistentCollection <Picture>
      */
-    public function getPictures(): ArrayCollection
+    public function getPictures(): PersistentCollection
     {
         return $this->pictures;
     }
@@ -349,7 +350,7 @@ class Presentation
     /**
      * @param mixed $pictures
      */
-    public function setPictures(ArrayCollection $pictures)
+    public function setPictures(PersistentCollection $pictures)
     {
         $this->pictures = $pictures;
     }

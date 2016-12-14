@@ -54,3 +54,35 @@ h2 {
 .icon {
   margin: 0 5px;
 }
+
+.infos {
+  display: inline-block;
+}
+
+.infoBlock {
+  width: 100%;
+}
+
+.full-height {
+  margin: 100px auto;
+}
+
+.pictures {
+  div.pictures {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* or space-around */
+  }
+
+  figure {
+    display: inline-block;
+    margin-bottom: 8px;
+    width: calc(50% - 4px);
+  }
+
+  @media screen and (min-width: 50em) {
+    figure {
+      width: calc(25% - 6px);
+    }
+  }
+}

@@ -55,7 +55,7 @@ define(function() {
 				data: {
 					presentation: path,
 					data: JSON.stringify(data),
-					newEntry: (saveAction !== undefined) ? 1 : 0
+					newEntry: (saveAction !== undefined && saveAction !== false) ? 1 : 0
 				}
 			}).success(function (data, status, xhr) {
 				if (cb) {

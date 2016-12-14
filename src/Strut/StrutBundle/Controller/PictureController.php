@@ -2,6 +2,9 @@
 
 namespace Strut\StrutBundle\Controller;
 
+use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Exception\OutOfRangeCurrentPageException;
+use Pagerfanta\Pagerfanta;
 use Strut\StrutBundle\Entity\Picture;
 use Strut\StrutBundle\Form\Type\PictureType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -9,9 +12,11 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class PictureController extends Controller
@@ -60,5 +65,51 @@ class PictureController extends Controller
      */
     public function showPictureAction(Picture $picture) {
         return new BinaryFileResponse($this->getParameter('pictures_directory') . '/' . $picture->getUuid() . '.' . $picture->getExtension());
+    }
+
+    /**
+     * @route("pictures/{page}", name="pictures", defaults={"page" = "1"})
+     * @param int $page
+     * @return RedirectResponse|Response
+     */
+    public function showPicturesAction(int $page) {
+        $repository = $this->get('strut.picture_repository');
+        $pictures = $repository->getPictures($this->getUser());
+
+        $pagerAdapter = new DoctrineORMAdapter($pictures->getQuery(), true, false);
+        $pagerFanta = new Pagerfanta($pagerAdapter);
+        $pagerFanta->setMaxPerPage(12);
+
+        try {
+            $pagerFanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $e) {
+            if ($page > 1) {
+                return $this->redirect($this->generateUrl('pictures', ['page' => $pagerFanta->getNbPages()]), 302);
+            }
+        }
+
+
+        return $this->render('default/pictures.html.twig', [
+            'pictures' => $pagerFanta,
+            'path' => Picture::PATH,
+        ]);
+    }
+
+    /**
+     * @route("delete-picture/{uuid}", name="delete-picture")
+     * @param Picture $picture
+     * @return RedirectResponse
+     */
+    public function deletePictureAction(Picture $picture) {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($picture);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->add(
+            'notice',
+            'picture.message.deleted'
+        );
+
+        return $this->redirectToRoute('pictures');
     }
 }

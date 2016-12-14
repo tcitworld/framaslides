@@ -5,6 +5,7 @@ menu:
   newpresentation: 'Nouvelle présentation'
   mypresentations: 'Mes présentations'
   templates: Modèles
+  pictures: Images
   disconnect: 'Se déconnecter'
   login: 'Se connecter'
   register: 'S''inscrire'
@@ -12,6 +13,8 @@ menu:
 
 presentations:
   nbversions: 'une version|%count% versions'
+  nbslides: 'une seule slide|%count% slides'
+  nbpictures: "{0}pas d'image|{1}une seule image|]1,Inf[%count% images"
   createdAt: 'Présentation créée le %createdAt%'
   updatedAt: 'Dernière version %updatedAt%'
   empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
@@ -70,6 +73,15 @@ templates:
 flashes.user.notice.added: Utilisateur %username% ajouté
 flashes.user.notice.updated: Utilisateur %username% mis à jour
 flashes.user.notice.deleted: Utilisateur %username% supprimé
+
+preview:
+  needlogin: Vous devez vous enregistrer pour modifier cette présentation
+
+pictures:
+  title: Images
+  desc: Voici toutes les images que vous avez uploadées sur vos présentations. Notez que les images associées à une présentation sont supprimées en même temps que la présentation. Supprimer des images ici les enlève de vos présentations.
+  message:
+    deleted: L'image a été supprimée
 
 # Admin stuff
 

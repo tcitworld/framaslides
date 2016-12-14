@@ -3,6 +3,7 @@
 namespace Strut\StrutBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Strut\StrutBundle\Entity\User;
 
 /**
  * VersionRepository
@@ -12,4 +13,12 @@ use Doctrine\ORM\EntityRepository;
  */
 class PictureRepository extends EntityRepository
 {
+    public function getPictures(User $user) {
+        return $this->createQueryBuilder('picture')
+            ->leftJoin('picture.presentation', 'presentation')
+            ->leftJoin('presentation.user', 'u')
+            ->where('u.id = :userId')->setParameter('userId', $user->getId())
+            ->orderBy('picture.createdAt', 'desc')
+        ;
+    }
 }

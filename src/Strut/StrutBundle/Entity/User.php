@@ -117,13 +117,12 @@ class User extends BaseUser
     }
 
     /**
-     * @param Presentation $entry
-     *
+     * @param \Strut\StrutBundle\Entity\Presentation $presentation
      * @return User
      */
-    public function addPresentation(Presentation $entry): User
+    public function addPresentation(Presentation $presentation): User
     {
-        $this->presentations[] = $entry;
+        $this->presentations[] = $presentation;
 
         return $this;
     }
@@ -143,6 +142,14 @@ class User extends BaseUser
     public function isEqualTo(UserInterface $user): bool
     {
         return $this->username === $user->getUsername();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return (string) $this->getUsername();
     }
 
 

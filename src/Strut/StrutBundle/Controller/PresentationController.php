@@ -38,7 +38,7 @@ class PresentationController extends Controller
         $repository = $this->get('strut.presentation_repository');
         $presentations = $repository->getBuilderByUser($this->getUser());
 
-        $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery());
+        $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
         $pagerFanta->setMaxPerPage(9);
 
@@ -105,29 +105,42 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/presentation/{title}", name="presentation")
-     * @param Presentation $presentation
+     * @route("/presentation/{presentationTitle}", name="presentation")
+     * @param $presentationTitle
      * @return JsonResponse
      */
-    public function getPresentationDataAction(Presentation $presentation) {
-        $this->checkUserPresentationAction($presentation);
+    public function getPresentationDataAction($presentationTitle) {
+        $presentation = $this->get('strut.presentation_repository')->findOneBy([
+            'title' => $presentationTitle,
+            'user' => $this->getUser(),
+        ]);
+        if (!$presentation) {
+            return new JsonResponse([], 404);
+        }
         $presentationData = $presentation->getLastVersion()->getContent();
         $json = $this->get('jms_serializer')->serialize($presentationData, 'json');
         return (new JsonResponse())->setJson($json);
     }
 
     /**
-     * @param Presentation $presentation
-     * @route("/delete-presentation/{title}", name="delete-presentation")
+     * @route("/delete-presentation/{presentationTitle}", name="delete-presentation")
+     * @param $presentationTitle
      * @return JsonResponse
      */
-    public function deletePresentation(Presentation $presentation) {
-        $this->checkUserPresentationAction($presentation);
+    public function deletePresentation($presentationTitle) {
+        $presentation = $this->get('strut.presentation_repository')->findOneBy([
+            'title' => $presentationTitle,
+            'user' => $this->getUser(),
+        ]);
+        if (!$presentation) {
+            return new JsonResponse([], 404);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($presentation);
         $em->flush();
 
-        return new JsonResponse($presentation);
+        return new JsonResponse();
     }
 
     /**
@@ -261,7 +274,7 @@ class PresentationController extends Controller
                 ]);
 
             case 'handouts':
-                return $this->render('@Strut/preview_export/reveal.html', [
+                return $this->render('@Strut/preview_export/handouts.html', [
                     'presentation' => $presentation
                 ]);
 
@@ -314,7 +327,15 @@ class PresentationController extends Controller
      */
     private function checkUserPresentationAction(Presentation $presentation)
     {
-        if (null === $this->getUser() || $this->getUser()->getId() != $presentation->getUser()->getId()) {
+        if (null === $this->getUser()) {
+            $this->get('logger')->info('user is null');
+            throw $this->createAccessDeniedException('You can not access this presentation.');
+        }
+
+        if ($this->getUser()->getId() != $presentation->getUser()->getId()) {
+            var_dump($this->getUser()->getId());
+            var_dump($presentation->getUser()->getId());
+            $this->get('logger')->info('user ' . $this->getUser()->getName() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getName());
             throw $this->createAccessDeniedException('You can not access this presentation.');
         }
     }

@@ -12,6 +12,7 @@ services:
           factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
           arguments:
               - Strut:Presentation
+              - Strut:User
 
   strut.users_repository:
           class: Strut\StrutBundle\Repository\UsersRepository
@@ -24,6 +25,12 @@ services:
             factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
             arguments:
                 - Strut:Version
+
+  strut.picture_repository:
+            class: Strut\StrutBundle\Repository\PictureRepository
+            factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
+            arguments:
+                - Strut:Picture
 
   twig.extension.date:
           class: Twig_Extensions_Extension_Date

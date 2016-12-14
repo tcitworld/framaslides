@@ -31,6 +31,8 @@ class TemplateController extends Controller {
      * @return JsonResponse
      */
     public function makeTemplateAction(Request $request, Presentation $presentation) {
+        $this->checkUserPresentationAction($presentation);
+
         $em = $this->getDoctrine()->getManager();
         $template = $request->get('template', false) === 'true';
         $public = $request->get('public', false) === 'true';
@@ -90,10 +92,19 @@ class TemplateController extends Controller {
         $content = $presentation->getLastVersion()->getContent();
 
         $logger->info("A new version has been created for presentation " . $presentation->getTitle());
+
+        /**
+         * Modify content for fileName
+         */
+        $data = json_decode($content);
+        $data->fileName = $title;
+        $content = json_encode($data);
+
         $version = new Version();
         $version->setContent($content);
         $em->persist($version);
 
+        $logger->info('The user is '. $this->getUser());
         $newPresentation = new Presentation($this->getUser());
         $newPresentation->setTitle($title);
         $newPresentation->addVersion($version);
@@ -105,6 +116,16 @@ class TemplateController extends Controller {
         $json = $this->get('jms_serializer')->serialize($newPresentation, 'json');
 
         return (new JsonResponse())->setJson($json);
+    }
+
+    /**
+     * @param Presentation $presentation
+     */
+    private function checkUserPresentationAction(Presentation $presentation)
+    {
+        if (null === $this->getUser() || $this->getUser()->getId() != $presentation->getUser()->getId()) {
+            throw $this->createAccessDeniedException('You can not access this presentation.');
+        }
     }
 
 }

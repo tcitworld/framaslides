@@ -8,7 +8,8 @@
                     <i class="glyphicon glyphicon-download-alt"></i>
                 </a>
             </span>
-            {% if not loop.first or data.hasNextPage %}
+            {% if not data.hasPreviousPage and loop.first %}
+            {% else %}
             <span class="icon icon-delete pull-right" data-toggle="tooltip" data-placement="bottom" title="Supprimer cette version">
                 <i class="glyphicon glyphicon-trash"></i>
             </span>

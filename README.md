@@ -1,68 +1,103 @@
-Symfony Standard Edition
-========================
+[![](https://framagit.org/assets/favicon-075eba76312e8421991a0c1f89a89ee81678bcde72319dd3e8047e2a47cd3a42.ico)](https://framagit.org)
 
-Welcome to the Symfony Standard Edition - a fully-functional Symfony
-application that you can use as the skeleton for your new applications.
+![English:](https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/20px-Flag_of_the_United_Kingdom.svg.png) **Framasoft uses GitLab** for the development of its free softwares. Our Github repositories are only mirrors.
+If you want to work with us, **fork us on [framagit.org](https://framagit.org)**. (no registration needed, you can sign in with your Github account)
 
-For details on how to download and get started with Symfony, see the
-[Installation][1] chapter of the Symfony Documentation.
+![Français :](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/20px-Flag_of_France.svg.png) **Framasoft utilise GitLab** pour le développement de ses logiciels libres. Nos dépôts Github ne sont que des miroirs.
+Si vous souhaitez travailler avec nous, **forkez-nous sur [framagit.org](https://framagit.org)**. (l'inscription n'est pas nécessaire, vous pouvez vous connecter avec votre compte Github)
+* * *
 
-What's inside?
---------------
+# Framaslides
 
-The Symfony Standard Edition is configured with the following defaults:
+An online presentation editor service [https://framaslides.org](https://framaslides.org)
 
-  * An AppBundle you can use to start coding;
 
-  * Twig as the only configured template engine;
+## Installation
+* Server nginx or Apache (lighttpd should work)
+* Requirements: PHP 7, NodeJS >= 6
+* Dependencies though composer and npm so you'll need them
+* Database PostGreSQL
 
-  * Doctrine ORM/DBAL;
+### Dependencies
+* `npm i`
+* `composer up` You'll need to fill in your database informations
 
-  * Swiftmailer;
+### Compilation and bundling
+* `grunt build` (for Strut)
+* `webpack` (for the manage interface)
 
-  * Annotations enabled for everything.
+### Database installation
+* `bin/console doctrine:schema:create`
+* `doctrine:database:create`
 
-It comes pre-configured with the following bundles:
+### Virtual Host
+#### Nginx
+```
+server {
+        listen *:80;
+        listen [ipv6]:80;
 
-  * **FrameworkBundle** - The core Symfony framework bundle
+        listen *:443 ssl;
+		ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        listen [ipv6]:443 ssl;
+        ssl_certificate /path/to/certificate;
+        ssl_certificate_key /path/to/associated/key;
 
-  * [**SensioFrameworkExtraBundle**][6] - Adds several enhancements, including
-    template and routing annotation capability
+        server_name messlides.tld ;
 
-  * [**DoctrineBundle**][7] - Adds support for the Doctrine ORM
+        root   /path/to/framaslides/;
 
-  * [**TwigBundle**][8] - Adds support for the Twig templating engine
+        if ($scheme != "https") {
+            rewrite ^ https://$http_host$request_uri? permanent;
+        }
 
-  * [**SecurityBundle**][9] - Adds security by integrating Symfony's security
-    component
+        index index.html index.htm index.php index.cgi index.pl index.xhtml;
 
-  * [**SwiftmailerBundle**][10] - Adds support for Swiftmailer, a library for
-    sending emails
+        location = /favicon.ico {
+            log_not_found off;
+            access_log off;
+        }
 
-  * [**MonologBundle**][11] - Adds support for Monolog, a logging library
+        location = /robots.txt {
+            allow all;
+            log_not_found off;
+            access_log off;
+        }
 
-  * **WebProfilerBundle** (in dev/test env) - Adds profiling functionality and
-    the web debug toolbar
+        location ~ \.php$ {
+            location ~ ^/(app_dev|config)\.php(/|$) {
+                root   /path/to/framaslides/web/;
+                fastcgi_pass unix:/path/to/sock;
+                fastcgi_split_path_info ^(.+\.php)(/.*)$;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                fastcgi_param DOCUMENT_ROOT $realpath_root;
+            }
+            location ~ ^/app\.php(/|$) {
+                root   /path/to/framaslides/web/;
+                fastcgi_pass unix:/path/to/sock;
+                fastcgi_split_path_info ^(.+\.php)(/.*)$;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                fastcgi_param DOCUMENT_ROOT $realpath_root;
+                internal;
+            }
+            return 404;
+        }
 
-  * **SensioDistributionBundle** (in dev/test env) - Adds functionality for
-    configuring and working with Symfony distributions
+        location @php {
+            try_files $uri =404;
+            include /etc/nginx/fastcgi_params;
+            fastcgi_pass unix:/path/to/sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_intercept_errors on;
+        }
 
-  * [**SensioGeneratorBundle**][13] (in dev/test env) - Adds code generation
-    capabilities
 
-  * **DebugBundle** (in dev/test env) - Adds Debug and VarDumper component
-    integration
+        location / {
+            root   /path/to/framaslides/web/;
+            try_files $uri /app.php$is_args$args;
+        }
 
-All libraries and bundles included in the Symfony Standard Edition are
-released under the MIT or BSD license.
-
-Enjoy!
-
-[1]:  https://symfony.com/doc/3.0/book/installation.html
-[6]:  https://symfony.com/doc/current/bundles/SensioFrameworkExtraBundle/index.html
-[7]:  https://symfony.com/doc/3.0/book/doctrine.html
-[8]:  https://symfony.com/doc/3.0/book/templating.html
-[9]:  https://symfony.com/doc/3.0/book/security.html
-[10]: https://symfony.com/doc/3.0/cookbook/email.html
-[11]: https://symfony.com/doc/3.0/cookbook/logging/monolog.html
-[13]: https://symfony.com/doc/3.0/bundles/SensioGeneratorBundle/index.html
+```

@@ -21,7 +21,7 @@ require.config({
     	'marked': '../components/marked/marked',
 
     	// build - rmap
-    	'strut/presentation_generator/bespoke': '../bundles/app/strut.presentation_generator.bespoke',
+    	// 'strut/presentation_generator/bespoke': '../bundles/app/strut.presentation_generator.bespoke',
     	'strut/presentation_generator/reveal': '../bundles/app/strut.presentation_generator.reveal',
     	'strut/presentation_generator/handouts': '../bundles/app/strut.presentation_generator.handouts',
     	'strut/deck': '../bundles/app/strut.deck',

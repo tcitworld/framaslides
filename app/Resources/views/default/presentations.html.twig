@@ -9,13 +9,29 @@
     <div class="row">
         {% for presentation in presentations %}
             <div class="col-xs-12 col-sm-4">
-                <div class="card" data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
+                <div class="card thumbnail" data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
                     <div class="card-block">
-                        <h4 class="card-title"><span class="title">{{ presentation.title }}</span></h4>
-                        <p><span class="label label-default versions">{{ 'presentations.nbversions' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
-                        <p class="card-text">{{ 'presentations.createdAt' | trans({ '%createdAt%': presentation.createdAt | date("d/m/Y") }) }}
-                        {{ 'presentations.updatedAt' | trans({ '%updatedAt%': presentation.getLastVersionDate | time_diff }) }}
-                        Nb slides : {{ presentation.getNbSlides }}</p>
+                        <div class="media">
+                            <div class="media-body">
+                                <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span></h4>
+                                <p><span class="label label-default versions">{{ 'presentations.nbversions' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
+                                <div class="infoBlock">
+                                    <div class="infos">
+                                        <small><span class="glyphicon glyphicon-time" title="Date de création"></span> {{ presentation.createdAt | date("d/m/Y") }}</small><br>
+                                        <small><span class="glyphicon glyphicon-refresh" title="Date de dernière mise à jour"></span> {{ presentation.getLastVersionDate | time_diff }}</small>
+                                    </div>
+                                    <div class="infos pull-right">
+                                        <small><span class="glyphicon glyphicon-th-large" title="Nombre de slides"></span> {{ 'presentations.nbslides' | transchoice(presentation.getNbSlides) }}</small><br>
+                                        <small><span class="glyphicon glyphicon-picture" title="Nombre d'images"></span> {{ 'presentations.nbpictures' | transchoice(presentation.pictures | length) }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if presentation.pictures | length > 0 %}
+                                <div class="media-right">
+                                    <img width="50px" class="img-thumbnail media-object" src="{{ path('show-picture', { 'uuid': (presentation.pictures | first).uuid }) }}" />
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="card-footer">
                         <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit"></i></a>
@@ -24,7 +40,7 @@
                         <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt"></i></a>
                         {% if presentation.rendered %}
                         <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="glyphicon glyphicon-share"></i></a>
-                        <a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}" target="_blank"><i class="glyphicon glyphicon-play-circle"></i></a>{% endif %}
+                        <a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="glyphicon glyphicon-play-circle"></i></a>{% endif %}
                     </div>
                 </div>
             </div>

@@ -4,10 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=1024" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<title>Deck Title</title>
+<title>{{ presentation.title }}</title>
 
-<meta name="description" content="TODO" />
-<meta name="author" content="TODO" />
+<meta name="description" content="A presentation on Framaslides" />
+<meta name="author" content="{{ presentation.user.name }}" />
 
 <style>
 .componentContainer {
@@ -157,48 +157,60 @@ $(document).ready(function() {
 
         var body = $('body');
 
-        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-pencil"></span></button></div>');
-        var fork = $('#fork');
+        console.log('user logged : {{ app.user }}, user presentation : {{ presentation.user }}');
+        {% if app.user and app.user != presentation.user %}
+        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-duplicate"></span></button></div>');
+        {% elseif app.user == presentation.user %}
+        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="edit"><span class="glyphicon glyphicon-pencil"></span></button><button class="btn btn-default hidden" id="home"><span class="glyphicon glyphicon-home"></span></button></div>');
+        {% else %}
+        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="login" data-toggle="tooltip" data-placement="right" title="{{ 'preview.needlogin' | trans }}"><span class="glyphicon glyphicon-lock"></span></button></div>');
+        {% endif %}
+        var btn = $('.popup button');
 
           if (window.location.hash === '#/overview') {
-            if (fork.hasClass('hidden')) {
-              fork.removeClass('hidden');
+            if (btn.hasClass('hidden')) {
+              btn.removeClass('hidden');
             }
           }
 
         window.addEventListener("hashchange", function() {
           if (window.location.hash !== '#/overview') {
-            if (!fork.hasClass('hidden')) {
-                fork.addClass('hidden');
-                }
-            } else {
-            fork.removeClass('hidden');
+            if (!btn.hasClass('hidden')) {
+              btn.addClass('hidden');
+            }
+          } else {
+            btn.removeClass('hidden');
           }
         }, false);
 
+        body.on('click', '#edit', function() {
+          window.location = window.location.origin + '{{ path('app', {'_fragment': presentation.title}) }}';
+        });
+
+          body.on('click', '#home', function() {
+            window.location = window.location.origin + '{{ path('presentations') }}';
+          });
+
+          body.on('click', '#login', function() {
+            window.location = window.location.origin + '{{ path('fos_user_security_login') }}';
+          });
+
         body.on('click', '#fork', function() {
-
-          {% set currentRoute = app.request.attributes.get('_route') %}
-          {% if currentRoute == 'preview' %}
-            window.location = window.location.origin + '{{ path('app', {'_fragment': presentation.title}) }}';
-          {% else %}
-              var titre = prompt('Titre');
-              if (!titre) {
-                return;
-              }
-              $.ajax({
-                url: '{{ path('create-from-template', {'id': presentation.id}) }}',
-                method: 'POST',
-                data: {
-                  title: titre,
-                  export: true,
-                },
-                success: function (data) {
-                  window.location.pathname = 'app#' + data.title;
-                }
-              });
-
-          {% endif %}
+          var titre = prompt('Titre');
+          if (!titre) {
+            return;
+          }
+          $.ajax({
+            url: '{{ path('create-from-template', {'id': presentation.id}) }}',
+            method: 'POST',
+            data: {
+              title: titre,
+              export: true,
+            },
+            success: function (data) {
+              window.location.pathname = 'app#' + data.title;
+            }
+          });
 
         });
     });
