@@ -266,10 +266,11 @@ var innerBg = document.querySelector('.innerBg');
         
         // root presentation elements
         var root = byId( rootId );
+        var canvas;
         if (previousInit) {
-            var canvas = root.children[0];
+            canvas = root.children[0];
         } else {
-            var canvas = document.createElement("div");
+            canvas = document.createElement("div");
         }
         
         var initialized = false;

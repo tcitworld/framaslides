@@ -57,7 +57,7 @@ function(remoteStorage, presentations) {
 			return activated;
 		},
 
-		ls: function(path, filter, callback) {
+		ls: function(path, callback) {
 			presentations.private.list(trimPath(path), function(listing) {
 				// TODO: apply filter
 				callback(listing);

@@ -1,0 +1,45 @@
+<div data-page="1" class="versions">
+    <ul class="list-group">
+        {% for version in versions %}
+        <li class="list-group-item" data-version="{{ version.id }}">
+            <time>{{ version.updated_at }}</time>
+            <span class="icon icon-download pull-right" data-toggle="tooltip" data-placement="bottom" title="Télécharger cette version">
+                <a href="export-version/{{version.id}}">
+                    <i class="glyphicon glyphicon-download-alt"></i>
+                </a>
+            </span>
+            {% if not data.hasPreviousPage and loop.first %}
+            {% else %}
+            <span class="icon icon-delete pull-right" data-toggle="tooltip" data-placement="bottom" title="Supprimer cette version">
+                <i class="glyphicon glyphicon-trash"></i>
+            </span>
+            <span class="icon icon-restore pull-right" data-toggle="tooltip" data-placement="bottom" title="Restaurer cette version (crée une nouvelle version)">
+                <i class="glyphicon glyphicon-repeat"></i>
+            </span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            {% if data.hasPreviousPage %}
+                <li>
+                    <a href="#" aria-label="Previous" class="previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for i in data.nbPages %}
+            <li><a href="#">{{ i }}</a></li>
+            {% endfor %}
+            {% if data.hasNextPage %}
+                <li>
+                    <a href="#" aria-label="Next" class="next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>

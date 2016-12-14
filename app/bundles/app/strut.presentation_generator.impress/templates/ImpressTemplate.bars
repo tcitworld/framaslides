@@ -8,8 +8,9 @@
 {{/customBackgrounds.attributes.bgs}}
 </style>
 {{> PerSlideSurfaceStylesheet}}
-<!-- This is a work around / hack to get the user's browser to download the fonts 
+<!-- This is a work around / hack to get the user's browser to download the fonts
  if they decide to save the presentation. -->
+<!--
 <div style="visibility: hidden; width: 0px; height: 0px">
 <img src="css/Lato-Bold.woff" />
 <img src="css/HammersmithOne.woff" />
@@ -22,6 +23,7 @@
 <img src="css/Lato-BoldItalic.woff" />
 <img src="css/AbrilFatface-Regular.woff" />
 <img src="css/Lato-Regular.woff" />
+-->
 </div>
 
 <div class="fallback-message">

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container ombre">
+    <h1>Modèles</h1>
+    <ul class="nav nav-pills">
+        {% set currentRoute = app.request.attributes.get('_route') %}
+        <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.mine' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-published' %}class="active"{% endif %}><a href="{{ path('templates-published') }}">{{ 'templates.published' | trans }}</a></li>
+    </ul>
+    <div class="row">
+    {% for presentation in templates %}
+        <div class="col-xs-12 col-sm-4">
+            <div class="card" data-presentation="{{ presentation.id }}">
+                <div class="card-block">
+                    <h4 class="card-title"><span class="title">{{ presentation.title }}</span> {% if presentation.user != app.user %}<small>{{ 'templates.author' | trans({'author': presentation.user}) }}</small>{% endif %}</h4>
+                    <p class="card-text">{{ 'presentations.createdAt' | trans({ '%createdAt%': presentation.createdAt | date("d/m/Y") }) }}
+                        {{ 'presentations.updatedAt' | trans({ '%updatedAt%': presentation.getLastVersionDate | time_diff }) }}
+                        Nb slides : {{ presentation.getNbSlides }}</p>
+                </div>
+                <div class="card-footer">
+                    {% if app.user == presentation.user %}
+                    <a href="{{ path('app') }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark"></i></a>
+                    {% endif %}
+                    <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt"></i></a>
+                    <a href="#" class="fork" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-duplicate"></i></a>
+                    {% if presentation.rendered %}<a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="glyphicon glyphicon-play-circle"></i></a>{% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% include 'default/modals/fork.html.twig' %}
+{% include 'default/modals/template.html.twig' %}
+{% endblock content %}

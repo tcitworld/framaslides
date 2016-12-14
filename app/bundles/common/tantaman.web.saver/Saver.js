@@ -1,13 +1,14 @@
 define(function() {
 	'use strict';
 
-	function Saver(exportables, storageInterface) {
+	function Saver(exportables, storageInterface, model) {
 		this.storageInterface = storageInterface;
 		if (Array.isArray(exportables)) {
 			this.exportables = exportables;
 		} else {
 			this.exportables = [exportables];
 		}
+		this.model = model;
 	}
 
 	Saver.prototype = {
@@ -17,7 +18,7 @@ define(function() {
 			this.exportables.forEach(function(exportable) {
 				var data = exportable.export();
 				var identifier = exportable.identifier();
-				this.storageInterface.store(identifier, data);
+				this.storageInterface.store(identifier, data, null, false, this.model);
 			}, this);
 		},
 

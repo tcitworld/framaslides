@@ -7,23 +7,35 @@ define(function() {
 	};
 
 	PreviewLauncher.prototype = {
-		launch: function(generator) {
+		launch: function(generator, _openWindow) {
+		  var openWindow = _openWindow || false;
 			if (window.previewWind)
 				window.previewWind.close();
 
 			this._editorModel.trigger('launch:preview', null);
+			var editorModel = this._editorModel;
 
 			var previewStr = generator.generate(this._editorModel.deck());
+			var previewConfig = JSON.stringify({
+        surface: this._editorModel.deck().get('surface')
+      });
 
-			localStorage.setItem('preview-string', previewStr);
-			localStorage.setItem('preview-config', JSON.stringify({
-				surface: this._editorModel.deck().get('surface')
-			}));
+			$.ajax({
+				type: 'POST',
+				url: '/save-preview/' + editorModel.fileName(),
+				data: {
+					previewData: previewStr,
+          previewConfig: previewConfig
+				},
+			}).success(function() {
+			  if (!openWindow) {
+          window.previewWind = window.open(
+            '/preview/' + editorModel.fileName() + '/' + generator.id + generator.getSlideHash(editorModel),
+            window.location.href);
 
-			window.previewWind = window.open(
-				'preview_export/' + generator.id + '.html' + generator.getSlideHash(this._editorModel),
-				window.location.href);
-			var sourceWind = window;
+          var sourceWind = window;
+        }
+			});
 		}
 	};
 

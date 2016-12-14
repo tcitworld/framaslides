@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+    <div class="container">
+            {% if app.request.hasPreviousSession %}
+                {% for type, messages in app.session.flashbag.all() %}
+                    {% for message in messages %}
+                        {% if type == 'success' %}
+                            {% set class = 'alert alert-success' %}
+                        {% elseif type == 'error' %}
+                            {% set class = 'alert alert-danger' %}
+                        {% elseif type == 'info' %}
+                            {% set class = 'alert alert-info' %}
+                        {% else %}
+                            {% set class = 'alert alert-warning' %}
+                        {% endif %}
+                        <div class="{{ class }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+            {% endif %}
+
+            {% block fos_user_content %}
+            {% endblock fos_user_content %}
+    </div>
+{% endblock content %}

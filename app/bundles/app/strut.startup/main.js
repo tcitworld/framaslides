@@ -1,6 +1,14 @@
 define(['strut/editor/EditorView',
         'strut/editor/EditorModel'],
 function(EditorView, EditorModel) {
+
+  if (!String.prototype.startsWith) {
+    String.prototype.startsWith = function (searchString, position) {
+      position = position || 0;
+      return this.substr(position, searchString.length) === searchString;
+    };
+  }
+
 	var registry = null;
 	var editorStartup = {
 		run: function() {
@@ -9,10 +17,10 @@ function(EditorView, EditorModel) {
     		editor.render();
     		$('body').append(editor.$el);
 
-    		if (sessionMeta.lastPresentation != null) {
+    		if (window.location.hash.startsWith('#')) {
     			// Load it up.
     			var storageInterface = registry.getBest('strut.StorageInterface');
-    			storageInterface.load(sessionMeta.lastPresentation, function(pres, err) {
+    			storageInterface.load(window.location.hash.slice(1), function(pres, err) {
     				if (!err) {
     					model.importPresentation(pres);
     				} else {

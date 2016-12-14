@@ -1,0 +1,9 @@
+app:
+  name: 'Framaslides'
+menu:
+  newpresentation: 'New presentation'
+  mypresentations: 'My presentations'
+  templates: 'Templates'
+  disconnect: 'Logout'
+  login: 'Login'
+  register: "Register"

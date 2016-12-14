@@ -1,0 +1,29 @@
+<!-- Share Modal -->
+<div class="modal fade" id="shareModal" tabindex="-1" role="dialog" aria-labelledby="shareModalTitle">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="shareModalTitle">{{ 'presentations.share.title' | trans }}</h4>
+                <div class="alert alert-warning alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'errors.default' | trans }}</strong> </div>
+                <div class="info alert-info fade in" role="complementary"><span>{{ 'presentations.share.title.details' | trans }}</span></div>
+            </div>
+            <div class="modal-body">
+                <label for="presentationshareurl">{{ 'presentations.share.input' | trans }}</label>
+                <div class="input-group">
+                    <input type="text" name="presentationshareurl" id="presentationshareurl" class="form-control" placeholder="{{ 'presentations.share.input' | trans }}">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-copy" aria-label="Copy url to clipboard Copier dans le presse-papiers" data-clipboard-target="#presentationshareurl">
+                            <span class="glyphicon glyphicon-paste" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" name="deleteshare" id="deleteshare" class="btn btn-danger" data-toggle="tooltip" data-placement="right" title="{{ 'presentations.share.delete.details' | trans }}"><span class="glyphicon glyphicon-trash"></span></button>
+                        <a class="btn btn-default" id="btn-external" href="#" target="_blank"><span class="glyphicon glyphicon-new-window" aria-hidden="true"></span></a>
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="share-save" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>

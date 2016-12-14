@@ -1,0 +1,88 @@
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  opacity: 1;
+  transition: 0.7s opacity;
+}
+
+header {
+
+  .strut-logo img {
+    height: 58px;
+  }
+
+  a.logo {
+    text-decoration: none;
+
+    h1 {
+      font-size: 48px;
+    }
+  }
+}
+
+nav.navbar {
+  background-color:#B49CD9;
+
+  a.navbar-brand {
+    text-decoration: none;
+    font-size: 40px;
+  }
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+.label.versions {
+  cursor: pointer;
+}
+
+.item-hidden {
+  transition: opacity .4s ease-out;
+  opacity: 0;
+  width: 0;
+}
+
+.card-footer {
+
+  .glyphicon {
+    font-size: 2.5rem;
+  }
+}
+
+.icon {
+  margin: 0 5px;
+}
+
+.infos {
+  display: inline-block;
+}
+
+.infoBlock {
+  width: 100%;
+}
+
+.full-height {
+  margin: 100px auto;
+}
+
+.pictures {
+  div.pictures {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* or space-around */
+  }
+
+  figure {
+    display: inline-block;
+    margin-bottom: 8px;
+    width: calc(50% - 4px);
+  }
+
+  @media screen and (min-width: 50em) {
+    figure {
+      width: calc(25% - 6px);
+    }
+  }
+}

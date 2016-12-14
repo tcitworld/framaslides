@@ -91,7 +91,6 @@ define(function() {
 			var xhr = new XMLHttpRequest();
 			xhr.open('POST', this.lutimAddress);
 
-			var self = this;
 			var handler = new UploadHandler(xhr);
 
 			xhr.send(form);

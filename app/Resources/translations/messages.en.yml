@@ -1,0 +1,7 @@
+app.name: Framaslides
+menu.newpresentation: 'New presentation'
+menu.mypresentations: 'My presentations'
+menu.templates: Templates
+menu.disconnect: Logout
+menu.login: Login
+menu.register: Register

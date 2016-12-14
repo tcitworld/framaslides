@@ -1,7 +1,7 @@
 define(['./Saver'],
 function(Saver) {
 	'use strict';
-	function ExitSaver(exportables, storageInterface) {
+	function ExitSaver(exportables, storageInterface, model) {
 		Saver.apply(this, arguments);
 		this._unloaded = this._unloaded.bind(this);
 		$(window).unload(this._unloaded);

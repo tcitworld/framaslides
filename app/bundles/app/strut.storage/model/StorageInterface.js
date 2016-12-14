@@ -1,5 +1,5 @@
-define(['tantaman/web/storage/StorageProvidersWrapper'],
-function(StorageProviders) {
+define(['tantaman/web/storage/StorageProvidersWrapper', 'strut/presentation_generator/PreviewLauncher'],
+function(StorageProviders, PreviewLauncher) {
 	'use strict';
 
 	// TODO: update to use ServiceCollection
@@ -37,8 +37,8 @@ function(StorageProviders) {
 			return this._providers.on.apply(this._providers, arguments);
 		},
 
-		store: function(identifier, data, cb) {
-			this.currentProvider().setContents(identifier, data, cb);
+		store: function(identifier, data, cb, saveAction) {
+			this.currentProvider().setContents(identifier, data, cb, saveAction);
 			return this;
 		},
 
@@ -58,18 +58,18 @@ function(StorageProviders) {
 		},
 
 		listPresentations: function(path, cb) {
-			this.currentProvider().ls(path, /.*\.strut$/, cb)
+			this.currentProvider().ls(path, cb)
 			return this;
 		},
 
-		savePresentation: function(identifier, data, cb) {
-			var idx = identifier.indexOf('.strut');
-			if (idx == -1 || (idx + '.strut'.length != identifier.length)) {
-				identifier += '.strut';
-			}
-			window.sessionMeta.lastPresentation = identifier;
+		savePresentation: function(identifier, data, cb, saveAction, model) {
+			this.store(identifier, data, cb, saveAction);
 
-			this.store(identifier, data, cb);
+      /** Also save preview */
+      var previewLauncher = new PreviewLauncher(model);
+      var generators = model.registry
+        .getBest('strut.presentation_generator.GeneratorCollection');
+      previewLauncher.launch(generators[0], true);
 		}
 	};
 

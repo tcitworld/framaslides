@@ -162,7 +162,7 @@ module.exports = function (grunt) {
                     // http://requirejs.org/docs/errors.html#sourcemapcomments
                     preserveLicenseComments: false,
                     useStrict: true,
-                    wrap: true,
+                    // wrap: true,
                     //uglify2: {} // https://github.com/mishoo/UglifyJS2
                 }
             }
@@ -265,6 +265,19 @@ module.exports = function (grunt) {
                         '*.css'
                     ]
                 }]
+            },
+            web: {
+                files: [{
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.dist %>',
+                        dest: 'web/',
+                        src: [
+                            'styles/**',
+                            'scripts/**',
+                            'preview_export/**'
+                        ]
+                }]
             }
         },
         bower: {
@@ -305,10 +318,11 @@ module.exports = function (grunt) {
         'htmlmin',
         'concat',
         // 'cssmin',
-        'uglify',
-        'copy',
+        // 'uglify',
+        'copy:dist',
         'replace',
-        'usemin'
+        'usemin',
+        'copy:web'
     ]);
 
     grunt.registerTask('default', [

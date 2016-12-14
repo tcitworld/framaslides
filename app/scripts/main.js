@@ -21,7 +21,7 @@ require.config({
     	'marked': '../components/marked/marked',
 
     	// build - rmap
-    	'strut/presentation_generator/bespoke': '../bundles/app/strut.presentation_generator.bespoke',
+    	// 'strut/presentation_generator/bespoke': '../bundles/app/strut.presentation_generator.bespoke',
     	'strut/presentation_generator/reveal': '../bundles/app/strut.presentation_generator.reveal',
     	'strut/presentation_generator/handouts': '../bundles/app/strut.presentation_generator.handouts',
     	'strut/deck': '../bundles/app/strut.deck',
@@ -34,6 +34,7 @@ require.config({
     	'strut/header': '../bundles/app/strut.header',
     	'strut/importer': '../bundles/app/strut.importer',
     	'strut/importer/json': '../bundles/app/strut.importer.json',
+      'strut/presentations': '../bundles/app/strut.presentations',
     	'strut/presentation_generator/impress': '../bundles/app/strut.presentation_generator.impress',
     	'strut/logo_button': '../bundles/app/strut.logo_button',
     	'strut/presentation_generator': '../bundles/app/strut.presentation_generator',
@@ -47,6 +48,7 @@ require.config({
     	'strut/transition_editor': '../bundles/app/strut.transition_editor',
 
     	'tantaman/web': '../bundles/common/tantaman.web',
+		'tcit/web/user_storage': '../bundles/common/tcit.web.user_storage',
 		'tantaman/web/local_storage': '../bundles/common/tantaman.web.local_storage',
 		'tantaman/web/remote_storage': '../bundles/common/tantaman.web.remote_storage',
 		'tantaman/web/saver': '../bundles/common/tantaman.web.saver',

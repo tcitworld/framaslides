@@ -17,7 +17,17 @@ function(de, en, es, fr, nl, ru, ar, handlebars) {
 		ar: ar
 	};
 
-	var lang = window.navigator.language || window.navigator.userLanguage;
+	var userlang;
+	$.ajax({
+	  method: 'GET',
+	  url: '/user-locale',
+    async: false,
+    success: function (data) {
+      userlang = data;
+    }
+  });
+
+	var lang = userlang || window.navigator.language || window.navigator.userLanguage;
 	var result = langs[lang.split('-')[0]] || langs.en;
 	handlebars.registerHelper("lang", function(key) {
 		return result[key];

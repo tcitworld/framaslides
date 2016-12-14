@@ -1,0 +1,40 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<div class="row full-height">
+
+    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    <div class="card-block">
+        {{ form_widget(form._token) }}
+
+        {% for flashMessage in app.session.flashbag.get('notice') %}
+            <span class="black-text"><p>{{ flashMessage }}</p></span>
+        {% endfor %}
+
+        <div class="form-group">
+            {{ form_errors(form.email) }}
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <div class="form-group">
+            <div class="alert alert-info">Note : Le nom d'utilisateur est insensible à la casse</div>
+            {{ form_errors(form.username) }}
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_errors(form.plainPassword.first) }}
+            {{ form_label(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+
+        <div class="form-group">
+            {{ form_errors(form.plainPassword.second) }}
+            {{ form_label(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
+        </div>
+    </div>
+    <a href="{{ path('fos_user_security_login') }}" class="btn btn-secondary">{{ 'security.login.submit'|trans }}</a>
+    <button class="btn btn-primary" type="submit" name="send">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</button>
+</div>

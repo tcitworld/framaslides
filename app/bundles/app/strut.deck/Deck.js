@@ -36,6 +36,7 @@ define(["common/Calcium",
 				var slides;
 				this.undoHistory = CmdListFactory.managedInstance('editor');
 				this.set("slides", new SlideCollection());
+				this.set("customBackgrounds", new CustomBackgrounds());
 				slides = this.get("slides");
 				slides.on("add", this._slideAdded, this);
 				slides.on("remove", this._slideRemoved, this);

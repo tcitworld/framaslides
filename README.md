@@ -1,91 +1,103 @@
-**Note:** I've been working on Strut2.0: https://github.com/tantaman/strut2
+[![](https://framagit.org/assets/favicon-075eba76312e8421991a0c1f89a89ee81678bcde72319dd3e8047e2a47cd3a42.ico)](https://framagit.org)
 
-Strut
-=======
+![English:](https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Flag_of_the_United_Kingdom.svg/20px-Flag_of_the_United_Kingdom.svg.png) **Framasoft uses GitLab** for the development of its free softwares. Our Github repositories are only mirrors.
+If you want to work with us, **fork us on [framagit.org](https://framagit.org)**. (no registration needed, you can sign in with your Github account)
 
-[![Facelift](https://f.cloud.github.com/assets/1009003/515405/f1003c6a-be74-11e2-84b9-14776c652afb.png)](http://strut.io)
+![Français :](https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/20px-Flag_of_France.svg.png) **Framasoft utilise GitLab** pour le développement de ses logiciels libres. Nos dépôts Github ne sont que des miroirs.
+Si vous souhaitez travailler avec nous, **forkez-nous sur [framagit.org](https://framagit.org)**. (l'inscription n'est pas nécessaire, vous pouvez vous connecter avec votre compte Github)
+* * *
 
-#### A GUI / Authoring Tool for ImpressJS and Bespoke.js ####
+# Framaslides
 
-Don't know what ImpressJS is?  Check out the ImpressJS demo presentation: http://bartaz.github.com/impress.js/#/bored
-
-### Start using Strut! http://strut.io/editor/
-(works in Firefox, Chrome and Safari with basic support for IE10)
-
-### Official Website: http://strut.io ###
-
-#### Learn a bit about Strut
-* http://www.youtube.com/watch?v=TTpiDXEIulg
-* previous video: http://www.youtube.com/watch?v=zA5s8wwme44
+An online presentation editor service [https://framaslides.org](https://framaslides.org)
 
 
+## Installation
+* Server nginx or Apache (lighttpd should work)
+* Requirements: PHP 7, NodeJS >= 6
+* Dependencies though composer and npm so you'll need them
+* Database PostGreSQL
+
+### Dependencies
+* `npm i`
+* `composer up` You'll need to fill in your database informations
+
+### Compilation and bundling
+* `grunt build` (for Strut)
+* `webpack` (for the manage interface)
+
+### Database installation
+* `bin/console doctrine:schema:create`
+* `doctrine:database:create`
+
+### Virtual Host
+#### Nginx
+```
+server {
+        listen *:80;
+        listen [ipv6]:80;
+
+        listen *:443 ssl;
+		ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+        listen [ipv6]:443 ssl;
+        ssl_certificate /path/to/certificate;
+        ssl_certificate_key /path/to/associated/key;
+
+        server_name messlides.tld ;
+
+        root   /path/to/framaslides/;
+
+        if ($scheme != "https") {
+            rewrite ^ https://$http_host$request_uri? permanent;
+        }
+
+        index index.html index.htm index.php index.cgi index.pl index.xhtml;
+
+        location = /favicon.ico {
+            log_not_found off;
+            access_log off;
+        }
+
+        location = /robots.txt {
+            allow all;
+            log_not_found off;
+            access_log off;
+        }
+
+        location ~ \.php$ {
+            location ~ ^/(app_dev|config)\.php(/|$) {
+                root   /path/to/framaslides/web/;
+                fastcgi_pass unix:/path/to/sock;
+                fastcgi_split_path_info ^(.+\.php)(/.*)$;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                fastcgi_param DOCUMENT_ROOT $realpath_root;
+            }
+            location ~ ^/app\.php(/|$) {
+                root   /path/to/framaslides/web/;
+                fastcgi_pass unix:/path/to/sock;
+                fastcgi_split_path_info ^(.+\.php)(/.*)$;
+                include fastcgi_params;
+                fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+                fastcgi_param DOCUMENT_ROOT $realpath_root;
+                internal;
+            }
+            return 404;
+        }
+
+        location @php {
+            try_files $uri =404;
+            include /etc/nginx/fastcgi_params;
+            fastcgi_pass unix:/path/to/sock;
+            fastcgi_index index.php;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_intercept_errors on;
+        }
 
 
-### Twitter: [@StrutPresents](https://twitter.com/strutpresents)
+        location / {
+            root   /path/to/framaslides/web/;
+            try_files $uri /app.php$is_args$args;
+        }
 
-
-### Mailing List ###
-strut-presentation-editor@googlegroups.com
-
-### Development/Building ###
-To build your own version of Strut you'll need Grunt v0.4.0 or later.
-
-
-1. Install the latest Grunt: `npm install -g grunt-cli`
-2. Clone Strut: `git clone git@framagit.org:framasoft/framaslides.git`
-3. `cd Strut`
-4. Install Strut's development dependencies: `npm install`
-5. Run Strut: `grunt server` (the server runs at localhost:9000)
-
-To make a production build of Strut run `grunt build`.
-The resulting build will be located in `Strut/dist`.  
-
-### Uploading pictures
-
-In order to add pictures to your presentations, you need a [lutim](https://framagit.org/luc/lutim) instance running.
-The default address is to change in the `app/bundles/common/tantaman.web.widgets/ItemImportModal.js` file.
-
-### RELEASE NOTES ###
-
-v0.5.3 - Positioning and transformations of components in edit mode
-now exactly match the positioning and transformations of components in the final presentation.
-
-### Contributing ###
-
-
-`Strut` is composed of several bundles which provide distinct features to `Strut`.  The set of bundles that compose
-`Strut` are defined in https://github.com/tantaman/Strut/blob/master/app/scripts/features.js
-
-This design allows features to be added and removed from `Strut` just by adding or removing bundles from the list
- in features.js.  E.g., if you wanted a build of Strut without `RemoteStorage` you can just remove
-the `RemoteStorage` bundle from features.js.  If you didn't want any slide components for some reason then you can remove
-`strut/slide_components/main` from features.js.
-
-Bundles contribute functionality to `Strut` by registering that functionality with the `ServiceRegistry`.
-You can take a look at the `RemoteStorage` bundle for an example: https://github.com/tantaman/Strut/blob/master/app/bundles/common/tantaman.web.remote_storage/main.js
-
-If a service is missing `Strut` continues to run without the functionality provided by that service.
-
-New development that isn't essential to the core of Strut should follow this pattern in order to keep the code
-modular and allow the removal of features that don't pan out or can only exist in specific environments.  For example,
-`RemoteStorage` can't be loaded if `Strut` is being served from a `file://` url.
-
-The `ServiceRegistry` also allows for runtime modularity.  I.e., services can be added and removed at runtime and `Strut`
-will update to reflect the current set of features & services that are isntalled.  Try to keep in mind the
-fact that services won't necessarily be present or if they are present they might go away.  This
-approach allows the user to add and remove plugins from 3rd parties at runtime.
-
-### Acknowledgements ###
-
-* ImpressJS https://github.com/bartaz/impress.js/
-* Bespoke.js https://github.com/markdalgleish/bespoke.js
-* BackboneJS http://documentcloud.github.com/backbone/
-* Spectrum https://github.com/bgrins/spectrum
-* Etch http://etchjs.com/
-* Bootstrap http://twitter.github.io/bootstrap/
-* lodash http://lodash.com/
-* mousetrap http://craig.is/killing/mice
-* RequireJS http://requirejs.org/
-* JQuery http://jquery.com/
-* HandlebarsJS http://handlebarsjs.com/
-* Grunt http://gruntjs.com/
+```

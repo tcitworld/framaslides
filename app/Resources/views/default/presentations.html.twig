@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container ombre">
+    <div class="row">
+        {% for presentation in presentations %}
+            <div class="col-xs-12 col-sm-4">
+                <div class="card thumbnail" data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
+                    <div class="card-block">
+                        <div class="media">
+                            <div class="media-body">
+                                <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span></h4>
+                                <p><span class="label label-default versions">{{ 'presentations.nbversions' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
+                                <div class="infoBlock">
+                                    <div class="infos">
+                                        <small><span class="glyphicon glyphicon-time" title="Date de création"></span> {{ presentation.createdAt | date("d/m/Y") }}</small><br>
+                                        <small><span class="glyphicon glyphicon-refresh" title="Date de dernière mise à jour"></span> {{ presentation.getLastVersionDate | time_diff }}</small>
+                                    </div>
+                                    <div class="infos pull-right">
+                                        <small><span class="glyphicon glyphicon-th-large" title="Nombre de slides"></span> {{ 'presentations.nbslides' | transchoice(presentation.getNbSlides) }}</small><br>
+                                        <small><span class="glyphicon glyphicon-picture" title="Nombre d'images"></span> {{ 'presentations.nbpictures' | transchoice(presentation.pictures | length) }}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if presentation.pictures | length > 0 %}
+                                <div class="media-right">
+                                    <img width="50px" class="img-thumbnail media-object" src="{{ path('show-picture', { 'uuid': (presentation.pictures | first).uuid }) }}" />
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit"></i></a>
+                        <a href="delete-presentation/{{ presentation.title }}" class="delete" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-trash"></i></a>
+                        <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark"></i></a>
+                        <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt"></i></a>
+                        {% if presentation.rendered %}
+                        <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="glyphicon glyphicon-share"></i></a>
+                        <a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="glyphicon glyphicon-play-circle"></i></a>{% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="pull-right">
+        {% if presentations.getNbPages > 1 %}
+            {{ pagerfanta(presentations, 'twitter_bootstrap3', {'proximity': 1}) }}
+        {% endif %}
+    </div>
+    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }}</div>
+</div>
+{% include 'default/modals/template.html.twig' %}
+{% include 'default/modals/versions.html.twig' %}
+{% include 'default/modals/share.html.twig' %}
+
+{% endblock content %}

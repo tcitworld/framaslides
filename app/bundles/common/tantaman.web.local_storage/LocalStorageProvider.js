@@ -16,14 +16,13 @@ define(function() {
 
 		},
 
-		ls: function(path, regex, cb) {
+		ls: function(path, cb) {
 			// Paths are currently ignored
 			var numFiles = this.impl.length;
 			var fnames = [];
 			for (var i = 0; i < numFiles; ++i) {
 				var fname = this.impl.key(i);
-				if (fname.indexOf(prefix) == 0 &&
-					(regex == null || regex.exec(fname) != null)) {
+				if (fname.indexOf(prefix) == 0) {
 					fnames.push(fname.substring(prefix.length));
 				}
 			}

@@ -1,0 +1,111 @@
+app.name: <span class="frama">Frama</span><span class="services">slides</span>
+app.presentation: "appName est un service d'édition de présentations en ligne"
+
+menu:
+  newpresentation: 'Nouvelle présentation'
+  mypresentations: 'Mes présentations'
+  templates: Modèles
+  pictures: Images
+  disconnect: 'Se déconnecter'
+  login: 'Se connecter'
+  register: 'S''inscrire'
+  admin: Admin
+
+presentations:
+  nbversions: 'une version|%count% versions'
+  nbslides: 'une seule slide|%count% slides'
+  nbpictures: "{0}pas d'image|{1}une seule image|]1,Inf[%count% images"
+  createdAt: 'Présentation créée le %createdAt%'
+  updatedAt: 'Dernière version %updatedAt%'
+  empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
+  isTemplate: Modèle
+  isPublic: Public
+  share:
+    title: Publier la présentation
+    title.details: Publier la présentation génère un lien unique permettant à tout le monde de visualiser votre présentation
+    input: URL publique de la présentation
+    delete: Supprimer le lien public de la présentation
+    delete.details: En supprimant le lien public de la présentation, il ne sera plus possible d'y accéder par lien public
+
+security:
+  login:
+    register: "S'inscrire"
+    submit: 'Se connecter'
+    forgot_password: 'Mot de passe oublié ?'
+
+profile:
+  edit: 'Éditer les paramètres de mon compte'
+  delete: 'Supprimer mon compte'
+  edit.cancel: "Annuler l'édition"
+
+version:
+  title: Version
+  lastnotdelete: La dernière version n'est pas supprimable.
+  delete: Supprimer cette version
+  restore: Restaurer cette version (crée une nouvelle version)
+  download: Télécharger cette version
+
+errors.default: Erreur
+info:
+  default: Information
+  version:
+    restaured:
+      title: Version restaurée
+      desc: Une nouvelle version correspondante a été créée.
+
+templates:
+  title: Modèle
+  form:
+    maketemplate: Faire de cette présentation un modèle
+    maketemplate.tooltip: Cette présentation sera accessible comme base pour d'autres présentations dans « Vos modèles »
+    makepublic: Rendre ce modèle public
+    makepublic.tooltip: Cette présentation sera accessible comme base pour d'autres présentations par tout le monde.
+  fork:
+    presentationtitle: Titre de la nouvelle présentation
+    presentationtitle.short: Titre
+    newpresentation: Nouvelle présentation
+    newpresentation.desc: Vous allez créer une nouvelle présentation basée sur ce modèle
+  mine: "Mes modèles (privés)"
+  public: "Modèles publics"
+  published: "Mes modèles publiés"
+  author: "publié par author"
+
+flashes.user.notice.added: Utilisateur %username% ajouté
+flashes.user.notice.updated: Utilisateur %username% mis à jour
+flashes.user.notice.deleted: Utilisateur %username% supprimé
+
+preview:
+  needlogin: Vous devez vous enregistrer pour modifier cette présentation
+
+pictures:
+  title: Images
+  desc: Voici toutes les images que vous avez uploadées sur vos présentations. Notez que les images associées à une présentation sont supprimées en même temps que la présentation. Supprimer des images ici les enlève de vos présentations.
+  message:
+    deleted: L'image a été supprimée
+
+# Admin stuff
+
+user:
+  manage:
+    field:
+      last_login: Dernière connexion
+      email: Email
+      username: Nom d'utilisateur
+    page_title: Gestion des utilisateurs
+    create_new_one: Créer un nouvel utilisateur
+    edit_action: Éditer l'utilisateur
+    action: Action
+    description: Ici vous pouvez gérer vos utilisateurs (ajout, édition et suppression)
+  page_title: Gestion des utilisateurs
+  edit_user: Éditer un utilisateur existant
+  new_user: Créer un nouvel utilisateur
+  form:
+    email_label: Email
+    username_label: Nom d'utilisateur
+    enabled_label: Activé
+    back_to_list: Retour à la liste
+    delete_confirm: Confirmer la suppression ?
+    delete: Supprimer l'utilisateur
+    save: Enregistrer
+    password_label: Mot de passe
+    repeat_new_password_label: Répéter le mot de passe
