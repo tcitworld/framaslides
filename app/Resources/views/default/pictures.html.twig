@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{{ 'pictures.title' | trans  }}
+{% endblock %}
+
+{% block content %}
+<div class="container pictures">
+    <div class="alert alert-info">
+        {{ 'pictures.desc' | trans }}
+    </div>
+    {% for picture in pictures %}
+        <figure>
+            <img class="img-responsive img-rounded" src="{{ path('show-picture', {'uuid': picture.uuid}) }}" alt="{{ picture.fileName }}"/>
+            <figcaption>{{ picture.fileName }}</figcaption>
+            <a href="{{ path('delete-picture', {'uuid': picture.uuid}) }}"><span class="glyphicon glyphicon-trash"></span></a>
+        </figure>
+    {% endfor %}
+    <div class="pull-right">
+        {% if pictures.getNbPages > 1 %}
+            {{ pagerfanta(pictures, 'twitter_bootstrap3', {'proximity': 1}) }}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
