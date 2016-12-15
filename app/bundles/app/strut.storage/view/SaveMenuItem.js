@@ -15,7 +15,7 @@ function(Backbone, ActionHandlers, ErrorModal, lang) {
 
 		save: function() {
 			fileName = this.model.fileName();
-			if (fileName == null) {
+			if (fileName == null || !this.model.getExistStatus()) {
 				this.saveAsModal.show(ActionHandlers.save, lang.save_as);
 			} else {
 				ActionHandlers.save(this.storageInterface, this.model, fileName, ErrorModal.show);

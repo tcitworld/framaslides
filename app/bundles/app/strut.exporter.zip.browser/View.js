@@ -4,8 +4,8 @@ function(Backbone, Archiver, lang) {
 		name: "Zip",
 		initialize: function() {
 			this.$el.html(
-				'<div class="alert alert-info">The most effective way to archive your rendered presentation is to:<p>' +
-				'<ol><li>Click the <div class="btn-group iconBtns"><button class="btn btn-success disabled"><i class="icon-play icon-white"></i>Present</button></div> button</li><li>Press <code>Ctrl+S</code>(windows) or <code>⌘+S</code>(Mac) to save the entire presentation to disk.</li></ol></p>'
+				'<div class="alert alert-info">Le moyen le plus facile de sauvegarder votre présentation est de&nbsp;:<p>' +
+				'<ol><li>Cliquer sur le bouton <div class="btn-group iconBtns"><button class="btn btn-success disabled"><i class="icon-play icon-white"></i>Présentation</button></div></li><li>Appuyez sur <code>Ctrl+S</code> ou sur <code>⌘+S</code>sous MacOS pour sauvegarder toute la présentation localement sur votre ordinateur.</li></ol></p>'
 				//+ '</div><div class="alert alert-success">Click below to continue downloading the generated zip</div>'
 				);
 		},

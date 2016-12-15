@@ -373,7 +373,7 @@ class PresentationController extends Controller
             $em->flush();
         }
 
-        return $this->redirect($this->generateUrl('share_entry', [
+        return $this->redirect($this->generateUrl('share_presentation', [
             'uuid' => $presentation->getUuid(),
         ]));
     }
@@ -407,7 +407,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("/share/{uuid}", requirements={"uuid" = ".+"}, name="share_entry")
+     * @Route("/share/{uuid}", requirements={"uuid" = ".+"}, name="share_presentation")
      * @Cache(maxage="25200", smaxage="25200", public=true)
      *
      * @return \Symfony\Component\HttpFoundation\Response

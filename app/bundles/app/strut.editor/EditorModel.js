@@ -39,13 +39,14 @@ define(['libs/backbone',
 				this.exportable.adapted = this;
 
 				this.filename = this._deck.get('fileName');
+				this.storageInterface = null;
 
 				var savers = this.registry.getBest('tantaman.web.saver.AutoSavers');
 				if (savers) {
-					var storageInterface = this.registry.getBest('strut.StorageInterface');
-					storageInterface = adaptStorageInterfaceForSavers(storageInterface);
-					this._exitSaver = savers.exitSaver(this.exportable, storageInterface, this);
-					this._timedSaver = savers.timedSaver(this.exportable, 60000, storageInterface, this);
+					this.storageInterface = this.registry.getBest('strut.StorageInterface');
+					this.storageInterface = adaptStorageInterfaceForSavers(this.storageInterface);
+					this._exitSaver = savers.exitSaver(this.exportable, this.storageInterface, this);
+					this._timedSaver = savers.timedSaver(this.exportable, 60000, this.storageInterface, this);
 				}
 
 				this.clipboard = new Clipboard();
@@ -107,6 +108,10 @@ define(['libs/backbone',
 			customBackgrounds: function() {
 				return this._deck.get('customBackgrounds');
 			},
+
+      getExistStatus: function () {
+        return this._deck.get('exists');
+      },
 
 			importPresentation: function(rawObj) {
 				// deck disposes iteself on import?

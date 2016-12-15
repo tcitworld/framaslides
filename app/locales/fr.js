@@ -29,8 +29,8 @@ define({
 	reset: 'Réinitialiser',
 	go: 'Aller',
 	strut_exporter_json: {
-		explain: 'Vous pouvez sauvegarder la présentation dans fichier que vous pourrez réimporter dans Strut plus tard',
-		click_below: 'Cliquer ci-dessous pour télécharger le fichier'
+		explain: 'Vous pouvez sauvegarder la présentation dans un fichier que vous pourrez réimporter dans Strut plus tard',
+		click_below: 'Cliquez ci-dessous pour télécharger le fichier'
 	},
 	background: 'Fond',
 	surface: 'Surface',
