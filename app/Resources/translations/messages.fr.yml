@@ -17,7 +17,8 @@ presentations:
   nbpictures: "{0}pas d'image|{1}une seule image|]1,Inf[%count% images"
   createdAt: 'Présentation créée le %createdAt%'
   updatedAt: 'Dernière version %updatedAt%'
-  empty: "Vous n'avez pas encore de présentations. Voulez-vous en créer une ?"
+  empty: "Vous n'avez pas encore de présentations, voulez-vous en créer une ?"
+  create: Créer une nouvelle présentation
   isTemplate: Modèle
   isPublic: Public
   share:

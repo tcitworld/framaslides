@@ -51,7 +51,7 @@
             {{ pagerfanta(presentations, 'twitter_bootstrap3', {'proximity': 1}) }}
         {% endif %}
     </div>
-    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }}</div>
+    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }} <a href="{{ path('app') }}">{{ 'presentations.create' | trans }}</a></div>
 </div>
 {% include 'default/modals/template.html.twig' %}
 {% include 'default/modals/versions.html.twig' %}

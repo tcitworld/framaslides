@@ -45,4 +45,5 @@ security:
         - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/users/, role: ROLE_ADMIN }
         - { path: ^/share, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/picture/, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, roles: ROLE_USER }

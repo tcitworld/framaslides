@@ -1,5 +1,5 @@
-define(['libs/backbone', '../PreviewLauncher'],
-function(Backbone, PreviewLauncher) {
+define(['libs/backbone', 'strut/storage/model/ActionHandlers', 'strut/storage/view/StorageModal', 'strut/storage/model/StorageInterface', '../PreviewLauncher', 'lang'],
+function(Backbone, ActionHandlers, StorageModal, StorageInterface , PreviewLauncher, lang) {
 	return Backbone.View.extend({
 		className: 'btn-group iconBtns',
 		events: {
@@ -18,10 +18,23 @@ function(Backbone, PreviewLauncher) {
 			this._generatorChanged();
 
 			this._template = JST['strut.presentation_generator/Button'];
+
+      /* var storageInterface = new StorageInterface(this._editorModel.registry);
+
+      this.saveAsModal = new StorageModal({
+        editorModel: this._editorModel,
+        storageInterface: storageInterface
+      });
+      */
 		},
 
 		_launch: function() {
-			this._previewLauncher.launch(this._generators[this._index]);
+		  if (this._editorModel.getExistStatus()) {
+        this._previewLauncher.launch(this._generators[this._index]);
+      } else {
+		    alert('Vous devez enregistrer la présentation avant de pouvoir la visionner');
+        //this.saveAsModal.show(ActionHandlers.save, lang.save_as);
+      }
 		},
 
 		_bind: function() {

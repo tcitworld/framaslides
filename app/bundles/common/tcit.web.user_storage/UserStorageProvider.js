@@ -1,7 +1,7 @@
 define(function() {
 	var prefix = "strut-";
 	function UserStorageProvider() {
-		this.name = "User Storage";
+		this.name = "Stockage";
 		this.id = "userstorage";
 	}
 	var alerted = false;

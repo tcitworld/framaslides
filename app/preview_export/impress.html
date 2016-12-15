@@ -157,12 +157,11 @@ $(document).ready(function() {
 
         var body = $('body');
 
-        console.log('user logged : {{ app.user }}, user presentation : {{ presentation.user }}');
         {% if app.user and app.user != presentation.user %}
         body.prepend('<div class="popup"><button class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-duplicate"></span></button></div>');
         {% elseif app.user == presentation.user %}
         body.prepend('<div class="popup"><button class="btn btn-default hidden" id="edit"><span class="glyphicon glyphicon-pencil"></span></button><button class="btn btn-default hidden" id="home"><span class="glyphicon glyphicon-home"></span></button></div>');
-        {% else %}
+        {% elseif app.request.attributes.get('_route') != 'share_presentation' %}
         body.prepend('<div class="popup"><button class="btn btn-default hidden" id="login" data-toggle="tooltip" data-placement="right" title="{{ 'preview.needlogin' | trans }}"><span class="glyphicon glyphicon-lock"></span></button></div>');
         {% endif %}
         var btn = $('.popup button');

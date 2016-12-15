@@ -37,6 +37,7 @@ define(["common/Calcium",
 				this.undoHistory = CmdListFactory.managedInstance('editor');
 				this.set("slides", new SlideCollection());
 				this.set("customBackgrounds", new CustomBackgrounds());
+				this.set('exists', false);
 				slides = this.get("slides");
 				slides.on("add", this._slideAdded, this);
 				slides.on("remove", this._slideRemoved, this);
@@ -128,6 +129,7 @@ define(["common/Calcium",
 				this.set('cannedTransition', rawObj.cannedTransition);
 				var bgs = new CustomBackgrounds(rawObj.customBackgrounds);
 				this.set('customBackgrounds', bgs);
+				this.set('exists', true);
 				this.undoHistory.clear();
 
 				// TODO: go through and dispose of all old slides...?
@@ -137,6 +139,10 @@ define(["common/Calcium",
 				bgs.deck = this;
 				bgs.prune();
 			},
+
+      setExists: function (exists) {
+        this.set('exists', exists);
+      },
 
 			/**
 			 * React on change of an active slide.
