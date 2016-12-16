@@ -10,6 +10,7 @@ namespace Strut\StrutBundle\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Strut\StrutBundle\Entity\User;
 
@@ -18,20 +19,21 @@ class PresentationRepository extends EntityRepository
     /**
      * Return a query builder to used by other getBuilderFor* method.
      *
-     * @param int $userId
-     *
+     * @param User $user
      * @return QueryBuilder
+     *
      */
-    public function getBuilderByUser($userId)
+    public function getBuilderByUser(User $user): QueryBuilder
     {
         return $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
-            ->where('u.id = :userId')->setParameter('userId', $userId)
+            ->where('u.id = :userId')->setParameter('userId', $user->getId())
             ->orderBy('p.createdAt', 'desc')
             ;
     }
 
-    public function getTemplates(User $user) {
+    public function getTemplates(User $user): array
+    {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
             ->where('u.id = :userId')->setParameter('userId', $user->getId())
@@ -43,7 +45,8 @@ class PresentationRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getPublicTemplates(User $user) {
+    public function getPublicTemplates(User $user): array
+    {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
             ->where('u.id != :userId')->setParameter('userId', $user->getId())
@@ -55,7 +58,8 @@ class PresentationRepository extends EntityRepository
         return $query->getResult();
     }
 
-    public function getPublishedTemplates(User $user) {
+    public function getPublishedTemplates(User $user): array
+    {
         $query = $this->createQueryBuilder('p')
             ->leftJoin('p.user', 'u')
             ->where('u.id = :userId')->setParameter('userId', $user->getId())

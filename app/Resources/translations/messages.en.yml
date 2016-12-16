@@ -1,7 +1,131 @@
-app.name: Framaslides
-menu.newpresentation: 'New presentation'
-menu.mypresentations: 'My presentations'
-menu.templates: Templates
-menu.disconnect: Logout
-menu.login: Login
-menu.register: Register
+app.name: <span class="frama">Frama</span><span class="services">slides</span>
+app.presentation: "appName is an online slide editor service"
+
+menu:
+  newpresentation: New presentation
+  mypresentations: My presentations
+  templates: Templates
+  pictures: Pictures
+  disconnect: Disconnect
+  login: Login
+  register: Register
+  admin: Admin
+
+presentations:
+  nbversions: 'one version|%count% versions'
+  nbslides: 'only one slide|%count% slides'
+  nbpictures: "{0}no pictures|{1}only one picture|]1,Inf[%count% pictures"
+  createdAt: 'Presentation created le %createdAt%'
+  updatedAt: 'Last version %updatedAt%'
+  empty: You don't have any presentations yet, do you want to create one ?
+  create: Create a new presentation
+  explore: See templates
+  isTemplate: Template
+  isPublic: Public
+  share:
+    title: Publish the presentation
+    title.details: Publish the presentation generates a public link allowing everyone with it to view and fork your presentation
+    input: Public URL for the presentation
+    delete: Delete the public link
+    delete.details: If you delete the public link for this presentation, it will no longer be possible to access it through this link.
+
+security:
+  login:
+    register: Register
+    submit: Login
+    forgot_password: Forgot password ?
+
+profile:
+  edit: Edit account details
+  delete: Delete my account
+  edit.cancel: Cancel edition
+
+config:
+  page_title: Configuration
+  tab_menu:
+    settings: Settings
+    user_info: User informations
+    password: Password
+  form_settings:
+    language_label: Language
+  form:
+    save: Save
+
+English: English
+Français: French
+
+version:
+  title: Version
+  lastnotdelete: You can't delete the last version
+  delete: Delete this version
+  restore: Restore this version (creates a new version)
+  download: Download this version
+  purge: Delete all previous versions
+
+errors.default: Error
+info:
+  default: Information
+  version:
+    restaured:
+      title: Version restored
+      desc: A new corresponding version has been created
+
+templates:
+  title: Template
+  form:
+    maketemplate: Make this presentation a template
+    maketemplate.tooltip: This presentation will be accessible as a base for other presentations inside « Your templates »
+    makepublic: Make this template public
+    makepublic.tooltip: This presentation will be accessible as a base for other presentations for everybody.
+  fork:
+    presentationtitle: Title for the new presentation
+    presentationtitle.short: Title
+    newpresentation: New presentation
+    newpresentation.desc: You will create a new presentation based on this template
+  mine: My templates (private)
+  public: Public templates
+  published: My published templates
+  author: published by author
+  empty: You have no templates
+  publicempty: No one published templates yet
+
+flashes.user.notice.added: User %username% added
+flashes.user.notice.updated: User %username% updated
+flashes.user.notice.deleted: User %username% deleted
+
+preview:
+  needlogin: You will need to login to edit this presentation
+
+pictures:
+  title: Pictures
+  desc: This is the list of all the pictures that you've uploaded through your presentations. Note that the pictures associated to a presentation are deleted with it. Deleting pictures here will remove them from your presentations.
+  message:
+    deleted: The picture was deleted
+  empty: You didn't send any pictures yet
+
+# Admin stuff
+
+user:
+  manage:
+    field:
+      last_login: Last connection
+      email: Email
+      username: Username
+    page_title: User management
+    create_new_one: Create a new user
+    edit_action: Edit the user
+    action: Action
+    description: Here you can manage your users (add, edit and delete)
+  page_title: User management
+  edit_user: Edit an exisiting user
+  new_user: Create a new user
+  form:
+    email_label: Email
+    username_label: Username
+    enabled_label: Activated
+    back_to_list: Back to the list
+    delete_confirm: Confirm suppression?
+    delete: Delete the user
+    save: Save
+    password_label: Password
+    repeat_new_password_label: Repeat password

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}Framaslides{% endblock %}</title>
     {% block stylesheets %}
         <link href="{{ asset('strut.bundle.css') }}" rel="stylesheet">
     {% endblock %}
@@ -31,6 +31,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ path('templates') }}">{{ 'menu.templates' | trans }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ path('pictures') }}">{{ 'menu.pictures' | trans }}</a></li>
+                <li class="nav-item"><a class="nav-link glyphicon glyphicon-cog" title="{{ 'config.page_title' | trans }}" href="{{ path('config') }}"></a></li>
                 <li class="nav-item"><a class="nav-link glyphicon glyphicon-user" href="{{ path('fos_user_profile_show') }}">{{ app.user }}</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item"><a class="nav-link" href="{{ path('user_index') }}">{{ 'menu.admin' | trans }}</a></li>

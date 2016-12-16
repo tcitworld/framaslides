@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Form;
+namespace Strut\StrutBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

@@ -7,14 +7,22 @@
 {% block content %}
 <div class="container ombre">
     <div class="row">
+        {% if presentations.currentPage == 1 %}
+        <div class="col-xs-12 col-sm-4">
+            <div class="card thumbnail" style="min-height: 133px;">
+                <h4 style="text-align: center;">{{ 'presentations.create' | trans }}</h4>
+                <a href="{{ path('app') }}"><span class="glyphicon glyphicon-plus no-presentations-message" style="font-size: 70px;"></span></a>
+            </div>
+        </div>
+        {% endif %}
         {% for presentation in presentations %}
             <div class="col-xs-12 col-sm-4">
                 <div class="card thumbnail" data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
                     <div class="card-block">
                         <div class="media">
                             <div class="media-body">
-                                <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span></h4>
-                                <p><span class="label label-default versions">{{ 'presentations.nbversions' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
+                                <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span> <span class="edit-title small glyphicon glyphicon-edit pointer"></span></h4>
+                                <p><span class="label label-default versions pointer">{{ 'presentations.nbversions' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
                                 <div class="infoBlock">
                                     <div class="infos">
                                         <small><span class="glyphicon glyphicon-time" title="Date de création"></span> {{ presentation.createdAt | date("d/m/Y") }}</small><br>
@@ -51,7 +59,13 @@
             {{ pagerfanta(presentations, 'twitter_bootstrap3', {'proximity': 1}) }}
         {% endif %}
     </div>
-    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">{{ 'presentations.empty' | trans }} <a href="{{ path('app') }}">{{ 'presentations.create' | trans }}</a></div>
+    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">
+        <p>{{ 'presentations.empty' | trans }}</p>
+        <p>
+            <a class="btn btn-primary" href="{{ path('app') }}">{{ 'presentations.create' | trans }}</a>
+            <a class="btn btn-default" href="{{ path('templates-public') }}">{{ 'presentations.explore' | trans }}</a>
+        </p>
+    </div>
 </div>
 {% include 'default/modals/template.html.twig' %}
 {% include 'default/modals/versions.html.twig' %}

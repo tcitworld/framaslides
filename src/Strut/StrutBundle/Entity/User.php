@@ -3,11 +3,9 @@
 namespace Strut\StrutBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Doctrine\UserManager;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
-use Strut\StrutBundle\Entity\Presentation;
 
 /**
  * @ORM\Entity
@@ -44,14 +42,14 @@ class User extends BaseUser
     protected $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="Strut\StrutBundle\Entity\Presentation", mappedBy="user", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Presentation", mappedBy="user", cascade={"remove"})
      */
     protected $presentations;
 
     /**
      * @var Config
      *
-     * @ORM\OneToMany(targetEntity="Strut\StrutBundle\Entity\Config", mappedBy="user", cascade={"remove"})
+     * @ORM\OneToOne(targetEntity="Config", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $config;
 
@@ -61,6 +59,7 @@ class User extends BaseUser
         $this->presentations = new ArrayCollection();
         $this->timestamps();
         $this->roles = ['ROLE_USER'];
+        $this->config = new Config($this);
     }
 
     /**
@@ -117,7 +116,7 @@ class User extends BaseUser
     }
 
     /**
-     * @param \Strut\StrutBundle\Entity\Presentation $presentation
+     * @param Presentation $presentation
      * @return User
      */
     public function addPresentation(Presentation $presentation): User
@@ -173,7 +172,7 @@ class User extends BaseUser
      *
      * @return Config
      */
-    public function getConfig(): Config
+    public function getConfig()
     {
         return $this->config;
     }

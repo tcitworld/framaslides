@@ -19,6 +19,7 @@ presentations:
   updatedAt: 'Dernière version %updatedAt%'
   empty: "Vous n'avez pas encore de présentations, voulez-vous en créer une ?"
   create: Créer une nouvelle présentation
+  explore: Voir les modèles
   isTemplate: Modèle
   isPublic: Public
   share:
@@ -39,12 +40,27 @@ profile:
   delete: 'Supprimer mon compte'
   edit.cancel: "Annuler l'édition"
 
+config:
+  page_title: Configuration
+  tab_menu:
+    settings: Paramètres
+    user_info: Informations utilisateur
+    password: Mot de passe
+  form_settings:
+    language_label: Langue
+  form:
+    save: Sauvegarder
+
+English: Anglais
+Français: Français
+
 version:
   title: Version
   lastnotdelete: La dernière version n'est pas supprimable.
   delete: Supprimer cette version
   restore: Restaurer cette version (crée une nouvelle version)
   download: Télécharger cette version
+  purge: Supprimer toutes les anciennes versions
 
 errors.default: Erreur
 info:
@@ -70,6 +86,8 @@ templates:
   public: "Modèles publics"
   published: "Mes modèles publiés"
   author: "publié par author"
+  empty: Vous n'avez aucun modèle
+  publicempty: Personne n'a encore publié de modèle
 
 flashes.user.notice.added: Utilisateur %username% ajouté
 flashes.user.notice.updated: Utilisateur %username% mis à jour
@@ -83,6 +101,7 @@ pictures:
   desc: Voici toutes les images que vous avez uploadées sur vos présentations. Notez que les images associées à une présentation sont supprimées en même temps que la présentation. Supprimer des images ici les enlève de vos présentations.
   message:
     deleted: L'image a été supprimée
+  empty: Vous n'avez encore envoyé aucune image
 
 # Admin stuff
 

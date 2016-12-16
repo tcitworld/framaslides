@@ -1,0 +1,9 @@
+services:
+
+    strut.form.type.config:
+          class: Strut\StrutBundle\Form\Type\ConfigType
+          arguments:
+              - "%strut.languages%"
+          tags:
+              - { name: form.type }
+

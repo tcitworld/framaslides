@@ -1,0 +1,131 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ 'config.page_title'|trans }}{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="col-md-12">
+            <div class="row">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#set1" aria-controls="home" role="tab" data-toggle="tab">{{ 'config.tab_menu.settings'|trans }}</a></li>
+                    {#
+                    <li role="presentation"><a href="#set2" aria-controls="home" role="tab" data-toggle="tab">{{ 'config.tab_menu.user_info'|trans }}</a></li>
+                    <li role="presentation"><a href="#set3" aria-controls="home" role="tab" data-toggle="tab">{{ 'config.tab_menu.password'|trans }}</a></li>#}
+                </ul>
+
+                <div class="tab-content">
+
+                    <div id="set1" class="col-md-6">
+                        {{ form_start(form.config) }}
+                        {{ form_errors(form.config) }}
+
+                        <div class="form-group">
+                            {{ form_label(form.config.language) }}
+                            {{ form_errors(form.config.language) }}
+                            {{ form_widget(form.config.language) }}
+                        </div>
+                        {{ form_widget(form.config.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                        {{ form_rest(form.config) }}
+                        </form>
+                    </div>
+
+                    {#
+                <div id="set3" class="col s12">
+                    {{ form_start(form.user) }}
+                    {{ form_errors(form.user) }}
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_label(form.user.name) }}
+                            {{ form_errors(form.user.name) }}
+                            {{ form_widget(form.user.name) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_label(form.user.email) }}
+                            {{ form_errors(form.user.email) }}
+                            {{ form_widget(form.user.email) }}
+                        </div>
+                    </div>
+
+                    {{ form_widget(form.user.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                    {{ form_widget(form.user._token) }}
+                    </form>
+
+                    <br /><hr /><br />
+
+                    <div class="row">
+                        <h5>{{ 'config.reset.title'|trans }}</h5>
+                        <p>{{ 'config.reset.description'|trans }}</p>
+                        <a href="{{ path('config_reset', { type: 'annotations'}) }}" onclick="return confirm('{{ 'config.reset.confirm'|trans|escape('js') }}')" class="waves-effect waves-light btn red">
+                            {{ 'config.reset.annotations'|trans }}
+                        </a>
+                        <a href="{{ path('config_reset', { type: 'tags'}) }}" onclick="return confirm('{{ 'config.reset.confirm'|trans|escape('js') }}')" class="waves-effect waves-light btn red">
+                            {{ 'config.reset.tags'|trans }}
+                        </a>
+                        <a href="{{ path('config_reset', { type: 'entries'}) }}" onclick="return confirm('{{ 'config.reset.confirm'|trans|escape('js') }}')" class="waves-effect waves-light btn red">
+                            {{ 'config.reset.entries'|trans }}
+                        </a>
+                    </div>
+
+                    {% if enabled_users > 1 %}
+                        <br /><hr /><br />
+
+                        <div class="row">
+                            <h5>{{ 'config.form_user.delete.title'|trans }}</h5>
+                            <p>{{ 'config.form_user.delete.description'|trans }}</p>
+                            <a href="{{ path('delete_account') }}" onclick="return confirm('{{ 'config.form_user.delete.confirm'|trans|escape('js') }}')" class="waves-effect waves-light btn red delete-account">
+                                {{ 'config.form_user.delete.button'|trans }}
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div id="set4" class="col s12">
+                    {{ form_start(form.pwd) }}
+                    {{ form_errors(form.pwd) }}
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ 'config.form_password.description'|trans }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_label(form.pwd.old_password) }}
+                            {{ form_errors(form.pwd.old_password) }}
+                            {{ form_widget(form.pwd.old_password) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_label(form.pwd.new_password.first) }}
+                            {{ form_errors(form.pwd.new_password.first) }}
+                            {{ form_widget(form.pwd.new_password.first) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field col s12">
+                            {{ form_label(form.pwd.new_password.second) }}
+                            {{ form_errors(form.pwd.new_password.second) }}
+                            {{ form_widget(form.pwd.new_password.second) }}
+                        </div>
+                    </div>
+
+                    {{ form_widget(form.pwd.save, {'attr': {'class': 'btn waves-effect waves-light'}}) }}
+                    {{ form_rest(form.pwd) }}
+                    </form>
+                </div>
+            </div>
+            #}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

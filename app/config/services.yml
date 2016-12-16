@@ -38,3 +38,23 @@ services:
               - "@translator.default"
           tags:
               - { name: twig.extension }
+
+  strut.locale_listener:
+      class: Strut\StrutBundle\Event\Listener\LocaleListener
+      arguments: ["%kernel.default_locale%"]
+      tags:
+          - { name: kernel.event_subscriber }
+
+  strut.user_locale_listener:
+      class: Strut\StrutBundle\Event\Listener\UserLocaleListener
+      arguments: ["@session"]
+      tags:
+          - { name: kernel.event_listener, event: security.interactive_login, method: onInteractiveLogin }
+
+  strut.listener.create_config:
+      class: Strut\StrutBundle\Event\Listener\CreateConfigListener
+      arguments:
+          - "@doctrine.orm.entity_manager"
+          - "%strut.language%"
+      tags:
+          - { name: kernel.event_subscriber }

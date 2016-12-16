@@ -3,6 +3,7 @@
 namespace Strut\StrutBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\UserInterface;
 
 /**
  * @ORM\Entity
@@ -20,7 +21,7 @@ class Config
     /**
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="config")
+     * @ORM\OneToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="config")
      */
     private $user;
 
@@ -31,7 +32,7 @@ class Config
      */
     private $lang;
 
-    public function __construct(User $user)
+    public function __construct(UserInterface $user)
     {
         $this->user = $user;
         $this->lang = 'fr';
@@ -40,7 +41,7 @@ class Config
     /**
      * @return string
      */
-    public function getLang(): string
+    public function getLanguage(): string
     {
         return $this->lang;
     }
@@ -48,7 +49,7 @@ class Config
     /**
      * @param string $lang
      */
-    public function setLang(string $lang)
+    public function setLanguage(string $lang)
     {
         $this->lang = $lang;
     }

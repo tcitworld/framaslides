@@ -2,7 +2,6 @@
 
 namespace Strut\StrutBundle\Controller;
 
-use Strut\StrutBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,26 +10,26 @@ use Symfony\Component\HttpFoundation\Request;
 class UserController extends Controller {
 
     /**
-     * @route("/user-locale", name="get-user-locale")
+     * @Route("/user-locale", name="get-user-locale")
      * @return JsonResponse
      */
-    public function getUserLocale() {
+    public function getUserLocaleAction() {
         if ($this->getUser()) {
-            $lang = $this->getUser()->getConfig()->getLang();
+            $lang = $this->getUser()->getConfig()->getLanguage();
             return new JsonResponse($lang);
         }
         return new JsonResponse([], 401);
     }
 
     /**
-     * @route("/user-locale/", name="set-user-locale")
+     * @Route("/user-locale/", name="set-user-locale")
      * @param Request $request
      * @return JsonResponse
      */
-    public function setUserLocale(Request $request) {
+    public function setUserLocaleAction(Request $request) {
         if ($this->getUser()) {
             $lang = $request->get('lang');
-            $this->getUser()->getConfig()->setLang($lang);
+            $this->getUser()->getConfig()->setLanguage($lang);
             return new JsonResponse($lang);
         }
         return new JsonResponse([], 401);

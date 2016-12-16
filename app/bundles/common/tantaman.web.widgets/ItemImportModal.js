@@ -1,8 +1,8 @@
 /*
 @author Matt Crinklaw-Vogt
 */
-define(['libs/backbone', 'libs/lutim', 'libs/uploadPicture'],
-function(Backbone, Lutim, UploadPicture) {
+define(['libs/backbone', 'libs/lutim', 'libs/uploadPicture', 'handlebars'],
+function(Backbone, Lutim, UploadPicture, Handlebars) {
 	var modalCache = {};
 	var reg = /[a-z]+:/;
 	// With a slash at the end !
@@ -20,7 +20,15 @@ function(Backbone, Lutim, UploadPicture) {
 		'https:': true
 	};
 
-	var Modal = Backbone.View.extend({
+  Handlebars.registerHelper('if_eq', function(a, b, opts) {
+    if(a === b) // Or === depending on your needs
+      return opts.fn(this);
+    else
+      return opts.inverse(this);
+  });
+
+
+  var Modal = Backbone.View.extend({
 		className: "itemGrabber modal hide",
 		events: {
 			"click .ok": "okClicked",
@@ -136,9 +144,6 @@ function(Backbone, Lutim, UploadPicture) {
 			this.$el.modal();
 			this.$el.modal("hide");
 			this.item = this.$el.find(this.options.tag)[0];
-			if (this.options.tag === "video") {
-				this.$el.find(".modal-body").prepend("<div class='alert alert-success'>Supporte <strong>webm & YouTube</strong>.<br/>Try out: http://www.youtube.com/watch?v=vHUsdkmr-SM</div>");
-			}
 			if (!this.options.ignoreErrors) {
 				this.item.onerror = function() {
 					return _this._itemLoadError();

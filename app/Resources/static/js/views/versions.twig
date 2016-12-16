@@ -42,4 +42,7 @@
             {% endif %}
         </ul>
     </nav>
+    {% if versions | length > 1 %}
+        <div><button type="button" class="btn btn-warning" id="purgeVersions">Supprimer toutes les anciennes versions</button></div>
+    {% endif %}
 </div>

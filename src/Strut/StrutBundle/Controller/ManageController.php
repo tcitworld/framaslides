@@ -8,6 +8,7 @@ use FOS\UserBundle\FOSUserEvents;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
+use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -15,8 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Strut\StrutBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
-
-//use Strut\StrutBundle\Entity\Config;
 
 /**
  * User controller.
@@ -31,7 +30,7 @@ class ManageController extends Controller
      * @param $page
      * @return Response
      */
-    public function indexAction($page)
+    public function indexAction(int $page): Response
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -39,7 +38,7 @@ class ManageController extends Controller
 
         $pagerAdapter = new ArrayAdapter($users);
         $pagerFanta = new Pagerfanta($pagerAdapter);
-        $pagerFanta->setMaxPerPage(2);
+        $pagerFanta->setMaxPerPage(10);
 
         try {
             $pagerFanta->setCurrentPage($page);
@@ -62,7 +61,7 @@ class ManageController extends Controller
      * @param Request $request
      * @return RedirectResponse|Response
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request): Response
     {
         /** @var UserManager $userManager */
         $userManager = $this->get('fos_user.user_manager');
@@ -70,7 +69,7 @@ class ManageController extends Controller
         $user = $userManager->createUser();
         // enable created user by default
 
-        $form = $this->createForm('Strut\StrutBundle\Form\NewUserType', $user, [
+        $form = $this->createForm('Strut\StrutBundle\Form\Type\NewUserType', $user, [
             'validation_groups' => ['Profile'],
         ]);
         $form->handleRequest($request);
@@ -105,10 +104,10 @@ class ManageController extends Controller
      * @param User $user
      * @return RedirectResponse|Response
      */
-    public function editAction(Request $request, User $user)
+    public function editAction(Request $request, User $user): Response
     {
         $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('Strut\StrutBundle\Form\UserType', $user);
+        $editForm = $this->createForm('Strut\StrutBundle\Form\Type\UserType', $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -140,7 +139,7 @@ class ManageController extends Controller
      * @param User $user
      * @return RedirectResponse
      */
-    public function deleteAction(Request $request, User $user)
+    public function deleteAction(Request $request, User $user): RedirectResponse
     {
         $form = $this->createDeleteForm($user);
         $form->handleRequest($request);
@@ -164,9 +163,9 @@ class ManageController extends Controller
      *
      * @param User $user The User entity
      *
-     * @return \Symfony\Component\Form\Form The form
+     * @return Form The form
      */
-    private function createDeleteForm(User $user)
+    private function createDeleteForm(User $user): Form
     {
         return $this->createFormBuilder()
             ->setAction($this->generateUrl('user_delete', array('id' => $user->getId())))

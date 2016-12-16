@@ -6,23 +6,19 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Strut\StrutBundle\Entity\Picture;
-use Strut\StrutBundle\Form\Type\PictureType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\File\MimeType\MimeTypeExtensionGuesser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class PictureController extends Controller
 {
     /**
-     * @route("/picture", name="new-picture")
+     * @Route("/picture", name="new-picture")
      * @param Request $request
      * @return JsonResponse
      */
@@ -59,7 +55,7 @@ class PictureController extends Controller
     }
 
     /**
-     * @route("/picture/{uuid}", name="show-picture")
+     * @Route("/picture/{uuid}", name="show-picture")
      * @param Picture $picture
      * @return BinaryFileResponse
      */
@@ -68,7 +64,7 @@ class PictureController extends Controller
     }
 
     /**
-     * @route("pictures/{page}", name="pictures", defaults={"page" = "1"})
+     * @Route("pictures/{page}", name="pictures", defaults={"page" = "1"})
      * @param int $page
      * @return RedirectResponse|Response
      */
@@ -96,7 +92,7 @@ class PictureController extends Controller
     }
 
     /**
-     * @route("delete-picture/{uuid}", name="delete-picture")
+     * @Route("delete-picture/{uuid}", name="delete-picture")
      * @param Picture $picture
      * @return RedirectResponse
      */

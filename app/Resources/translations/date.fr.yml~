@@ -1,6 +1,0 @@
-diff.ago.year: 'Il y a %count% année|Il y a %count% années'
-diff.ago.month: 'Il y a %count% mois|Il y a %count% mois'
-diff.ago.day: 'Il y a %count% jour|Il y a %count% jours'
-diff.ago.hour: 'Il y a %count% heure|Il y a %count% heures'
-diff.ago.minute: 'Il y a %count% minute|Il y a %count% minutes'
-diff.ago.second: 'Il y a %count% seconde|Il y a %count% secondes'

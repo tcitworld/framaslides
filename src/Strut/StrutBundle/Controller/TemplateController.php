@@ -9,13 +9,12 @@ use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class TemplateController extends Controller {
 
     /**
-     * @route("/templates", name="templates")
+     * @Route("/templates", name="templates")
      *
      */
     public function showTemplatesAction() {
@@ -25,7 +24,7 @@ class TemplateController extends Controller {
     }
 
     /**
-     * @route("/make-template/{id}", name="make-template", requirements={"id" = "\d+"})
+     * @Route("/make-template/{id}", name="make-template", requirements={"id" = "\d+"})
      * @param Request $request
      * @param Presentation $presentation
      * @return JsonResponse
@@ -36,8 +35,8 @@ class TemplateController extends Controller {
         $em = $this->getDoctrine()->getManager();
         $template = $request->get('template', false) === 'true';
         $public = $request->get('public', false) === 'true';
-        $presentation->setIsTemplate($template);
-        $presentation->setIsPublic($public);
+        $presentation->setTemplate($template);
+        $presentation->setPublic($public);
         $em->flush();
 
         $json = $this->get('jms_serializer')->serialize($presentation, 'json');
@@ -46,7 +45,7 @@ class TemplateController extends Controller {
     }
 
     /**
-     * @route("/templates-public", name="templates-public")
+     * @Route("/templates-public", name="templates-public")
      */
     public function showPublicTemplatesAction() {
         $repository = $this->get('strut.presentation_repository');
@@ -55,7 +54,7 @@ class TemplateController extends Controller {
     }
 
     /**
-     * @route("/templates-published", name="templates-published")
+     * @Route("/templates-published", name="templates-published")
      */
     public function showPublishedTemplatesAction() {
         $repository = $this->get('strut.presentation_repository');
@@ -64,7 +63,7 @@ class TemplateController extends Controller {
     }
 
     /**
-     * @route("create-from-template/{id}", name="create-from-template")
+     * @Route("create-from-template/{id}", name="create-from-template")
      * @param Request $request
      * @param Presentation $presentation
      * @return JsonResponse
@@ -72,11 +71,11 @@ class TemplateController extends Controller {
     public function createCopyFromTemplateAction(Request $request, Presentation $presentation) {
         $logger = $this->get('logger');
 
-        if (!$presentation->getIsTemplate() && !$request->request->has('export')) {
+        if (!$presentation->isTemplate() && !$request->request->has('export')) {
             $logger->warn('User ' . $this->getUser()->getName() . ' tried to fork a presentation which is not a template');
             throw new InvalidArgumentException();
         }
-        if (!$presentation->getIsPublic() && $presentation->getUser() !== $this->getUser()) {
+        if (!$presentation->isPublic() && $presentation->getUser() !== $this->getUser()) {
             $logger->warn('User ' . $this->getUser()->getName() . ' tried to fork a presentation which is not public and not his own');
             throw new InvalidArgumentException();
         }

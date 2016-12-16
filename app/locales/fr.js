@@ -34,5 +34,9 @@ define({
 	},
 	background: 'Fond',
 	surface: 'Surface',
-  return: "Retourner aux présentations"
+  return: 'Retourner aux présentations',
+  picture_incorrect: "L'URL de l'image entrée semble être incorrecte",
+  preview: 'Aperçu',
+  upload: 'Téléverser',
+  video_info: 'Supporte <strong>webm & YouTube</strong>.<br/>Essayez par exemple&nbsp;: http://www.youtube.com/watch?v=vHUsdkmr-SM'
 });

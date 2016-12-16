@@ -18,4 +18,23 @@ class UsersRepository extends EntityRepository
             ->orderBy('u.createdAt', 'desc');
     }
 
+    public function findAll(): array
+    {
+        return $this->findBy([], ['createdAt' => 'desc']);
+    }
+
+    /**
+     * Count how many users are enabled.
+     *
+     * @return int
+     */
+    public function getSumEnabledUsers(): int
+    {
+        return $this->createQueryBuilder('u')
+            ->select('count(u)')
+            ->andWhere('u.enabled = true')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
 }

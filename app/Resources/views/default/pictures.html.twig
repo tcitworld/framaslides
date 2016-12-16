@@ -21,6 +21,7 @@
             {{ pagerfanta(pictures, 'twitter_bootstrap3', {'proximity': 1}) }}
         {% endif %}
     </div>
+    <div class="alert alert-warning" style="{{ pictures | length > 0 ? 'display: none;' : '' }}">{{ 'pictures.empty' | trans }}</div>
 </div>
 {% endblock %}
 

@@ -33,5 +33,10 @@ define({
 		click_below: 'Click below to download'
 	},
 	background: 'Background',
-	surface: 'Surface'
+	surface: 'Surface',
+  return: 'Back to the presentations',
+  picture_incorrect: "The entered picture URL appears to be incorrect",
+  preview: 'Preview',
+  upload: 'Upload',
+  video_info: 'Supports <strong>webm & YouTube</strong>.<br/>Try: http://www.youtube.com/watch?v=vHUsdkmr-SM'
 });

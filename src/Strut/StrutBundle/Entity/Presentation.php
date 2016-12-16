@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Strut\StrutBundle\Entity\Version;
-use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\Exclude;
 
 /**
@@ -45,6 +44,7 @@ class Presentation
 
     /**
      * @var PersistentCollection
+     * @ORM\OrderBy({"updatedAt" = "DESC"})
      * @ORM\OneToMany(targetEntity="Version", mappedBy="presentation", cascade={"remove"})
      */
     private $versions;
@@ -267,7 +267,7 @@ class Presentation
     /**
      * @return boolean
      */
-    public function getIsPublic(): bool
+    public function isPublic(): bool
     {
         return $this->isPublic ?? false;
     }
@@ -275,7 +275,7 @@ class Presentation
     /**
      * @param boolean $isPublic
      */
-    public function setIsPublic(bool $isPublic)
+    public function setPublic(bool $isPublic)
     {
         $this->isPublic = $isPublic;
     }
@@ -293,7 +293,7 @@ class Presentation
     /**
      * @return boolean
      */
-    public function getIsTemplate(): bool
+    public function isTemplate(): bool
     {
         return $this->isTemplate ?? false;
     }
@@ -301,7 +301,7 @@ class Presentation
     /**
      * @param boolean $isTemplate
      */
-    public function setIsTemplate(bool $isTemplate)
+    public function setTemplate(bool $isTemplate)
     {
         $this->isTemplate = $isTemplate;
     }

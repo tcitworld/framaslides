@@ -3,6 +3,7 @@
 namespace Strut\StrutBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Strut\StrutBundle\Entity\User;
 
 /**
@@ -13,7 +14,8 @@ use Strut\StrutBundle\Entity\User;
  */
 class PictureRepository extends EntityRepository
 {
-    public function getPictures(User $user) {
+    public function getPictures(User $user): QueryBuilder
+    {
         return $this->createQueryBuilder('picture')
             ->leftJoin('picture.presentation', 'presentation')
             ->leftJoin('presentation.user', 'u')

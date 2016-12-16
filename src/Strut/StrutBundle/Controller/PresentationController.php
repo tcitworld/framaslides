@@ -9,20 +9,17 @@
 namespace Strut\StrutBundle\Controller;
 
 
-use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Patchwork\Utf8;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -40,7 +37,7 @@ class PresentationController extends Controller
 
         $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
-        $pagerFanta->setMaxPerPage(9);
+        $pagerFanta->setMaxPerPage(6);
 
         try {
             $pagerFanta->setCurrentPage($page);
@@ -54,11 +51,12 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/versions/{presentation}/{page}", name="versions", defaults={"page" = "1"})
+     * @Route("/versions/{presentation}/{page}", name="versions", defaults={"page" = "1"})
      * @param Presentation $presentation
-     * @return JsonResponse
+     * @param int $page
+     * @return JsonResponse|RedirectResponse
      */
-    public function getPresentationVersions(Presentation $presentation, int $page) {
+    public function getPresentationVersionsAction(Presentation $presentation, int $page) {
         $versions = $presentation->getVersions();
 
         $pagerAdapter = new DoctrineCollectionAdapter($versions);
@@ -94,10 +92,10 @@ class PresentationController extends Controller
     /** API Stuff */
 
     /**
-     * @route("/presentations-json", name="presentations-json")
+     * @Route("/presentations-json", name="presentations-json")
      * @return JSONResponse
      */
-    public function getPresentationsJson() {
+    public function getPresentationsJsonAction() {
         $repository = $this->get('strut.presentation_repository');
         $presentations = $repository->findByUser($this->getUser());
         $json = $this->get('jms_serializer')->serialize($presentations, 'json');
@@ -105,7 +103,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/presentation/{presentationTitle}", name="presentation")
+     * @Route("/presentation/{presentationTitle}", name="presentation")
      * @param $presentationTitle
      * @return JsonResponse
      */
@@ -123,11 +121,11 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/delete-presentation/{presentationTitle}", name="delete-presentation")
+     * @Route("/delete-presentation/{presentationTitle}", name="delete-presentation")
      * @param $presentationTitle
      * @return JsonResponse
      */
-    public function deletePresentation($presentationTitle) {
+    public function deletePresentationAction($presentationTitle) {
         $presentation = $this->get('strut.presentation_repository')->findOneBy([
             'title' => $presentationTitle,
             'user' => $this->getUser(),
@@ -144,11 +142,11 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/delete-version/{version}", name="delete-version")
+     * @Route("/delete-version/{version}", name="delete-version")
      * @param Version $version
      * @return JsonResponse
      */
-    public function deleteVersion(Version $version) {
+    public function deleteVersionAction(Version $version) {
         $this->checkUserVersionAction($version);
         $em = $this->getDoctrine()->getManager();
         $version->getPresentation()->removeVersion($version);
@@ -159,11 +157,11 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/restore-version/{version}", name="restore-version")
+     * @Route("/restore-version/{version}", name="restore-version")
      * @param Version $version
      * @return JsonResponse
      */
-    public function restoreVersion(Version $version) {
+    public function restoreVersionAction(Version $version) {
         $this->checkUserVersionAction($version);
         $em = $this->getDoctrine()->getManager();
 
@@ -184,7 +182,26 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/new-presentation", name="new-presentation")
+     * @Route("purge-versions/{presentation}", name="purge-version")
+     * @param Presentation $presentation
+     * @return JsonResponse
+     */
+    public function purgeVersionsAction(Presentation $presentation) {
+        $this->checkUserPresentationAction($presentation);
+        $em = $this->getDoctrine()->getManager();
+        $versions = $presentation->getVersions();
+        foreach ($versions as $version) {
+            if ($version != $versions->first()) {
+                $em->remove($version);
+            }
+        }
+        $em->flush();
+        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
+        return (new JsonResponse())->setJson($json);
+    }
+
+    /**
+     * @Route("/new-presentation", name="new-presentation")
      * @param Request $request
      * @return JsonResponse
      */
@@ -237,13 +254,22 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/save-preview/{title}", name="save-preview")
+     * @Route("/save-preview/{title}", name="save-preview")
      * @param Request $request
-     * @param Presentation $presentation
+     * @param string $title
      * @return JsonResponse
      */
-    public function savePreview(Request $request, Presentation $presentation) {
-        //$this->checkUserAction($presentation);
+    public function savePreviewAction(Request $request, string $title) {
+        /** @var Presentation $presentation */
+        $presentation = $this->get('strut.presentation_repository')->findOneBy(
+            [
+                'user' => $this->getUser(),
+                'title' => $title,
+            ]);
+        if (!$presentation) {
+            return new JsonResponse([], 404);
+        }
+
         $previewData = $request->get('previewData');
         $previewConfig = $request->get('previewConfig');
 
@@ -256,7 +282,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/preview/{title}/{type}/", name="preview")
+     * @Route("/preview/{title}/{type}/", name="preview")
      * @param Presentation $presentation
      * @param $type
      * @return Response
@@ -285,14 +311,13 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/export-presentation/{presentation}", name="export-presentation")
+     * @Route("/export-presentation/{presentation}", name="export-presentation")
      * @param Presentation $presentation
      * @return Response
      */
-    public function exportPresentation(Presentation $presentation) {
+    public function exportPresentationAction(Presentation $presentation) {
         $response = new Response($presentation->getLastVersion()->getContent());
 
-        // $response->headers->set('Content-Type', 'text/plain');
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             Utf8::toAscii($presentation->getTitle()) . '.json'
@@ -303,14 +328,13 @@ class PresentationController extends Controller
     }
 
     /**
-     * @route("/export-version/{version}", name="export-version")
+     * @Route("/export-version/{version}", name="export-version")
      * @param Version $version
      * @return Response
      */
-    public function exportVersion(Version $version) {
+    public function exportVersionAction(Version $version) {
         $response = new Response($version->getContent());
 
-        // $response->headers->set('Content-Type', 'text/plain');
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             Utf8::toAscii($version->getPresentation()->getTitle()) . '-' . $version->getUpdatedAt()->format('d-m-Y H:i:s') . '.json'
@@ -333,8 +357,6 @@ class PresentationController extends Controller
         }
 
         if ($this->getUser()->getId() != $presentation->getUser()->getId()) {
-            var_dump($this->getUser()->getId());
-            var_dump($presentation->getUser()->getId());
             $this->get('logger')->info('user ' . $this->getUser()->getName() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getName());
             throw $this->createAccessDeniedException('You can not access this presentation.');
         }
@@ -408,7 +430,6 @@ class PresentationController extends Controller
      * @param Presentation $presentation
      *
      * @Route("/share/{uuid}", requirements={"uuid" = ".+"}, name="share_presentation")
-     * @Cache(maxage="25200", smaxage="25200", public=true)
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */

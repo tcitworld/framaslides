@@ -188,11 +188,25 @@ $(() => {
     });
   });
 
+  body.on('click', '#purgeVersions', () => {
+    const confirm = window.confirm('Voulez-vous vraiment supprimer toutes les anciennes versions ?');
+    if (confirm) {
+      $.ajax({
+        url: `purge-versions/${$('#versionModal').attr('data-presentation')}`,
+        success: () => {
+          $('#versionModal').modal('hide');
+        },
+      });
+    }
+  });
+
   /**
    * Presentation title edition
    */
-  $('.card').on('click', '.card-title .title', () => {
-    $(this).attr('contenteditable', 'true');
+  body.on('click', '.edit-title', (e) => {
+    $(e.target).parent().find('.title').attr('contenteditable', 'true');
+    $(e.target).removeClass('glyphicon-edit');
+    $(e.target).addClass('glyphicon glyphicon-ok');
   });
 
   /**
