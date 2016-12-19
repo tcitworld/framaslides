@@ -59,7 +59,6 @@ class User extends BaseUser
         $this->presentations = new ArrayCollection();
         $this->timestamps();
         $this->roles = ['ROLE_USER'];
-        $this->config = new Config($this);
     }
 
     /**
