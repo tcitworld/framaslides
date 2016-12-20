@@ -277,7 +277,17 @@ module.exports = function (grunt) {
                             'scripts/**',
                             'preview_export/**'
                         ]
-                }]
+                },
+                {
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= yeoman.app %>',
+                    dest: 'web/scripts/libs/',
+                    src: [
+                        'scripts/libs/require.js',
+                    ]
+                }
+                ]
             }
         },
         bower: {

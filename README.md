@@ -20,7 +20,7 @@ An online presentation editor service [https://framaslides.org](https://framasli
 
 ### Dependencies
 * `npm i`
-* `composer up` You'll need to fill in your database informations
+* `composer up` You'll need to do a `grunt build` first then fill in your database informations
 
 ### Compilation and bundling
 * `grunt build` (for Strut)
@@ -28,7 +28,7 @@ An online presentation editor service [https://framaslides.org](https://framasli
 
 ### Database installation
 * `bin/console doctrine:schema:create`
-* `doctrine:database:create`
+* `bin/console doctrine:database:create` (If you don't already have created a database. The user will need rights to create a new database)
 
 ### Virtual Host
 #### Nginx
