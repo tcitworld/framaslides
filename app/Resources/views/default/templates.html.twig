@@ -6,8 +6,8 @@
     <ul class="nav nav-pills">
         {% set currentRoute = app.request.attributes.get('_route') %}
         <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.mine' | trans }}</a></li>
-        <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
         <li role="presentation" {% if currentRoute == 'templates-published' %}class="active"{% endif %}><a href="{{ path('templates-published') }}">{{ 'templates.published' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
     </ul>
     <div class="row">
     {% for presentation in templates %}
