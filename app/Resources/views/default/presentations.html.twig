@@ -5,9 +5,21 @@
 {% endblock stylesheets %}
 
 {% block content %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+{% if currentRoute == 'homepage' %}
+    {% set currentRoute = 'presentations' %}
+{% elseif currentRoute == 'search' %}
+    {% set currentRoute = app.request.query.get('currentRoute') %}
+{% endif %}
 <div class="container ombre">
+    <ul class="nav nav-tabs">
+        <li role="presentation" {% if currentRoute == 'presentations' or currentRoute == 'homepage' %}class="active"{% endif %}><a href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.mine' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-published' %}class="active"{% endif %}><a href="{{ path('templates-published') }}">{{ 'templates.published' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
+    </ul>
     <div class="row">
-        {% if presentations.currentPage == 1 %}
+        {% if currentRoute == 'presentations' and presentations.currentPage == 1 and app.request.attributes.get('_route') != 'search' %}
         <div class="col-xs-12 col-sm-4">
             <div class="card thumbnail" style="min-height: 133px;">
                 <h4 style="text-align: center;">{{ 'presentations.create' | trans }}</h4>
@@ -56,14 +68,26 @@
     </div>
     <div class="pull-right">
         {% if presentations.getNbPages > 1 %}
-            {{ pagerfanta(presentations, 'twitter_bootstrap3', {'proximity': 1}) }}
+            {{ pagerfanta(presentations, 'twitter_bootstrap3_translated', {'proximity': 1}) }}
         {% endif %}
     </div>
     <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">
-        <p>{{ 'presentations.empty' | trans }}</p>
+        <p>
+            {% if app.request.attributes.get('_route') == 'search' %}
+                {{ 'search.empty' | trans({'%term%': app.request.query.get('search_entry')['term'] }) }}
+            {% else %}
+                {% if currentRoute == 'presentations' %}
+                    {{ 'presentations.empty' | trans }}
+                {% elseif currentRoute == 'templates-public' %}
+                    {{ 'templates.publicempty' | trans }}
+                {% elseif currentRoute == 'templates' %}
+                    {{ 'templates.empty' | trans }}
+                {% endif %}
+            {% endif %}
+        </p>
         <p>
             <a class="btn btn-primary" href="{{ path('app') }}">{{ 'presentations.create' | trans }}</a>
-            <a class="btn btn-default" href="{{ path('templates-public') }}">{{ 'presentations.explore' | trans }}</a>
+            {% if currentRoute != 'templates-public' %}<a class="btn btn-default" href="{{ path('templates-public') }}">{{ 'presentations.explore' | trans }}</a>{% endif %}
         </p>
     </div>
 </div>

@@ -17,6 +17,8 @@ use Patchwork\Utf8;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
+use Strut\StrutBundle\Form\Type\SearchEntryType;
+use Strut\StrutBundle\Repository\PresentationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,16 +30,90 @@ class PresentationController extends Controller
 {
     /**
      * @Route("/presentations/{page}", name="presentations", defaults={"page" = "1"})
+     * @param Request $request
      * @param int $page
      * @return Response
      */
-    public function getPresentationsAction(int $page) {
+    public function getPresentationsAction(Request $request, int $page): Response
+    {
+        return $this->showPresentations('all', $request, $page);
+    }
+
+    /**
+     * @Route("/templates", name="templates", defaults={"page" = "1"})
+     * @param Request $request
+     * @param int $page
+     * @return Response
+     */
+    public function getTemplatesAction(Request $request, int $page): Response
+    {
+        return $this->showPresentations('templates', $request, $page);
+    }
+
+    /**
+     * @Route("/templates-public", name="templates-public", defaults={"page" = "1"})
+     * @param Request $request
+     * @param int $page
+     * @return Response
+     */
+    public function showPublicTemplatesAction(Request $request, int $page): Response
+    {
+        return $this->showPresentations('public-templates', $request, $page);
+    }
+
+    /**
+     * @Route("/templates-published", name="templates-published", defaults={"page" = "1"})
+     * @param Request $request
+     * @param int $page
+     * @return Response
+     */
+    public function showPublishedTemplatesAction(Request $request, int $page): Response
+    {
+        return $this->showPresentations('published-templates', $request, $page);
+    }
+
+    /**
+     * @param string $action
+     * @param Request $request
+     * @param int $page
+     * @return RedirectResponse|Response
+     */
+    private function showPresentations(string $action, Request $request, int $page): Response
+    {
         $repository = $this->get('strut.presentation_repository');
-        $presentations = $repository->getBuilderByUser($this->getUser());
+        /** @var PresentationRepository $repository */
+
+        $searchTerm = (isset($request->get('search_entry')['term']) ? $request->get('search_entry')['term'] : '');
+        $currentRoute = (!is_null($request->query->get('currentRoute')) ? $request->query->get('currentRoute') : '');
+
+        switch ($action) {
+            case 'all':
+                $presentations = $repository->getBuilderByUser($this->getUser());
+                break;
+
+            case 'search':
+                $presentations = $repository->getBuilderForSearchByUser($this->getUser(), $searchTerm, $currentRoute);
+                break;
+
+            case 'templates':
+                $presentations = $repository->getBuilderForTemplatesByUser($this->getUser());
+                break;
+
+            case 'public-templates':
+                $presentations = $repository->getBuilderForPublicTemplatesByUser($this->getUser());
+                break;
+
+            case 'published-templates':
+                $presentations = $repository->getBuilderForPublishedTemplatesByUser($this->getUser());
+                break;
+
+            default:
+                throw new \InvalidArgumentException(sprintf('Type "%s" is not implemented.', $action));
+        }
 
         $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
-        $pagerFanta->setMaxPerPage(6);
+        $pagerFanta->setMaxPerPage(3);
 
         try {
             $pagerFanta->setCurrentPage($page);
@@ -47,7 +123,11 @@ class PresentationController extends Controller
             }
         }
 
-        return $this->render(':default:presentations.html.twig', ['presentations' => $pagerFanta, 'currentPage' => $page]);
+        return $this->render(':default:presentations.html.twig', [
+            'presentations' => $pagerFanta,
+            'currentPage' => $page,
+            'searchTerm' => $searchTerm,
+        ]);
     }
 
     /**
@@ -56,7 +136,8 @@ class PresentationController extends Controller
      * @param int $page
      * @return JsonResponse|RedirectResponse
      */
-    public function getPresentationVersionsAction(Presentation $presentation, int $page) {
+    public function getPresentationVersionsAction(Presentation $presentation, int $page): Response
+    {
         $versions = $presentation->getVersions();
 
         $pagerAdapter = new DoctrineCollectionAdapter($versions);
@@ -95,7 +176,8 @@ class PresentationController extends Controller
      * @Route("/presentations-json", name="presentations-json")
      * @return JSONResponse
      */
-    public function getPresentationsJsonAction() {
+    public function getPresentationsJsonAction(): JsonResponse
+    {
         $repository = $this->get('strut.presentation_repository');
         $presentations = $repository->findByUser($this->getUser());
         $json = $this->get('jms_serializer')->serialize($presentations, 'json');
@@ -107,7 +189,8 @@ class PresentationController extends Controller
      * @param $presentationTitle
      * @return JsonResponse
      */
-    public function getPresentationDataAction($presentationTitle) {
+    public function getPresentationDataAction($presentationTitle): JsonResponse
+    {
         $presentation = $this->get('strut.presentation_repository')->findOneBy([
             'title' => $presentationTitle,
             'user' => $this->getUser(),
@@ -125,7 +208,8 @@ class PresentationController extends Controller
      * @param $presentationTitle
      * @return JsonResponse
      */
-    public function deletePresentationAction($presentationTitle) {
+    public function deletePresentationAction($presentationTitle): JsonResponse
+    {
         $presentation = $this->get('strut.presentation_repository')->findOneBy([
             'title' => $presentationTitle,
             'user' => $this->getUser(),
@@ -146,7 +230,8 @@ class PresentationController extends Controller
      * @param Version $version
      * @return JsonResponse
      */
-    public function deleteVersionAction(Version $version) {
+    public function deleteVersionAction(Version $version): JsonResponse
+    {
         $this->checkUserVersionAction($version);
         $em = $this->getDoctrine()->getManager();
         $version->getPresentation()->removeVersion($version);
@@ -161,7 +246,8 @@ class PresentationController extends Controller
      * @param Version $version
      * @return JsonResponse
      */
-    public function restoreVersionAction(Version $version) {
+    public function restoreVersionAction(Version $version): JsonResponse
+    {
         $this->checkUserVersionAction($version);
         $em = $this->getDoctrine()->getManager();
 
@@ -186,7 +272,8 @@ class PresentationController extends Controller
      * @param Presentation $presentation
      * @return JsonResponse
      */
-    public function purgeVersionsAction(Presentation $presentation) {
+    public function purgeVersionsAction(Presentation $presentation): JsonResponse
+    {
         $this->checkUserPresentationAction($presentation);
         $em = $this->getDoctrine()->getManager();
         $versions = $presentation->getVersions();
@@ -205,7 +292,8 @@ class PresentationController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAction(Request $request) {
+    public function saveAction(Request $request): JsonResponse
+    {
         $data = $request->get('data');
         $newEntry = (bool) $request->get('newEntry', 0);
         $name = $request->get('presentation');
@@ -259,7 +347,8 @@ class PresentationController extends Controller
      * @param string $title
      * @return JsonResponse
      */
-    public function savePreviewAction(Request $request, string $title) {
+    public function savePreviewAction(Request $request, string $title): JsonResponse
+    {
         /** @var Presentation $presentation */
         $presentation = $this->get('strut.presentation_repository')->findOneBy(
             [
@@ -287,7 +376,8 @@ class PresentationController extends Controller
      * @param $type
      * @return Response
      */
-    public function previewPresentationAction(Presentation $presentation, $type) {
+    public function previewPresentationAction(Presentation $presentation, $type): Response
+    {
         switch ($type) {
             case 'impress':
                 return $this->render('@Strut/preview_export/impress.html', [
@@ -315,7 +405,8 @@ class PresentationController extends Controller
      * @param Presentation $presentation
      * @return Response
      */
-    public function exportPresentationAction(Presentation $presentation) {
+    public function exportPresentationAction(Presentation $presentation): Response
+    {
         $response = new Response($presentation->getLastVersion()->getContent());
 
         $disposition = $response->headers->makeDisposition(
@@ -332,7 +423,8 @@ class PresentationController extends Controller
      * @param Version $version
      * @return Response
      */
-    public function exportVersionAction(Version $version) {
+    public function exportVersionAction(Version $version): Response
+    {
         $response = new Response($version->getContent());
 
         $disposition = $response->headers->makeDisposition(
@@ -381,9 +473,9 @@ class PresentationController extends Controller
      *
      * @Route("/share/{id}", requirements={"id" = "\d+"}, name="share")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function shareAction(Presentation $presentation)
+    public function shareAction(Presentation $presentation): Response
     {
         $this->checkUserPresentationAction($presentation);
 
@@ -407,9 +499,9 @@ class PresentationController extends Controller
      *
      * @Route("/share/delete/{id}", requirements={"id" = "\d+"}, name="delete_share")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function deleteShareAction(Presentation $presentation)
+    public function deleteShareAction(Presentation $presentation): Response
     {
         $this->checkUserPresentationAction($presentation);
 
@@ -431,12 +523,36 @@ class PresentationController extends Controller
      *
      * @Route("/share/{uuid}", requirements={"uuid" = ".+"}, name="share_presentation")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function sharePresentationAction(Presentation $presentation)
+    public function sharePresentationAction(Presentation $presentation): Response
     {
         return $this->render('@Strut/preview_export/impress.html', [
             'presentation' => $presentation
+        ]);
+    }
+
+    /**
+    * @param Request $request
+    * @param int     $page
+    * @param string $currentRoute
+    *
+    * @Route("/search/{page}", name="search", defaults={"page" = "1"})
+    *
+    * @return Response
+    */
+    public function searchFormAction(Request $request, int $page = 1, string $currentRoute = ''): Response
+    {
+        $form = $this->createForm(SearchEntryType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return $this->showPresentations('search', $request, $page);
+        }
+
+        return $this->render('default/forms/search_form.html.twig', [
+            'form' => $form->createView(),
+            'currentRoute' => $currentRoute,
         ]);
     }
 }

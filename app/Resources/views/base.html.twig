@@ -28,8 +28,8 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item"><a class="nav-link" href="{{ path('app') }}"><i title="{{ 'menu.newpresentation' | trans }}" class="glyphicon glyphicon-plus"></i></a></li>
+                {{ render(controller('Strut:Presentation:searchForm', {'currentRoute': app.request.attributes.get('_route')})) }}
                 <li class="nav-item"><a class="nav-link" href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('templates') }}">{{ 'menu.templates' | trans }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ path('pictures') }}">{{ 'menu.pictures' | trans }}</a></li>
                 <li class="nav-item"><a class="nav-link glyphicon glyphicon-cog" title="{{ 'config.page_title' | trans }}" href="{{ path('config') }}"></a></li>
                 <li class="nav-item"><a class="nav-link glyphicon glyphicon-user" href="{{ path('fos_user_profile_show') }}">{{ app.user }}</a></li>
@@ -44,5 +44,6 @@
 {% endif %}
 {% block content %}{% endblock content %}
 <script src="{{ asset('strut.bundle.js') }}"></script>
+{{ piwik_code() }}
 </body>
 </html>

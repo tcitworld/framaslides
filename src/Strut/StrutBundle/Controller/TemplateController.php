@@ -13,15 +13,7 @@ use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
 class TemplateController extends Controller {
 
-    /**
-     * @Route("/templates", name="templates")
-     *
-     */
-    public function showTemplatesAction() {
-        $repository = $this->get('strut.presentation_repository');
-        $templates = $repository->getTemplates($this->getUser());
-        return $this->render('default/templates.html.twig', ['templates' => $templates]);
-    }
+
 
     /**
      * @Route("/make-template/{id}", name="make-template", requirements={"id" = "\d+"})
@@ -42,24 +34,6 @@ class TemplateController extends Controller {
         $json = $this->get('jms_serializer')->serialize($presentation, 'json');
 
         return (new JsonResponse())->setJson($json);
-    }
-
-    /**
-     * @Route("/templates-public", name="templates-public")
-     */
-    public function showPublicTemplatesAction() {
-        $repository = $this->get('strut.presentation_repository');
-        $templates = $repository->getPublicTemplates($this->getUser());
-        return $this->render('default/templates.html.twig', ['templates' => $templates]);
-    }
-
-    /**
-     * @Route("/templates-published", name="templates-published")
-     */
-    public function showPublishedTemplatesAction() {
-        $repository = $this->get('strut.presentation_repository');
-        $templates = $repository->getPublishedTemplates($this->getUser());
-        return $this->render('default/templates.html.twig', ['templates' => $templates]);
     }
 
     /**

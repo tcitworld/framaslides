@@ -1,0 +1,22 @@
+<form name="search" method="GET" action="{{ path('search')}}" class="navbar-form navbar-left">
+    {% if form_errors(form) %}
+        <span class="black-text">{{ form_errors(form) }}</span>
+    {% endif %}
+
+    {% if form_errors(form.term) %}
+        <span class="black-text">{{ form_errors(form.term) }}</span>
+    {% endif %}
+
+    <input type="hidden" name="currentRoute" value="{{ currentRoute }}" />
+
+    <div class="input-group">
+        {{ form_widget(form.term, { 'attr': {'autocomplete': 'off', 'placeholder': 'menu.search.placeholder'} }) }}
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </span>
+    </div>
+
+    {{ form_rest(form) }}
+</form>

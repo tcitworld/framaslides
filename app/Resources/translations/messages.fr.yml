@@ -10,6 +10,8 @@ menu:
   login: 'Se connecter'
   register: 'S''inscrire'
   admin: Admin
+  search:
+    placeholder: Rechercher
 
 presentations:
   nbversions: 'une version|%count% versions'
@@ -34,6 +36,10 @@ security:
     register: "S'inscrire"
     submit: 'Se connecter'
     forgot_password: 'Mot de passe oublié ?'
+
+search:
+  empty: Aucun résultat trouvé pour la recherche « %term% »
+
 
 profile:
   edit: 'Éditer les paramètres de mon compte'
