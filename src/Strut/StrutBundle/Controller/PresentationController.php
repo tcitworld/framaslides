@@ -113,7 +113,7 @@ class PresentationController extends Controller
 
         $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
-        $pagerFanta->setMaxPerPage(3);
+        $pagerFanta->setMaxPerPage(9);
 
         try {
             $pagerFanta->setCurrentPage($page);
