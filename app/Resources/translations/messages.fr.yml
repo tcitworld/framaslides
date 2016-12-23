@@ -4,8 +4,10 @@ app.presentation: "appName est un service d'édition de présentations en ligne"
 menu:
   newpresentation: 'Nouvelle présentation'
   mypresentations: 'Mes présentations'
-  templates: Modèles
+  mypresentations.desc: Voir mes présentations
   pictures: Images
+  pictures.desc: Voir mes images
+  config: Configuration
   disconnect: 'Se déconnecter'
   login: 'Se connecter'
   register: 'S''inscrire'
@@ -14,16 +16,34 @@ menu:
     placeholder: Rechercher
 
 presentations:
-  nbversions: 'une version|%count% versions'
-  nbslides: 'une seule slide|%count% slides'
-  nbpictures: "{0}pas d'image|{1}une seule image|]1,Inf[%count% images"
-  createdAt: 'Présentation créée le %createdAt%'
-  updatedAt: 'Dernière version %updatedAt%'
+  nbVersions:
+    label: 'une version|%count% versions'
+    desc: Nombre de versions
+  nbSlides:
+    label: 'une seule slide|%count% slides'
+    desc: Nombre de slides
+  nbPictures:
+    label: "{0}pas d'image|{1}une seule image|]1,Inf[%count% images"
+    desc: Nombre d'images
+  createdAt: Date de création
+  updatedAt: Date de dernière mise à jour
   empty: "Vous n'avez pas encore de présentations, voulez-vous en créer une ?"
   create: Créer une nouvelle présentation
   explore: Voir les modèles
   isTemplate: Modèle
+  edit:
+    desc: Éditer la présentation
+  delete:
+    desc: Supprimer la présentation
+  bookmark:
+    desc: Marquer la présentation comme modèle ou publique
+  download:
+    desc: Télécharger la présenation au format json
+  preview:
+    desc: Voir la présentation
   isPublic: Public
+  title:
+    edit: Éditer le titre (non-fonctionnel)
   share:
     title: Publier la présentation
     title.details: Publier la présentation génère un lien unique permettant à tout le monde de visualiser votre présentation
