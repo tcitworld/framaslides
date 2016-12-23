@@ -3,6 +3,8 @@
 namespace Strut\StrutBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Strut\StrutBundle\Form\Type\ChangePasswordType;
+use Strut\StrutBundle\Form\Type\UserInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -26,8 +28,8 @@ class ConfigController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $config = $this->getConfig();
-        // $userManager = $this->container->get('fos_user.user_manager');
-        // $user = $this->getUser();
+        $userManager = $this->get('fos_user.user_manager');
+        $user = $this->getUser();
 
         // handle basic config detail (this form is defined as a service)
         $configForm = $this->createForm(ConfigType::class, $config, ['action' => $this->generateUrl('config')]);
@@ -47,7 +49,7 @@ class ConfigController extends Controller
             return $this->redirect($this->generateUrl('config'));
         }
 
-        /*
+
         // handle changing password
         $pwdForm = $this->createForm(ChangePasswordType::class, null, ['action' => $this->generateUrl('config').'#set4']);
         $pwdForm->handleRequest($request);
@@ -84,13 +86,16 @@ class ConfigController extends Controller
 
             return $this->redirect($this->generateUrl('config').'#set3');
         }
-        */
+
 
         return $this->render('default/config.html.twig', [
             'form' => [
                 'config' => $configForm->createView(),
-                // 'pwd' => $pwdForm->createView(),
-                // 'user' => $userForm->createView(),
+                'pwd' => $pwdForm->createView(),
+                'user' => $userForm->createView(),
+                'enabled_users' => $this->getDoctrine()
+                    ->getRepository('Strut:User')
+                    ->getSumEnabledUsers(),
             ],
         ]);
     }
@@ -146,5 +151,27 @@ class ConfigController extends Controller
         $em->deleteUser($user);
 
         return $this->redirect($this->generateUrl('fos_user_security_login'));
+    }
+
+    /**
+     * Remove all annotations OR tags OR entries for the current user.
+     *
+     * @Route("/reset/{type}", requirements={"id" = "annotations|tags|entries"}, name="config_reset")
+     *
+     * @return RedirectResponse
+     */
+    public function resetAction($type)
+    {
+
+        $this->getDoctrine()
+            ->getRepository('Strut:Presentation')
+            ->removeAllByUser($this->getUser());
+
+        $this->get('session')->getFlashBag()->add(
+            'notice',
+            'flashes.config.notice.'.$type.'_reset'
+        );
+
+        return $this->redirect($this->generateUrl('config').'#set3');
     }
 }

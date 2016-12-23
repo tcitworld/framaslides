@@ -36,6 +36,11 @@ $(() => {
     $('[data-toggle="tooltip"]').tooltip();
   });
 
+  $('.tab a').click((e) => {
+      e.preventDefault();
+      $(this).tab('show');
+  });
+
   /**
    * Initialize copy/paste
    */

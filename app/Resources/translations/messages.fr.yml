@@ -74,6 +74,24 @@ config:
     password: Mot de passe
   form_settings:
     language_label: Langue
+  form_user:
+    name_label: Nom d'utilisateur
+    email_label: Adresse email
+    delete:
+      title: Supprimer votre compte
+      description: Si vous n'avez plus l'emploi de votre compte, vous pouvez très simplement le supprimer en cliquant sur le bouton ci-dessous
+      button: Supprimer mon compte
+      confirm: Confirmez la suppression du compte ?
+  reset:
+    title: Réinitaliser votre compte
+    description: Réinitialiser votre compte supprimera toutes vos présentations (modèles publics inclus).
+    presentations: Supprimer toutes mes présentations
+    confirm: Confirmer la suppression de toutes vos présentations ?
+  form_password:
+    description: Vous voulez modifier votre mot de passe ?
+    old_password_label: Mot de passe actuel
+    new_password_label: Nouveau mot de passe
+    repeat_new_password_label: Confirmez le nouveau mot de passe
   form:
     save: Sauvegarder
 

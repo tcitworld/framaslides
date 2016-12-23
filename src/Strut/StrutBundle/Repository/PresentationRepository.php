@@ -81,4 +81,12 @@ class PresentationRepository extends EntityRepository
 
         return $qb;
     }
+
+    public function removeAllByUser(User $user)
+    {
+        $this->getEntityManager()
+            ->createQuery('DELETE FROM Strut\StrutBundle\Entity\Presentation p WHERE p.user = :userId')
+            ->setParameter('userId', $user->getId())
+            ->execute();
+    }
 }

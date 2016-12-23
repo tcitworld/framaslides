@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
