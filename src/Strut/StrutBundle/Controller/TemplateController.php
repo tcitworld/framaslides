@@ -2,6 +2,7 @@
 
 namespace Strut\StrutBundle\Controller;
 
+use Strut\StrutBundle\Form\Type\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -9,11 +10,40 @@ use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\InvalidArgumentException;
 
-class TemplateController extends Controller {
+class TemplateController extends Controller
+{
+    /**
+     * @Route("/template/{presentation}", name="template", requirements={"id" = "\d+"})
+     *
+     */
+    public function templateFormAction(Presentation $presentation, Request $request): Response
+    {
+        $form = $this->createForm(TemplateType::class, $presentation);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
 
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($presentation);
+            $em->flush();
+
+            $this->get('session')->getFlashBag()->add(
+                'notice',
+                'flashes.entry.notice.entry_updated'
+            );
+
+            return $this->redirect($this->generateUrl('template', [
+                'presentation' => $presentation->getId(),
+            ]));
+        }
+
+        return $this->render('default/forms/template.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
 
     /**
      * @Route("/make-template/{id}", name="make-template", requirements={"id" = "\d+"})
@@ -21,7 +51,8 @@ class TemplateController extends Controller {
      * @param Presentation $presentation
      * @return JsonResponse
      */
-    public function makeTemplateAction(Request $request, Presentation $presentation) {
+    public function makeTemplateAction(Request $request, Presentation $presentation): JsonResponse
+    {
         $this->checkUserPresentationAction($presentation);
 
         $em = $this->getDoctrine()->getManager();
@@ -42,7 +73,8 @@ class TemplateController extends Controller {
      * @param Presentation $presentation
      * @return JsonResponse
      */
-    public function createCopyFromTemplateAction(Request $request, Presentation $presentation) {
+    public function createCopyFromTemplateAction(Request $request, Presentation $presentation): JsonResponse
+    {
         $logger = $this->get('logger');
 
         if (!$presentation->isTemplate() && !$request->request->has('export')) {
@@ -100,5 +132,4 @@ class TemplateController extends Controller {
             throw $this->createAccessDeniedException('You can not access this presentation.');
         }
     }
-
 }

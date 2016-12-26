@@ -36,5 +36,4 @@ class UserRepository extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-
 }

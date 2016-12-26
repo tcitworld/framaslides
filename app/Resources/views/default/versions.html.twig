@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+<div class="container">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="header" style="margin-bottom: 20px;">
+            <h4 class="modal-title" id="versionModalLabel">{{ 'version.title' | trans({ '%presentation%': presentation.title }) }}</h4>
+            <div class="alert alert-warning alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'errors.default' | trans }}</strong> </div>
+            <div class="alert alert-info alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'info.default' | trans }}</strong> <span class="desc"></span></div>
+            <a class="btn btn-default" href="{{ path('presentations') }}"><i class="glyphicon glyphicon-chevron-left"></i> Retour à la liste des présentations</a>
+        </div>
+        <div class="body">
+            <ul class="list-group">
+                {% for version in versions %}
+                    <li class="list-group-item" data-version="{{ version.id }}">
+                        <time>{{ version.updatedAt | time_diff }} ({{ version.updatedAt | date('\\l\\e d/m/Y \\à H:i:s')  }})</time>
+                        <div class="btn-group pull-right btn-group-xs" role="group" aria-label="actions">
+                            <a class="btn btn-default " href="{{ path('export-version', {'version': version.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Télécharger cette version">
+                                <i class="glyphicon glyphicon-download-alt"></i>
+                            </a>
+                            {% if loop.first and not versions.hasPreviousPage %}
+                            {% else %}
+                                <a class="btn btn-danger pull-right" href="{{ path('delete-version-web', {'version': version.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Supprimer cette version">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                </a>
+                                <a class="btn btn-default pull-right" href="{{ path('restore-version', {'version': version.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Restaurer cette version (crée une nouvelle version)">
+                                    <i class="glyphicon glyphicon-repeat"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+            <div class="pull-right">
+                {% if versions.getNbPages > 1 %}
+                    {{ pagerfanta(versions, 'twitter_bootstrap3_translated', {'proximity': 1}) }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="footer">
+            {% if versions | length > 1 %}
+                <span>{{ 'version.lastnotdelete.desc' | trans }}</span>
+                <button type="button" class="btn btn-warning" id="purgeVersions">{{ 'version.lastnotdelete.btn' | trans }}</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

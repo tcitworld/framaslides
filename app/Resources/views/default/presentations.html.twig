@@ -34,7 +34,7 @@
                         <div class="media">
                             <div class="media-body">
                                 <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span> <span class="edit-title small glyphicon glyphicon-edit pointer" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.title.edit' | trans }}"></span></h4>
-                                <p><span class="label label-default versions pointer">{{ 'presentations.nbVersions.label' | transchoice(presentation.versions | length) }}</span> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
+                                <p><a href="{{ path('versions', {'presentation': presentation.id }) }}"><span class="label label-default versions pointer">{{ 'presentations.nbVersions.label' | transchoice(presentation.versions | length) }}</span></a> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
                                 <div class="infoBlock">
                                     <div class="infos">
                                         <small data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.createdAt' | trans }}"><span class="glyphicon glyphicon-time"></span> {{ presentation.createdAt | date("d/m/Y") }}</small><br>
@@ -56,7 +56,7 @@
                     <div class="card-footer">
                         <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}"></i></a>
                         <a href="delete-presentation/{{ presentation.title }}" class="delete" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}"></i></a>
-                        <a href="#" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}"></i></a>
+                        <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}"></i></a>
                         <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.download.desc' | trans }}"></i></a>
                         {% if presentation.rendered %}
                         <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="glyphicon glyphicon-share" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}"></i></a>
@@ -91,8 +91,6 @@
         </p>
     </div>
 </div>
-{% include 'default/modals/template.html.twig' %}
-{% include 'default/modals/versions.html.twig' %}
 {% include 'default/modals/share.html.twig' %}
 
 {% endblock content %}

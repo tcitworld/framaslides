@@ -7,7 +7,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Strut\StrutBundle\Entity\Config;
 
 class ConfigType extends AbstractType
 {
@@ -18,7 +17,6 @@ class ConfigType extends AbstractType
      */
     public function __construct($languages)
     {
-
         $this->languages = $languages;
     }
 

@@ -99,8 +99,10 @@ English: Anglais
 Français: Français
 
 version:
-  title: Version
-  lastnotdelete: La dernière version n'est pas supprimable.
+  title: Versions pour la présentation %presentation% :
+  lastnotdelete:
+    desc: La version la plus récente n'est pas supprimable.
+    btn: Supprimer toutes les anciennes versions.
   delete: Supprimer cette version
   restore: Restaurer cette version (crée une nouvelle version)
   download: Télécharger cette version
@@ -114,12 +116,14 @@ info:
       title: Version restaurée
       desc: Une nouvelle version correspondante a été créée.
 
+template:
+  form_settings:
+    template_label: Faire de cette présentation un modèle
+    public_label: Rendre ce modèle public
 templates:
   title: Modèle
   form:
-    maketemplate: Faire de cette présentation un modèle
     maketemplate.tooltip: Cette présentation sera accessible comme base pour d'autres présentations dans « Vos modèles »
-    makepublic: Rendre ce modèle public
     makepublic.tooltip: Cette présentation sera accessible comme base pour d'autres présentations par tout le monde.
   fork:
     presentationtitle: Titre de la nouvelle présentation

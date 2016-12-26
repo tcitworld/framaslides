@@ -37,8 +37,8 @@ $(() => {
   });
 
   $('.tab a').click((e) => {
-      e.preventDefault();
-      $(this).tab('show');
+    e.preventDefault();
+    $(this).tab('show');
   });
 
   /**
@@ -96,103 +96,6 @@ $(() => {
     });
   });
 
-  function getVersionsPage(presentation, page = 1) {
-    return $.ajax(`versions/${presentation}/${page}`);
-  }
-
-  /**
-   * Show version list
-   */
-  $('.label.versions').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(event.target);
-    $('#versionModal').attr('data-presentation', elem.parents('.card').attr('data-presentation'));
-    $('#versionModal .modal-title').text(`Versions pour la présentation « ${elem.parents('.card').find('.card-title .title').text()} »`);
-    $('#versionModal .modal-body').empty();
-    getVersionsPage(elem.closest('.card').attr('data-presentation')).done((data) => {
-      const versions = data.versions;
-      versions.forEach((version) => {
-        version.updated_at = moment(version.updated_at).format('LLLL'); // eslint-disable-line
-      });
-
-      const html = template(
-        {
-          versions,
-          data,
-        });
-
-      $('.modal-body').append(html);
-      $('body').tooltip({
-        selector: '[data-toggle="tooltip"]',
-      });
-      $('#versionModal').modal();
-    });
-  });
-
-  function navigationPage(presentation, versionNb, next) {
-    const modifier = next ? 1 : -1;
-    const page = parseInt(versionNb, 10) + parseInt(modifier, 10);
-    getVersionsPage(presentation, page).done((data) => {
-      const versions = data.versions;
-      versions.forEach((version) => {
-        version.updated_at = moment(version.updated_at).format('LLLL'); // eslint-disable-line
-      });
-
-      const html = template(
-        {
-          versions,
-          data,
-        });
-
-      $('.modal-body').empty();
-      $('.modal-body').append(html);
-      $('div.versions').attr('data-page', page);
-      $('#versionModal').modal();
-    });
-  }
-
-  body.on('click', 'a.previous', () => {
-    navigationPage($('#versionModal').attr('data-presentation'), $('div.versions').attr('data-page'), false);
-  });
-
-  body.on('click', 'a.next', () => {
-    navigationPage($('#versionModal').attr('data-presentation'), $('div.versions').attr('data-page'), true);
-  });
-
-  /**
-   * Version stuff
-   */
-  const modalBody = $('#versionModal .modal-body');
-
-  /**
-   * Delete version
-   */
-  modalBody.on('click', '.icon-delete', (event) => {
-    event.preventDefault();
-    const elem = $(event.target).closest('li');
-    $.ajax({
-      url: `delete-version/${elem.attr('data-version')}`,
-      success: () => {
-        elem.addClass('item-hidden').delay(400).remove();
-      },
-    });
-  });
-
-  /**
-   * Restore version
-   */
-  modalBody.on('click', '.icon-restore', (event) => {
-    event.preventDefault();
-    $.ajax({
-      url: `restore-version/${$(event.target).closest('li').attr('data-version')}`,
-      success: () => {
-        $('#versionModal .modal-header .alert-info strong').text('Version restaurée');
-        $('#versionModal .modal-header .alert-info .desc').text('Une nouvelle version correspondante a été créée.');
-        $('#versionModal .modal-header .alert-info').toggleClass('hidden');
-      },
-    });
-  });
-
   body.on('click', '#purgeVersions', () => {
     const confirm = window.confirm('Voulez-vous vraiment supprimer toutes les anciennes versions ?');
     if (confirm) {
@@ -221,50 +124,18 @@ $(() => {
   /**
    * Disable making a template public is presentation is not template
    */
-  function publicIfTemplate() {
-    const makepublic = $('#makepublic');
-    if (makepublic.attr('disabled')) {
+
+  $('#template_template').change(() => {
+    const makepublic = $('#template_public');
+    const maketemplate = $('#template_template');
+    if (maketemplate.prop('checked')) {
       makepublic.removeAttr('disabled');
       makepublic.parent().parent().removeClass('disabled');
     } else {
       makepublic.attr('disabled', 'true');
+      makepublic.prop('checked', false);
       makepublic.parent().parent().addClass('disabled');
     }
-  }
-
-  /**
-   * Publish presentation
-   */
-  $('.publish').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(event.target);
-    const templateModal = $('#templateModal');
-    templateModal.find('.modal-title').text(`Sauvegarder « ${elem.parents('.card').find('.title').text()} » en modèle`);
-    templateModal.attr('data-presentation', elem.parents('.card').attr('data-presentation'));
-    templateModal.find('#maketemplate').prop('checked', elem.parents('.card').attr('data-template') === '1');
-    publicIfTemplate();
-    templateModal.find('#makepublic').prop('checked', elem.parents('.card').attr('data-public') === '1');
-    templateModal.modal();
-  });
-
-  $('#maketemplate').change(() => {
-    publicIfTemplate();
-  });
-
-  /**
-   * Save template stuff
-   */
-  body.on('click', '#template-save', () => {
-    $.ajax({
-      url: `make-template/${$('#templateModal').attr('data-presentation')}`,
-      data: {
-        template: $('#maketemplate').prop('checked'),
-        public: $('#makepublic').prop('checked'),
-      },
-      success: () => {
-        $('#templateModal').modal('hide');
-      },
-    });
   });
 
 

@@ -7,13 +7,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     /**
      * @Route("/user-locale", name="get-user-locale")
      * @return JsonResponse
      */
-    public function getUserLocaleAction() {
+    public function getUserLocaleAction()
+    {
         if ($this->getUser()) {
             $lang = $this->getUser()->getConfig()->getLanguage();
             return new JsonResponse($lang);
@@ -26,7 +28,8 @@ class UserController extends Controller {
      * @param Request $request
      * @return JsonResponse
      */
-    public function setUserLocaleAction(Request $request) {
+    public function setUserLocaleAction(Request $request)
+    {
         if ($this->getUser()) {
             $lang = $request->get('lang');
             $this->getUser()->getConfig()->setLanguage($lang);

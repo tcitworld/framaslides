@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tcit
- * Date: 15/11/16
- * Time: 17:47
- */
 
 namespace Strut\StrutBundle\Controller;
-
 
 use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
@@ -131,163 +124,6 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/versions/{presentation}/{page}", name="versions", defaults={"page" = "1"})
-     * @param Presentation $presentation
-     * @param int $page
-     * @return JsonResponse|RedirectResponse
-     */
-    public function getPresentationVersionsAction(Presentation $presentation, int $page): Response
-    {
-        $versions = $presentation->getVersions();
-
-        $pagerAdapter = new DoctrineCollectionAdapter($versions);
-        $pagerFanta = new Pagerfanta($pagerAdapter);
-        $pagerFanta->setMaxPerPage(5);
-
-        try {
-            $pagerFanta->setCurrentPage($page);
-        } catch (OutOfRangeCurrentPageException $e) {
-            if ($page > 1) {
-                return $this->redirect($this->generateUrl('presentations', ['page' => $pagerFanta->getNbPages()]), 302);
-            }
-        }
-
-        $versionsArray = [];
-        foreach ($pagerFanta->getCurrentPageResults() as $result) {
-            $versionsArray[] = $result;
-        }
-
-        $json = $this->get('jms_serializer')->serialize([
-            'total' => $pagerFanta->getNbResults(),
-            'versions' => $versionsArray,
-            'nbPages' => $pagerFanta->getNbPages(),
-            'haveToPaginate' => $pagerFanta->haveToPaginate(),
-            'hasPreviousPage' => $pagerFanta->hasPreviousPage(),
-            'previousPage' => !$pagerFanta->hasPreviousPage() ?? $pagerFanta->getPreviousPage(),
-            'hasNextPage' => $pagerFanta->hasNextPage(),
-            'nextPage' => !$pagerFanta->hasPreviousPage() ?? $pagerFanta->getNextPage(),
-        ], 'json');
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /** API Stuff */
-
-    /**
-     * @Route("/presentations-json", name="presentations-json")
-     * @return JSONResponse
-     */
-    public function getPresentationsJsonAction(): JsonResponse
-    {
-        $repository = $this->get('strut.presentation_repository');
-        $presentations = $repository->findByUser($this->getUser());
-        $json = $this->get('jms_serializer')->serialize($presentations, 'json');
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
-     * @Route("/presentation/{presentationTitle}", name="presentation")
-     * @param $presentationTitle
-     * @return JsonResponse
-     */
-    public function getPresentationDataAction($presentationTitle): JsonResponse
-    {
-        $presentation = $this->get('strut.presentation_repository')->findOneBy([
-            'title' => $presentationTitle,
-            'user' => $this->getUser(),
-        ]);
-        if (!$presentation) {
-            return new JsonResponse([], 404);
-        }
-        $presentationData = $presentation->getLastVersion()->getContent();
-        $json = $this->get('jms_serializer')->serialize($presentationData, 'json');
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
-     * @Route("/delete-presentation/{presentationTitle}", name="delete-presentation")
-     * @param $presentationTitle
-     * @return JsonResponse
-     */
-    public function deletePresentationAction($presentationTitle): JsonResponse
-    {
-        $presentation = $this->get('strut.presentation_repository')->findOneBy([
-            'title' => $presentationTitle,
-            'user' => $this->getUser(),
-        ]);
-        if (!$presentation) {
-            return new JsonResponse([], 404);
-        }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($presentation);
-        $em->flush();
-
-        return new JsonResponse();
-    }
-
-    /**
-     * @Route("/delete-version/{version}", name="delete-version")
-     * @param Version $version
-     * @return JsonResponse
-     */
-    public function deleteVersionAction(Version $version): JsonResponse
-    {
-        $this->checkUserVersionAction($version);
-        $em = $this->getDoctrine()->getManager();
-        $version->getPresentation()->removeVersion($version);
-        $em->remove($version);
-        $em->flush();
-
-        return new JsonResponse($version);
-    }
-
-    /**
-     * @Route("/restore-version/{version}", name="restore-version")
-     * @param Version $version
-     * @return JsonResponse
-     */
-    public function restoreVersionAction(Version $version): JsonResponse
-    {
-        $this->checkUserVersionAction($version);
-        $em = $this->getDoctrine()->getManager();
-
-        $presentation = $version->getPresentation();
-
-        $newVersion = new Version($presentation);
-        $newVersion->setContent($version->getContent());
-
-        $presentation->addVersion($newVersion);
-
-        $em->persist($newVersion);
-        $em->flush();
-
-        $versions = $presentation->getVersions();
-        $json = $this->get('jms_serializer')->serialize($versions, 'json');
-
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
-     * @Route("purge-versions/{presentation}", name="purge-version")
-     * @param Presentation $presentation
-     * @return JsonResponse
-     */
-    public function purgeVersionsAction(Presentation $presentation): JsonResponse
-    {
-        $this->checkUserPresentationAction($presentation);
-        $em = $this->getDoctrine()->getManager();
-        $versions = $presentation->getVersions();
-        foreach ($versions as $version) {
-            if ($version != $versions->first()) {
-                $em->remove($version);
-            }
-        }
-        $em->flush();
-        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
      * @Route("/new-presentation", name="new-presentation")
      * @param Request $request
      * @return JsonResponse
@@ -323,7 +159,7 @@ class PresentationController extends Controller
         if ($presentation) { // If the presentation already exists, just add a new version
             $logger->info("Version  " . $version->getId() . " has been added to presentation " . $presentation->getId());
             $presentation->addVersion($version);
-        } else if ($newEntry) { // otherwise, let's create an new presentation
+        } elseif ($newEntry) { // otherwise, let's create an new presentation
             $presentation = new Presentation($this->getUser());
             $presentation->setTitle($name);
             $presentation->addVersion($version);
@@ -338,7 +174,6 @@ class PresentationController extends Controller
         $json = $this->get('jms_serializer')->serialize($presentation, 'json');
 
         return (new JsonResponse())->setJson($json);
-
     }
 
     /**
@@ -367,7 +202,6 @@ class PresentationController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->flush();
         return new JSONResponse();
-
     }
 
     /**
@@ -397,7 +231,27 @@ class PresentationController extends Controller
             default:
                 return new JsonResponse(null, 406);
         }
+    }
 
+
+    /**
+     * @Route("purge-versions/{presentation}", name="purge-version")
+     * @param Presentation $presentation
+     * @return JsonResponse
+     */
+    public function purgeVersionsAction(Presentation $presentation): JsonResponse
+    {
+        $this->checkUserPresentationAction($presentation);
+        $em = $this->getDoctrine()->getManager();
+        $versions = $presentation->getVersions();
+        foreach ($versions as $version) {
+            if ($version != $versions->first()) {
+                $em->remove($version);
+            }
+        }
+        $em->flush();
+        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
+        return (new JsonResponse())->setJson($json);
     }
 
     /**
@@ -412,24 +266,6 @@ class PresentationController extends Controller
         $disposition = $response->headers->makeDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             Utf8::toAscii($presentation->getTitle()) . '.json'
-        );
-
-        $response->headers->set('Content-Disposition', $disposition);
-        return $response;
-    }
-
-    /**
-     * @Route("/export-version/{version}", name="export-version")
-     * @param Version $version
-     * @return Response
-     */
-    public function exportVersionAction(Version $version): Response
-    {
-        $response = new Response($version->getContent());
-
-        $disposition = $response->headers->makeDisposition(
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-            Utf8::toAscii($version->getPresentation()->getTitle()) . '-' . $version->getUpdatedAt()->format('d-m-Y H:i:s') . '.json'
         );
 
         $response->headers->set('Content-Disposition', $disposition);
@@ -454,17 +290,6 @@ class PresentationController extends Controller
         }
     }
 
-    /**
-     * Check if the logged user can manage the given entry.
-     *
-     * @param Version $version
-     */
-    private function checkUserVersionAction(Version $version)
-    {
-        if (null === $this->getUser() || $this->getUser()->getId() != $version->getPresentation()->getUser()->getId()) {
-            throw $this->createAccessDeniedException('You can not access this presentation.');
-        }
-    }
 
     /**
      * Get public URL for entry (and generate it if necessary).

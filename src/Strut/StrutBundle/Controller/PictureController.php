@@ -22,7 +22,8 @@ class PictureController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
-    public function uploadPictureAction(Request $request) {
+    public function uploadPictureAction(Request $request)
+    {
         $presentationTitle = $request->get('presentation');
 
         $em = $this->getDoctrine()->getManager();
@@ -59,7 +60,8 @@ class PictureController extends Controller
      * @param Picture $picture
      * @return BinaryFileResponse
      */
-    public function showPictureAction(Picture $picture) {
+    public function showPictureAction(Picture $picture)
+    {
         return new BinaryFileResponse($this->getParameter('pictures_directory') . '/' . $picture->getUuid() . '.' . $picture->getExtension());
     }
 
@@ -68,7 +70,8 @@ class PictureController extends Controller
      * @param int $page
      * @return RedirectResponse|Response
      */
-    public function showPicturesAction(int $page) {
+    public function showPicturesAction(int $page)
+    {
         $repository = $this->get('strut.picture_repository');
         $pictures = $repository->getPictures($this->getUser());
 
@@ -96,7 +99,8 @@ class PictureController extends Controller
      * @param Picture $picture
      * @return RedirectResponse
      */
-    public function deletePictureAction(Picture $picture) {
+    public function deletePictureAction(Picture $picture)
+    {
         $em = $this->getDoctrine()->getManager();
         $em->remove($picture);
         $em->flush();

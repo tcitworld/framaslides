@@ -355,7 +355,8 @@ class Presentation
         $this->pictures = $pictures;
     }
 
-    public function addPicture(Picture $picture) {
+    public function addPicture(Picture $picture)
+    {
         $this->pictures[] = $picture;
         $picture->setPresentation($this);
     }

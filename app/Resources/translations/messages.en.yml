@@ -10,8 +10,8 @@ menu:
   login: Login
   register: Register
   admin: Admin
-    search:
-      placeholder: Search
+  search:
+    placeholder: Search
 
 presentations:
   nbversions: 'one version|%count% versions'

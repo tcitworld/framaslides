@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Strut\StrutBundle\Entity\Config;
 use Strut\StrutBundle\Form\Type\ConfigType;
+
 // use Strut\StrutBundle\Form\ChangePasswordType;
 // use Strut\StrutBundle\Form\UserInformationType;
 
@@ -162,7 +163,6 @@ class ConfigController extends Controller
      */
     public function resetAction($type)
     {
-
         $this->getDoctrine()
             ->getRepository('Strut:Presentation')
             ->removeAllByUser($this->getUser());
