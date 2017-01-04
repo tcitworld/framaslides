@@ -11,12 +11,10 @@ class DefaultController extends Controller
 {
     /**
      * @Route("/app", name="app")
-     * @param Request $request
      * @return Response
      */
-    public function appAction(Request $request)
+    public function appAction(): Response
     {
-        // replace this example code with whatever you need
         return $this->render('@Strut/index.html');
     }
 }

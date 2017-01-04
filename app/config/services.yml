@@ -20,6 +20,12 @@ services:
           arguments:
               - Strut:User
 
+  strut.user_group_repository:
+          class: Strut\StrutBundle\Repository\UserGroupRepository
+          factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
+          arguments:
+              - Strut:UserGroup
+
   strut.version_repository:
             class: Strut\StrutBundle\Repository\VersionRepository
             factory: [ "@doctrine.orm.default_entity_manager", getRepository ]

@@ -7,6 +7,8 @@ menu:
   mypresentations.desc: Voir mes présentations
   pictures: Images
   pictures.desc: Voir mes images
+  groups: Groupes
+  groups.desc: Liste des groupes
   config: Configuration
   disconnect: 'Se déconnecter'
   login: 'Se connecter'
@@ -177,3 +179,38 @@ user:
     save: Enregistrer
     password_label: Mot de passe
     repeat_new_password_label: Répéter le mot de passe
+
+group:
+  page_title: Groupes
+  list:
+    name: Nom du groupe
+    nbMembers: Nombre de membres
+    action: Action
+    create_new_one: Créer un nouveau groupe
+  form:
+    name: Nom du groupe
+    save: Créer un nouveau groupe
+    role: Droits par défaut pour tout nouveau utilisateur
+    access: Méthode d'enregistrement
+  new.title: Création d'un nouveau groupe
+  user:
+    inGroup: "{0}Il n'y a personne dans ce groupe|{1}Vous êtes tout seul dans ce groupe|]1,Inf[Vous êtes %count% utilisateurs dans ce groupe"
+    notInGroup: "{0}Il n'y a personne dans ce groupe|{1}Il y a un seul utilisateur dans ce groupe|]1,Inf[%count% utilisateurs dans ce groupe"
+  roles:
+    readonly: Lecture seule
+    write: Écriture
+    manage_prez: Gestion des présentations
+    manage_users: Gestion des utilisateurs
+    admin: Administrateur
+  access:
+    open: Ouvert
+    request: Demande d'admission
+    invitation: Sur invitation uniquement
+    hidden: Sur invitation et caché
+  leave: Quitter le groupe
+  delete: Supprimer le groupe
+  requests:
+    page_title: Liste des requêtes
+    username: Nom d'utilisateur
+    action: Action
+    sent: Demande envoyée

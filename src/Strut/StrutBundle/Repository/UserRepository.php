@@ -4,6 +4,7 @@ namespace Strut\StrutBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Strut\StrutBundle\Entity\Group;
 
 class UserRepository extends EntityRepository
 {
@@ -35,5 +36,13 @@ class UserRepository extends EntityRepository
             ->andWhere('u.enabled = true')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    public function getRequests(Group $group): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.userGroups', 'usergroup')
+            ->where('usergroup.group = :group')->setParameter(':group', $group->getId())
+            ->andWhere('usergroup.accepted = false');
     }
 }

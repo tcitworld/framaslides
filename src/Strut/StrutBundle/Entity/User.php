@@ -3,6 +3,7 @@
 namespace Strut\StrutBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use FOS\UserBundle\Model\GroupInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
@@ -53,10 +54,18 @@ class User extends BaseUser
      */
     protected $config;
 
+    /**
+     * @var ArrayCollection
+     *
+     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="user", cascade={"persist", "remove"})
+     */
+    protected $userGroups;
+
     public function __construct()
     {
         parent::__construct();
         $this->presentations = new ArrayCollection();
+        $this->userGroups = new ArrayCollection();
         $this->timestamps();
         $this->roles = ['ROLE_USER'];
     }
@@ -212,5 +221,44 @@ class User extends BaseUser
     public function removePresentation(Presentation $presentation)
     {
         $this->presentations->removeElement($presentation);
+    }
+
+    public function addAGroup(Group $group, $role)
+    {
+       $this->userGroups[] = new UserGroup($this, $group, $role);
+    }
+
+    public function getUserGroupFromGroup(Group $group): UserGroup
+    {
+        foreach ($this->userGroups as $userGroup) {
+            if ($userGroup->getGroup() == $group) {
+                return $userGroup;
+            }
+        }
+        throw new \Exception('No such group');
+    }
+
+    public function setGroupRole(Group $group, $role)
+    {
+        if ($userGroup = $this->getUserGroupFromGroup($group)) {
+            $userGroup->setRole($role);
+        }
+    }
+
+    public function getGroupRoleForUser(Group $group)
+    {
+        if ($userGroup = $this->getUserGroupFromGroup($group)) {
+            return $userGroup->getRole();
+        }
+        return null;
+    }
+
+    public function acceptedInGroup(Group $group): bool
+    {
+        if ($group::ACCESS_REQUEST === $group->getAcceptSystem()) {
+            $userGroup = $this->getUserGroupFromGroup($group);
+            return $userGroup->getAccepted();
+        }
+        return true;
     }
 }

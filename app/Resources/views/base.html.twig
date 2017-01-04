@@ -30,7 +30,8 @@
                 <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.newpresentation' | trans }}"><a class="nav-link" href="{{ path('app') }}"><i class="glyphicon glyphicon-plus" ></i></a></li>
                 {{ render(controller('Strut:Presentation:searchForm', {'currentRoute': app.request.attributes.get('_route')})) }}
                 <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.mypresentations.desc' | trans }}"><a class="nav-link" href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.pictures.desc' | trans }}"><a class="nav-link" href="{{ path('pictures') }}">{{ 'menu.pictures' | trans }}</a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.groups.desc' | trans }}"><a class="nav-link" href="{{ path('groups') }}">{{ 'menu.groups' | trans }}</a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.pictures.desc' | trans }}"><a class="nav-link" href="{{ path('pictures') }}"><i class="glyphicon glyphicon-picture"></i></a></li>
                 <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.config' | trans }}"><a class="nav-link glyphicon glyphicon-cog" href="{{ path('config') }}"></a></li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item"><a class="nav-link" href="{{ path('user_index') }}">{{ 'menu.admin' | trans }}</a></li>
