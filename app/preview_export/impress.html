@@ -215,6 +215,21 @@ $(document).ready(function() {
     });
 });
 </script>
+
+    <meta property="og:title" content="{{ presentation.title | raw }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ app.request.uri }}" />
+    {% set picturePath = app.request.schemeAndHttpHost ~ asset('img/slides.png') %}
+    {% if presentation.pictures | length > 0 %}
+    {% set picturePath = path('show-picture', { 'uuid': (presentation.pictures | first).uuid }) %}
+    {% endif %}
+    <meta property="og:image" content="{{ picturePath }}" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="{{ picturePath }}" />
+    <meta name="twitter:site" content="@framasoft" />
+    <meta name="twitter:title" content="{{ presentation.title | raw }}" />
+    <meta name="twitter:description" content="A presentation created with Framaslides&hellip;" />
+
 </head>
 <body class="impress-not-supported">
     <div id="launched-placeholder"></div>
