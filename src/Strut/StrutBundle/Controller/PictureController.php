@@ -107,7 +107,7 @@ class PictureController extends Controller
 
         $this->get('session')->getFlashBag()->add(
             'notice',
-            'picture.message.deleted'
+            'flashes.picture.notice.deleted'
         );
 
         return $this->redirectToRoute('pictures');

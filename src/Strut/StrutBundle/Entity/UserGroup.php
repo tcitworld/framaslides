@@ -4,9 +4,12 @@ namespace Strut\StrutBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\GroupInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\UserGroupRepository")
+ * @UniqueEntity({"user_id", "group_id"})
  * @ORM\Table(name="fos_user_group")
  */
 class UserGroup
@@ -24,13 +27,13 @@ class UserGroup
     private $role;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="groupsUser")
+     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="userGroups")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\Group", inversedBy="groupsUser")
+     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\Group", inversedBy="users")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
     private $group;
@@ -39,6 +42,12 @@ class UserGroup
      * @ORM\Column(name="accepted", type="boolean", options={"default" : false})
      */
     private $accepted;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Strut\StrutBundle\Entity\Invitation", inversedBy="userGroup", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="invitation", referencedColumnName="code")
+     */
+    protected $invitation;
 
     /**
      * UserGroup constructor.
@@ -99,9 +108,18 @@ class UserGroup
     /**
      * @return bool
      */
-    public function getAccepted(): bool
+    public function isAccepted(): bool
     {
         return $this->accepted;
     }
 
+    public function setInvitation($invitation)
+    {
+        $this->invitation = $invitation;
+    }
+
+    public function getInvitation()
+    {
+        return $this->invitation;
+    }
 }

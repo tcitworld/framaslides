@@ -31,6 +31,12 @@
                 {{ form_widget(form.acceptSystem) }}
             </div>
 
+            <div class="form-group">
+                {{ form_label(form.plainPassword) }}
+                {{ form_errors(form.plainPassword) }}
+                {{ form_widget(form.plainPassword) }}
+            </div>
+
             {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
             {{ form_rest(form) }}
             </form>

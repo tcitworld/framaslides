@@ -55,17 +55,11 @@ class ConfigController extends Controller
         $pwdForm = $this->createForm(ChangePasswordType::class, null, ['action' => $this->generateUrl('config').'#set4']);
         $pwdForm->handleRequest($request);
 
-        if ($pwdForm->isValid()) {
-            if ($this->get('craue_config')->get('demo_mode_enabled') && $this->get('craue_config')->get('demo_mode_username') === $user->getUsername()) {
-                $message = 'flashes.config.notice.password_not_updated_demo';
-            } else {
-                $message = 'flashes.config.notice.password_updated';
+        if ($pwdForm->isSubmitted() && $pwdForm->isValid()) {
+            $user->setPlainPassword($pwdForm->get('new_password')->getData());
+            $userManager->updateUser($user, true);
 
-                $user->setPlainPassword($pwdForm->get('new_password')->getData());
-                $userManager->updateUser($user, true);
-            }
-
-            $this->get('session')->getFlashBag()->add('notice', $message);
+            $this->get('session')->getFlashBag()->add('notice', 'flashes.config.notice.password_updated');
 
             return $this->redirect($this->generateUrl('config').'#set4');
         }
@@ -77,7 +71,7 @@ class ConfigController extends Controller
         ]);
         $userForm->handleRequest($request);
 
-        if ($userForm->isValid()) {
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
             $userManager->updateUser($user, true);
 
             $this->get('session')->getFlashBag()->add(
@@ -157,7 +151,7 @@ class ConfigController extends Controller
     /**
      * Remove all annotations OR tags OR entries for the current user.
      *
-     * @Route("/reset/{type}", requirements={"id" = "annotations|tags|entries"}, name="config_reset")
+     * @Route("/reset", name="config_reset")
      *
      * @return RedirectResponse
      */
@@ -169,7 +163,7 @@ class ConfigController extends Controller
 
         $this->get('session')->getFlashBag()->add(
             'notice',
-            'flashes.config.notice.'.$type.'_reset'
+            'flashes.config.notice.presentation_reset'
         );
 
         return $this->redirect($this->generateUrl('config').'#set3');

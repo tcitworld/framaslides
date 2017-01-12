@@ -5,10 +5,13 @@ namespace Strut\StrutBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
+ * @UniqueEntity("name")
  */
 class Group extends BaseGroup
 {
@@ -41,11 +44,14 @@ class Group extends BaseGroup
     /** An user needs to request to join the group */
     const ACCESS_REQUEST = 2;
 
+    /** An user need the password to access the group */
+    const ACCESS_PASSWORD = 3;
+
     /** An user needs to be invited to join the group */
-    const ACCESS_INVITATION_ONLY = 3;
+    const ACCESS_INVITATION_ONLY = 4;
 
     /** An user needs to be invited to join the group, and the group is not publicly listed */
-    const ACCESS_HIDDEN = 4;
+    const ACCESS_HIDDEN = 10;
 
 
     /**
@@ -66,6 +72,17 @@ class Group extends BaseGroup
     protected $defaultRole;
 
     /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $password;
+    protected $plainPassword;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Presentation", mappedBy="groupShares", cascade={"persist"})
+     */
+    protected $presentations;
+
+    /**
      * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="group", cascade={"persist"})
      */
     protected $users;
@@ -80,7 +97,8 @@ class Group extends BaseGroup
     /**
      * @return ArrayCollection
      */
-    public function getUsers() {
+    public function getUsers()
+    {
         $userObj = new ArrayCollection();
         foreach ($this->users as $userGroup) {
             /** @var UserGroup $userGroup */
@@ -111,5 +129,74 @@ class Group extends BaseGroup
     public function setAcceptSystem(int $acceptSystem)
     {
         $this->acceptSystem = $acceptSystem;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword(): string
+    {
+        return $this->password ?: '';
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword(string $password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword ?: '';
+    }
+
+    /**
+     * @param string $plainPassword
+     */
+    public function setPlainPassword($plainPassword)
+    {
+        $this->plainPassword = $plainPassword;
+    }
+
+    /**
+     * @param int $defaultRole
+     */
+    public function setDefaultRole(int $defaultRole)
+    {
+        $this->defaultRole = $defaultRole;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    public function getRequests()
+    {
+        $requests = new ArrayCollection();
+        foreach ($this->users as $user) /** @var UserGroup $user */
+        {
+            if (!$user->isAccepted()) {
+                $requests->add($user->getUser());
+            }
+        }
+        return $requests;
+    }
+
+    public function getInvited()
+    {
+        $invited = new ArrayCollection();
+        foreach ($this->users as $userGroup) /** @var UserGroup $userGroup */
+        {
+            if ($userGroup->getInvitation()) {
+                $invited->add($userGroup);
+            }
+        }
+        return $invited;
     }
 }

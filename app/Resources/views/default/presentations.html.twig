@@ -12,14 +12,22 @@
     {% set currentRoute = app.request.query.get('currentRoute') %}
 {% endif %}
 <div class="container ombre">
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs nav-justified">
         <li role="presentation" {% if currentRoute == 'presentations' or currentRoute == 'homepage' %}class="active"{% endif %}><a href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
-        <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.mine' | trans }}</a></li>
-        <li role="presentation" {% if currentRoute == 'templates-published' %}class="active"{% endif %}><a href="{{ path('templates-published') }}">{{ 'templates.published' | trans }}</a></li>
-        <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
+        <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.all' | trans }}</a></li>
+        {% if app.user.groups | length > 0 %}
+        <li role="presentation" {% if currentRoute == 'group-presentations-list' %}class="active"{% endif %}><a href="{{ path('group-presentations-list') }}">{{ 'group.presentations' | trans }}</a></li>
+        {% endif %}
     </ul>
+    {% if currentRoute == 'templates' or currentRoute == 'templates-published' or currentRoute == 'templates-public' %}
+        <ul class="nav nav-tabs nav-justified">
+            <li role="presentation" {% if currentRoute == 'templates' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.mine' | trans }}</a></li>
+            <li role="presentation" {% if currentRoute == 'templates-published' %}class="active"{% endif %}><a href="{{ path('templates-published') }}">{{ 'templates.published' | trans }}</a></li>
+            <li role="presentation" {% if currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates-public') }}">{{ 'templates.public' | trans }}</a></li>
+        </ul>
+    {% endif %}
     <div class="row">
-        {% if currentRoute == 'presentations' and presentations.currentPage == 1 and app.request.attributes.get('_route') != 'search' %}
+        {% if currentRoute == 'presentations' and presentations.currentPage == 1 and app.request.attributes.get('_route') != 'search' and presentations | length > 0 %}
         <div class="col-xs-12 col-sm-4">
             <div class="card thumbnail" style="min-height: 133px;">
                 <h4 style="text-align: center;">{{ 'presentations.create' | trans }}</h4>
@@ -34,7 +42,15 @@
                         <div class="media">
                             <div class="media-body">
                                 <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span> <span class="edit-title small glyphicon glyphicon-edit pointer" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.title.edit' | trans }}"></span></h4>
-                                <p><a href="{{ path('versions', {'presentation': presentation.id }) }}"><span class="label label-default versions pointer">{{ 'presentations.nbVersions.label' | transchoice(presentation.versions | length) }}</span></a> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}</p>
+                                <p><a href="{{ path('versions', {'presentation': presentation.id }) }}"><span class="label label-default versions pointer">{{ 'presentations.nbVersions.label' | transchoice(presentation.versions | length) }}</span></a> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}
+                                    {% if presentation.groupShares | length > 0 %}
+                                        {% for group in presentation.groupShares %}
+                                             {% if app.user.inGroup(group) %}
+                                                <a href="{{ path('group-presentations', { 'group' : group.id }) }}"><span class="label label-primary"><i class="material-icons font-size-inherit vertical-align-middle">group</i> {{ group.name }}</span></a>
+                                             {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                </p>
                                 <div class="infoBlock">
                                     <div class="infos">
                                         <small data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.createdAt' | trans }}"><span class="glyphicon glyphicon-time"></span> {{ presentation.createdAt | date("d/m/Y") }}</small><br>
@@ -55,8 +71,10 @@
                     </div>
                     <div class="card-footer">
                         <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}"></i></a>
-                        <a href="delete-presentation/{{ presentation.title }}" class="delete" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}"></i></a>
-                        <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}"></i></a>
+                        {% if presentation.userCanManage(app.user) %}
+                           <a href="{{ path('delete-presentation-id', { 'presentation': presentation.id }) }}" class="delete" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-trash" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}"></i></a>
+                            <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="glyphicon glyphicon-bookmark" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}"></i></a>
+                        {% endif %}
                         <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="glyphicon glyphicon-download-alt" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.download.desc' | trans }}"></i></a>
                         {% if presentation.rendered %}
                         <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="glyphicon glyphicon-share" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}"></i></a>
@@ -71,7 +89,7 @@
             {{ pagerfanta(presentations, 'twitter_bootstrap3_translated', {'proximity': 1}) }}
         {% endif %}
     </div>
-    <div class="no-presentations-message" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">
+    <div class="jumbotron" style="{{ presentations | length > 0 ? 'display: none;' : '' }}">
         <p>
             {% if app.request.attributes.get('_route') == 'search' %}
                 {{ 'search.empty' | trans({'%term%': app.request.query.get('search_entry')['term'] }) }}
@@ -82,6 +100,8 @@
                     {{ 'templates.publicempty' | trans }}
                 {% elseif currentRoute == 'templates' %}
                     {{ 'templates.empty' | trans }}
+                {% elseif currentRoute == 'templates-published' %}
+                    {{ 'templates.published.empty' | trans }}
                 {% endif %}
             {% endif %}
         </p>

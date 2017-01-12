@@ -93,6 +93,12 @@ class Presentation
     private $uuid;
 
     /**
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="Group", inversedBy="presentations", cascade={"persist"})
+     */
+    private $groupShares;
+
+    /**
      * @Exclude
      * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="presentations")
      *
@@ -108,6 +114,7 @@ class Presentation
         $this->user->addPresentation($this);
         $this->versions = new ArrayCollection();
         $this->pictures = new ArrayCollection();
+        $this->groupShares = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->isTemplate = false;
         $this->isPublic = false;
@@ -359,5 +366,58 @@ class Presentation
     {
         $this->pictures[] = $picture;
         $picture->setPresentation($this);
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getGroupShares()
+    {
+        return $this->groupShares;
+    }
+
+    /**
+     * @param ArrayCollection $groupShares
+     */
+    public function setGroupShares(ArrayCollection $groupShares)
+    {
+        $this->groupShares = $groupShares;
+    }
+
+    public function addGroupShare(Group $group)
+    {
+        try {
+            $this->getUser()->getUserGroupFromGroup($group);
+            $this->groupShares->add($group);
+        } catch (\Exception $e) {
+        }
+    }
+
+    public function removeGroupShare(Group $group)
+    {
+        if ($this->groupShares->contains($group)) {
+            $this->groupShares->removeElement($group);
+        } else {
+            throw new \Exception("Group share doesn't exist");
+        }
+    }
+
+    public function maxRightsForUser(User $user): int
+    {
+        /** If we're the owner of the prez */
+        if ($this->getUser() == $user) {
+            return Group::ROLE_MANAGE_PREZ;
+        }
+
+        $maxRights = 0;
+        foreach (array_intersect($user->getGroups()->toArray(), $this->getGroupShares()->toArray()) as $group) {
+            $maxRights = max($user->getGroupRoleForUser($group), $maxRights);
+        }
+        return $maxRights;
+    }
+
+    public function userCanManage(User $user): bool
+    {
+        return $this->maxRightsForUser($user) >= Group::ROLE_MANAGE_PREZ;
     }
 }

@@ -31,7 +31,7 @@ presentations:
   updatedAt: Date de dernière mise à jour
   empty: "Vous n'avez pas encore de présentations, voulez-vous en créer une ?"
   create: Créer une nouvelle présentation
-  explore: Voir les modèles
+  explore: Voir les modèles publics
   isTemplate: Modèle
   edit:
     desc: Éditer la présentation
@@ -77,6 +77,7 @@ config:
   form_settings:
     language_label: Langue
   form_user:
+    title: Modifier vos informations personnelles
     name_label: Nom d'utilisateur
     email_label: Adresse email
     delete:
@@ -122,6 +123,7 @@ template:
   form_settings:
     template_label: Faire de cette présentation un modèle
     public_label: Rendre ce modèle public
+    groups_label: Partages avec un groupe
 templates:
   title: Modèle
   form:
@@ -133,15 +135,47 @@ templates:
     newpresentation: Nouvelle présentation
     newpresentation.desc: Vous allez créer une nouvelle présentation basée sur ce modèle
   mine: "Mes modèles (privés)"
+  all: Modèles
   public: "Modèles publics"
   published: "Mes modèles publiés"
+  published.empty: Vous n'avez encore publié aucun modèle
   author: "publié par author"
   empty: Vous n'avez aucun modèle
   publicempty: Personne n'a encore publié de modèle
 
-flashes.user.notice.added: Utilisateur %username% ajouté
-flashes.user.notice.updated: Utilisateur %username% mis à jour
-flashes.user.notice.deleted: Utilisateur %username% supprimé
+flashes:
+  user:
+    notice:
+      added: Utilisateur %username% ajouté
+      updated: Utilisateur %username% mis à jour
+      deleted: Utilisateur %username% supprimé
+  presentation:
+    notice:
+      presentation_deleted: La présentation a été supprimée
+    success:
+      presentation_updated: La présentation a été mise à jour
+  config:
+    notice:
+      config_saved: La configuration a été sauvegardée
+      password_updated: Le mot de passe a été mis à jour
+      user_updated: L'utilisateur a été mis à jour
+      presentation_reset: L'utilisateur a été remis à zéro
+  group:
+    notice:
+      password_success: Vous avez rejoint le groupe %groupe% !
+      user:
+        edited: Droits de l'utilisateur %user% dans le groupe %group% mis à jour
+      edited: Groupe %group% mis à jour
+      invite_cancelled: L'invitation a été annulée
+      invite_accepted: L'invitation a été acceptée. Vous faites maintenant partie du groupe %group%.
+    error:
+      already_in: L'utilisateur fait déjà partie du groupe ou a déjà reçu une invitation
+      no_such_user: Il n'existe pas d'utilisateur avec ce nom
+    success:
+      invite_sent: L'invitation a été envoyée
+  picture:
+    notice:
+      deleted: Image supprimée
 
 preview:
   needlogin: Vous devez vous enregistrer pour modifier cette présentation
@@ -182,16 +216,19 @@ user:
 
 group:
   page_title: Groupes
+  join: Rejoindre le groupe
   list:
     name: Nom du groupe
     nbMembers: Nombre de membres
     action: Action
     create_new_one: Créer un nouveau groupe
+    empty: Aucun groupe
   form:
     name: Nom du groupe
     save: Créer un nouveau groupe
     role: Droits par défaut pour tout nouveau utilisateur
     access: Méthode d'enregistrement
+    password: Mot de passe (si nécessaire)
   new.title: Création d'un nouveau groupe
   user:
     inGroup: "{0}Il n'y a personne dans ce groupe|{1}Vous êtes tout seul dans ce groupe|]1,Inf[Vous êtes %count% utilisateurs dans ce groupe"
@@ -202,11 +239,14 @@ group:
     manage_prez: Gestion des présentations
     manage_users: Gestion des utilisateurs
     admin: Administrateur
+    unknown: Inconnu
   access:
     open: Ouvert
     request: Demande d'admission
+    password: Mot de passe
     invitation: Sur invitation uniquement
     hidden: Sur invitation et caché
+    unknown: Inconnu
   leave: Quitter le groupe
   delete: Supprimer le groupe
   requests:
@@ -214,3 +254,43 @@ group:
     username: Nom d'utilisateur
     action: Action
     sent: Demande envoyée
+  members:
+    name: Nom du membre
+    role: Rôle
+    action: Action
+    edit: Éditer les droits du membre
+    exclude: Exclure le membre
+    empty: Vous êtes seul membre de ce groupe
+  manage:
+    label: Gérer le groupe
+    title: Gestion du groupe %group%
+  edit_user:
+    title: Édition des droits d'un membre
+    role: Rôle de l'utilisateur
+  edit:
+    title: Éditer le groupe
+    requests: Voir les demandes d'ajout
+    invitations: Voir les invitations
+  menu:
+    public: Groupes publics
+    private: Mes groupes
+  password:
+    title: Groupe protégé par mot de passe
+    label: Entrez le mot de passe du groupe
+    submit: Rejoindre le groupe
+  presentations: Présentations partagées avec mes groupes
+  invitation:
+    list:
+      name: Nom de l'utilisateur
+      date: Date de l'envoi
+      title: Invitations
+      empty: Il n'y a aucune invitation en attente pour le groupe « %group% »
+    new:
+      title: Envoyer une invitation
+    email:
+      hello: Bonjour %username%,
+      invited: Vous avez été invité à rejoindre le groupe « %groupname% ».
+      join: Vous pouvez rejoindre le groupe en cliquant sur ce lien <a href="%url%">%url%</a>.
+      join_txt: Vous pouvez rejoindre le groupe en cliquant sur ce lien %url%.
+      cheers: Bonne journée !
+      subject: Vous avez été invité·e à rejoindre le groupe %group%

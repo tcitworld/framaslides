@@ -2,12 +2,14 @@
 
 namespace Strut\StrutBundle\Controller;
 
+use Doctrine\ORM\QueryBuilder;
 use Pagerfanta\Adapter\DoctrineCollectionAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Patchwork\Utf8;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Strut\StrutBundle\Entity\Group;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Strut\StrutBundle\Form\Type\SearchEntryType;
@@ -18,6 +20,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class PresentationController extends Controller
 {
@@ -63,6 +67,80 @@ class PresentationController extends Controller
     public function showPublishedTemplatesAction(Request $request, int $page): Response
     {
         return $this->showPresentations('published-templates', $request, $page);
+    }
+
+    /**
+     * @Route("/group-presentations/{group}/{page}", name="group-presentations", defaults={"page" = "1"})
+     *
+     * @param Request $request
+     * @param Group $group
+     * @param int $page
+     * @return Response
+     */
+    public function showGroupSharedTemplatesAction(Request $request, Group $group, int $page): Response
+    {
+        if (!$this->getUser()->inGroup($group)) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $repository = $this->get('strut.presentation_repository');
+
+        /** @var QueryBuilder $presentations */
+        $presentations = $repository->findByGroup($group);
+
+        $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
+        $pagerFanta = new Pagerfanta($pagerAdapter);
+        $pagerFanta->setMaxPerPage(9);
+
+        try {
+            $pagerFanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $e) {
+            if ($page > 1) {
+                return $this->redirect($this->generateUrl('group-presentations', [
+                    'page' => $pagerFanta->getNbPages(),
+                    'group' => $group->getId()
+                ]), 302);
+            }
+        }
+
+        return $this->render(':default:presentations.html.twig', [
+            'presentations' => $pagerFanta,
+            'currentPage' => $page,
+        ]);
+    }
+
+    /**
+     * @Route("/group-presentations-list/{page}", name="group-presentations-list", defaults={"page" = "1"})
+     *
+     * @param Request $request
+     * @param int $page
+     * @return Response
+     */
+    public function showAnyGroupSharedTemplatesAction(Request $request, int $page): Response
+    {
+        $repository = $this->get('strut.presentation_repository');
+
+        /** @var QueryBuilder $presentations */
+        $presentations = $repository->findAllGroupShared();
+
+        $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
+        $pagerFanta = new Pagerfanta($pagerAdapter);
+        $pagerFanta->setMaxPerPage(9);
+
+        try {
+            $pagerFanta->setCurrentPage($page);
+        } catch (OutOfRangeCurrentPageException $e) {
+            if ($page > 1) {
+                return $this->redirect($this->generateUrl('group-presentations', [
+                    'page' => $pagerFanta->getNbPages(),
+                ]), 302);
+            }
+        }
+
+        return $this->render(':default:presentations.html.twig', [
+            'presentations' => $pagerFanta,
+            'currentPage' => $page,
+        ]);
     }
 
     /**
@@ -121,87 +199,6 @@ class PresentationController extends Controller
             'currentPage' => $page,
             'searchTerm' => $searchTerm,
         ]);
-    }
-
-    /**
-     * @Route("/new-presentation", name="new-presentation")
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function saveAction(Request $request): JsonResponse
-    {
-        $data = $request->get('data');
-        $newEntry = (bool) $request->get('newEntry', 0);
-        $name = $request->get('presentation');
-
-        $em = $this->getDoctrine()->getManager();
-        $logger = $this->get('logger');
-
-        /** @var Presentation $presentation */
-        $presentation = $this->get('strut.presentation_repository')->findOneBy(
-            [
-            'user' => $this->getUser(),
-            'title' => $name,
-            ]);
-
-        if ($presentation && $data === $presentation->getLastVersion()->getContent()) {
-            $logger->info("Tried to save but there's no change for presentation " . $presentation->getId());
-            $json = $this->get('jms_serializer')->serialize($presentation, 'json');
-            return new JsonResponse($json, 304, [], true);
-        }
-
-        $version = new Version();
-        $version->setContent($data);
-        $em->persist($version);
-        $logger->info("Created version " . $version->getId());
-
-
-        if ($presentation) { // If the presentation already exists, just add a new version
-            $logger->info("Version  " . $version->getId() . " has been added to presentation " . $presentation->getId());
-            $presentation->addVersion($version);
-        } elseif ($newEntry) { // otherwise, let's create an new presentation
-            $presentation = new Presentation($this->getUser());
-            $presentation->setTitle($name);
-            $presentation->addVersion($version);
-            $logger->info("A new presentation has been created " . $presentation->getTitle());
-            $em->persist($presentation);
-        } else {
-            return new JsonResponse([]);
-        }
-
-        $em->flush();
-
-        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
-
-        return (new JsonResponse())->setJson($json);
-    }
-
-    /**
-     * @Route("/save-preview/{title}", name="save-preview")
-     * @param Request $request
-     * @param string $title
-     * @return JsonResponse
-     */
-    public function savePreviewAction(Request $request, string $title): JsonResponse
-    {
-        /** @var Presentation $presentation */
-        $presentation = $this->get('strut.presentation_repository')->findOneBy(
-            [
-                'user' => $this->getUser(),
-                'title' => $title,
-            ]);
-        if (!$presentation) {
-            return new JsonResponse([], 404);
-        }
-
-        $previewData = $request->get('previewData');
-        $previewConfig = $request->get('previewConfig');
-
-        $presentation->setRendered($previewData);
-        $presentation->setPreviewConfig($previewConfig);
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-        return new JSONResponse();
     }
 
     /**
@@ -273,6 +270,31 @@ class PresentationController extends Controller
     }
 
     /**
+     * @Route("/delete-presentation-id/{presentation}", name="delete-presentation-id")
+     * @param Request $request
+     * @param Presentation $presentation
+     * @return Response
+     */
+    public function deletePresentationAction(Request $request, Presentation $presentation): Response
+    {
+        $this->checkUserPresentationAction($presentation);
+
+        // entry deleted, dispatch event about it!
+        // $this->get('event_dispatcher')->dispatch(EntryDeletedEvent::NAME, new EntryDeletedEvent($entry));
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($presentation);
+        $em->flush();
+
+        $this->get('session')->getFlashBag()->add(
+            'notice',
+            'flashes.presentation.notice.presentation_deleted'
+        );
+
+        return $this->redirectToRoute('presentations');
+    }
+
+    /**
      * Check if the logged user can manage the given entry.
      *
      * @param Presentation $presentation
@@ -281,12 +303,17 @@ class PresentationController extends Controller
     {
         if (null === $this->getUser()) {
             $this->get('logger')->info('user is null');
-            throw $this->createAccessDeniedException('You can not access this presentation.');
+            throw $this->createAccessDeniedException("Can't find user for this presentation");
         }
 
-        if ($this->getUser()->getId() != $presentation->getUser()->getId()) {
-            $this->get('logger')->info('user ' . $this->getUser()->getName() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getName());
-            throw $this->createAccessDeniedException('You can not access this presentation.');
+        if ($this->getUser()->getId() != $presentation->getUser()->getId() && $presentation->getGroupShares()->isEmpty()) {
+            $this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getUsername());
+            throw $this->createAccessDeniedException("You don't have the rights to access this presentation.");
+        }
+
+        if (!$presentation->getGroupShares()->isEmpty() && empty(array_intersect($this->getUser()->getGroups()->toArray(), $presentation->getGroupShares()->toArray()))) {
+            $this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' is not in one of the groups for presentation ' . $presentation->getTitle());
+            throw $this->createAccessDeniedException('You are not in the group to access this presentation');
         }
     }
 

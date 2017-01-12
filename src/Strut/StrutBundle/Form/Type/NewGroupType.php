@@ -5,6 +5,7 @@ namespace Strut\StrutBundle\Form\Type;
 use Strut\StrutBundle\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewGroupType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -34,9 +34,15 @@ class NewGroupType extends AbstractType
                 'choices' => [
                     'group.access.open' => Group::ACCESS_OPEN,
                     'group.access.request' => Group::ACCESS_REQUEST,
+                    'group.access.password' => Group::ACCESS_PASSWORD,
                     'group.access.invitation' => Group::ACCESS_INVITATION_ONLY,
                     'group.access.hidden' => Group::ACCESS_HIDDEN,
                 ],
+            ])
+            ->add('plainPassword', PasswordType::class, [
+                'label' => 'group.form.password',
+                'required' => false,
+                'attr' => ['autocomplete' => 'off'],
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'group.form.save',

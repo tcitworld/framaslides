@@ -38,11 +38,19 @@ class UserRepository extends EntityRepository
             ->getSingleScalarResult();
     }
 
-    public function getRequests(Group $group): QueryBuilder
+    public function findGroupRequests(Group $group): QueryBuilder
     {
         return $this->createQueryBuilder('u')
             ->leftJoin('u.userGroups', 'usergroup')
             ->where('usergroup.group = :group')->setParameter(':group', $group->getId())
             ->andWhere('usergroup.accepted = false');
+    }
+
+    public function findGroupMembers(Group $group): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->leftJoin('u.userGroups', 'usergroup')
+            ->where('usergroup.group = :group')->setParameter(':group', $group->getId())
+            ->andWhere('usergroup.accepted = true');
     }
 }

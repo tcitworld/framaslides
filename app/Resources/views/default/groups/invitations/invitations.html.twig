@@ -1,0 +1,33 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ 'group.invitation.list.title'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if invitedUsers | length > 0 %}
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>{{ 'group.invitation.list.name'|trans }}</th>
+                    <th>{{ 'group.invitation.list.date'|trans }}</th>
+                    <th>{{ 'group.list.action'|trans }}</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for invited in invitedUsers %}
+                    <tr>
+                        <td>{{ invited.user }}</td>
+                        <td>{{ invited.invitation.date | date }}</td>
+                        <td><a href="{{ path('invitation-cancel', { 'code': invited.invitation.code }) }}"><i class="material-icons">cancel</i></a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+                <div class="jumbotron">
+                    <h2>{{ 'group.invitation.list.empty' | trans({'%group%': group.name }) }}</h2>
+                </div>
+            {% endif %}
+        <a class="btn btn-default" href="{{ path('group-invitation', {'group': group.id}) }}">{{ 'group.invitation.new.title' | trans }}</a>
+    </div>
+{% endblock %}

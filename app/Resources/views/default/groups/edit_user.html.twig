@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ 'group.edit_user.title'|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>{{ 'group.edit_user.title'|trans }}</h4>
+
+                {{ form_start(edit_form) }}
+                {{ form_errors(edit_form) }}
+
+                <div class="form-group">
+                    {{ form_label(edit_form.role) }}
+                    {{ form_errors(edit_form.role) }}
+                    {{ form_widget(edit_form.role, {'attr':  {'class': 'form-control'}}) }}
+                </div>
+
+                {{ form_widget(edit_form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                {{ form_widget(edit_form._token) }}
+                {{ form_end(edit_form) }}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

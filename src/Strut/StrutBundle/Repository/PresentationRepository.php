@@ -11,6 +11,7 @@ namespace Strut\StrutBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
+use Strut\StrutBundle\Entity\Group;
 use Strut\StrutBundle\Entity\User;
 
 class PresentationRepository extends EntityRepository
@@ -79,6 +80,19 @@ class PresentationRepository extends EntityRepository
             ->groupBy('p.id');
 
         return $qb;
+    }
+
+    public function findByGroup(Group $group): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.groupShares', 'g', 'WITH', 'g.id = :group')
+            ->setParameter(':group', $group->getId());
+    }
+
+    public function findAllGroupShared(): QueryBuilder
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.groupShares', 'g');
     }
 
     public function removeAllByUser(User $user)

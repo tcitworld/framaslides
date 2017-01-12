@@ -27,21 +27,47 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.newpresentation' | trans }}"><a class="nav-link" href="{{ path('app') }}"><i class="glyphicon glyphicon-plus" ></i></a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.newpresentation' | trans }}"><a class="nav-link" href="{{ path('app') }}"><i class="material-icons">add</i></a></li>
                 {{ render(controller('Strut:Presentation:searchForm', {'currentRoute': app.request.attributes.get('_route')})) }}
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.mypresentations.desc' | trans }}"><a class="nav-link" href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.groups.desc' | trans }}"><a class="nav-link" href="{{ path('groups') }}">{{ 'menu.groups' | trans }}</a></li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.pictures.desc' | trans }}"><a class="nav-link" href="{{ path('pictures') }}"><i class="glyphicon glyphicon-picture"></i></a></li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.config' | trans }}"><a class="nav-link glyphicon glyphicon-cog" href="{{ path('config') }}"></a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.mypresentations.desc' | trans }}"><a class="nav-link" href="{{ path('presentations') }}"><i class="material-icons">description</i></a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.groups.desc' | trans }}"><a class="nav-link" href="{{ path('my-groups') }}"><i class="material-icons">group</i></a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.pictures.desc' | trans }}"><a class="nav-link" href="{{ path('pictures') }}"><i class="material-icons">image</i></a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.config' | trans }}"><a class="nav-link" href="{{ path('config') }}"><i class="material-icons">settings</i></a></li>
                 {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item"><a class="nav-link" href="{{ path('user_index') }}">{{ 'menu.admin' | trans }}</a></li>
                 {% endif %}
-                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.disconnect' | trans }}"><a class="nav-link" href="{{ path('fos_user_security_logout') }}"><i class="glyphicon glyphicon-log-out"></i></a></li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.disconnect' | trans }}"><a class="nav-link" href="{{ path('fos_user_security_logout') }}"><i class="material-icons">exit_to_app</i></a></li>
             </ul>
         </div>
     </div>
 </nav>
 {% endif %}
+{% block messages %}
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ flashMessage|trans }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ flashMessage|trans }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('warning') %}
+        <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ flashMessage|trans }}
+        </div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ flashMessage|trans }}
+        </div>
+    {% endfor %}
+{% endblock messages %}
 {% block content %}{% endblock content %}
 <script src="{{ asset('strut.bundle.js') }}"></script>
 {{ piwik_code() }}

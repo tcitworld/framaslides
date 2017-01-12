@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ 'group.page_title'|trans }}{% endblock %}
+
+{% block content %}
+{% set currentRoute = app.request.attributes.get('_route') %}
+
+    <div class="container">
+
+        <ul class="nav nav-tabs nav-justified">
+            <li role="presentation" {% if currentRoute == 'my-groups' %}class="active"{% endif %}><a href="{{ path('my-groups') }}">{{ 'group.menu.private' | trans }}</a></li>
+            <li role="presentation" {% if currentRoute == 'groups' %}class="active"{% endif %}><a href="{{ path('groups') }}">{{ 'group.menu.public' | trans  }}</a></li>
+        </ul>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th>{{ 'group.list.name'|trans }}</th>
+                <th>{{ 'group.list.nbMembers'|trans }}</th>
+                <th>{{ 'group.list.action'|trans }}</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for group in groups %}
+                <tr>
+                    <td>{{ group.name }}</td>
+                    <td>
+                    {% if app.user in group.users and app.user.inGroup(group) %}
+                        {{ 'group.user.inGroup' | transchoice(group.users | length) }}
+                    {% else %}
+                        {{ 'group.user.notInGroup' | transchoice(group.users | length) }}
+                    {% endif %}
+                    </td>
+                    <td>
+                        {% if app.user in group.users and app.user.inGroup(group) %}
+                            {% if app.user.getGroupRoleForUser(group) >= 5 %}
+                                <a href="{{ path('group-manage', { 'group': group.id }) }}" class="btn btn-standard"><i class="glyphicon glyphicon-cog" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.manage.label'|trans }}"></i></a>
+                            {% endif %}
+                            <a href="{{ path('group-presentations', { 'group': group.id }) }}" class="btn btn-standard"><i class="glyphicon glyphicon-th-list" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.presentations'|trans }}"></i></a>
+                            <a href="{{ path('group_leave', { 'group': group.id }) }}" class="btn btn-warning"><i class="glyphicon glyphicon-log-out" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.leave'|trans }}"></i></a>
+                        {% elseif app.user in group.users and not app.user.inGroup(group) %}
+                            {{ 'group.requests.sent' | trans }}
+                        {% else %}
+                        <a href="{{ path('group_join', { 'group': group.id }) }}" class="btn btn-default">
+                            {% if group.acceptSystem == 3 %}
+                                <i class="material-icons md-18 vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.join'|trans }}">lock</i>
+                            {% else %}
+                                <i class="glyphicon glyphicon-log-in" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.join'|trans }}"></i>
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if groups | length == 0 %}
+        <div class="jumbotron">
+                <h2>{{ 'group.list.empty' | trans }}</h2>
+        </div>
+        {% endif %}
+        <p>
+            <a href="{{ path('group_new') }}" class="btn btn-success">{{ 'group.list.create_new_one'|trans }}</a>
+        </p>
+        <div class="pull-right">
+            {% if groups.getNbPages > 1 %}
+                {{ pagerfanta(groups, 'twitter_bootstrap3', {'proximity': 1}) }}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

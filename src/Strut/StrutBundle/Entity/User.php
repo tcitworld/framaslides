@@ -22,13 +22,6 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="name", type="text", nullable=true)
-     */
-    protected $name;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
@@ -81,30 +74,6 @@ class User extends BaseUser
         }
 
         $this->updatedAt = new \DateTime();
-    }
-
-    /**
-     * Set name.
-     *
-     * @param string $name
-     *
-     * @return User
-     */
-    public function setName($name): User
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 
     /**
@@ -223,21 +192,33 @@ class User extends BaseUser
         $this->presentations->removeElement($presentation);
     }
 
+    /**
+     * @param Group $group
+     * @param $role
+     */
     public function addAGroup(Group $group, $role)
     {
-       $this->userGroups[] = new UserGroup($this, $group, $role);
+        $this->userGroups->add(new UserGroup($this, $group, $role));
     }
 
-    public function getUserGroupFromGroup(Group $group): UserGroup
+    /**
+     * @param Group $group
+     * @return UserGroup
+     */
+    public function getUserGroupFromGroup(Group $group)
     {
         foreach ($this->userGroups as $userGroup) {
             if ($userGroup->getGroup() == $group) {
                 return $userGroup;
             }
         }
-        throw new \Exception('No such group');
+        return null;
     }
 
+    /**
+     * @param Group $group
+     * @param $role
+     */
     public function setGroupRole(Group $group, $role)
     {
         if ($userGroup = $this->getUserGroupFromGroup($group)) {
@@ -245,20 +226,40 @@ class User extends BaseUser
         }
     }
 
+    /**
+     * @param Group $group
+     * @return int
+     */
     public function getGroupRoleForUser(Group $group)
     {
         if ($userGroup = $this->getUserGroupFromGroup($group)) {
             return $userGroup->getRole();
         }
-        return null;
+        return 0;
     }
 
-    public function acceptedInGroup(Group $group): bool
+    /**
+     * @param Group $group
+     * @return bool
+     */
+    public function inGroup(Group $group): bool
     {
         if ($group::ACCESS_REQUEST === $group->getAcceptSystem()) {
             $userGroup = $this->getUserGroupFromGroup($group);
-            return $userGroup->getAccepted();
+            return $userGroup->isAccepted();
         }
-        return true;
+        return null !== $this->getUserGroupFromGroup($group);
+    }
+
+    /**
+     * @return ArrayCollection<Group>
+     */
+    public function getGroups()
+    {
+        $groups = new ArrayCollection();
+        foreach ($this->userGroups as $userGroup) {
+            $groups->add($userGroup->getGroup());
+        }
+        return $groups;
     }
 }

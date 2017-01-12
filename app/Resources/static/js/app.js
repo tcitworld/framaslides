@@ -11,6 +11,7 @@ const template = require('./views/versions.twig'); // eslint-disable-line
  * CSS Imports
  */
 require('../css/app.scss');
+require('../../../../node_modules/material-design-icons/iconfont/material-icons.css');
 
 /**
  * jQuery compatibility for nav
@@ -56,7 +57,7 @@ $(() => {
     const elem = $(event.target).parents('.card');
     const shareModal = $('#shareModal');
 
-    fetch(`share/${elem.attr('data-presentation')}`, {
+    fetch($(event.target).parent().attr('href'), {
       credentials: 'same-origin',
     }).then((response) => {
       if (response.ok) {
@@ -76,23 +77,6 @@ $(() => {
       if (response.ok) {
         shareModal.modal('hide');
       }
-    });
-  });
-
-  /**
-   * Delete presentation
-   */
-  $('.delete').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(event.target).parents('.card');
-    $.ajax({
-      url: `delete-presentation/${elem.attr('data-presentation-title')}`,
-      success: () => {
-        elem.addClass('item-hidden').delay(400).remove();
-        if ($('.card').length === 0) {
-          $('.no-presentations-message').show();
-        }
-      },
     });
   });
 

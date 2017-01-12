@@ -2,6 +2,7 @@
 
 namespace Strut\StrutBundle\Controller;
 
+use Strut\StrutBundle\Entity\Group;
 use Strut\StrutBundle\Form\Type\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -21,18 +22,21 @@ class TemplateController extends Controller
      */
     public function templateFormAction(Presentation $presentation, Request $request): Response
     {
-        $form = $this->createForm(TemplateType::class, $presentation);
+        if (!$presentation->getGroupShares()->isEmpty() && !empty(array_intersect($this->getUser()->getGroups()->toArray(), $presentation->getGroupShares()->toArray())) && $this->getUser() != $presentation->getUser() && $presentation->maxRightsForUser($this->getUser()) < Group::ROLE_MANAGE_PREZ) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $form = $this->createForm(TemplateType::class, $presentation, ['attr' => ['user' => $this->getUser()]]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
             $em->persist($presentation);
             $em->flush();
 
             $this->get('session')->getFlashBag()->add(
-                'notice',
-                'flashes.entry.notice.entry_updated'
+                'success',
+                'flashes.presentation.success.presentation_updated'
             );
 
             return $this->redirect($this->generateUrl('template', [

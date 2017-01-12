@@ -4,6 +4,7 @@ namespace Strut\StrutBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Strut\StrutBundle\Entity\User;
 
 class GroupRepository extends EntityRepository
 {
@@ -15,5 +16,18 @@ class GroupRepository extends EntityRepository
     public function getBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('g');
+    }
+
+    public function findPublicGroups(): QueryBuilder
+    {
+        return $this->getBuilder()
+            ->where('g.acceptSystem < 10');
+    }
+
+    public function findGroupsByUser(User $user): QueryBuilder
+    {
+        return $this->getBuilder()
+            ->join('Strut\StrutBundle\Entity\UserGroup', 'u', 'WITH', 'u.group = g.id')
+            ->where('u.user = :user')->setParameter(':user', $user->getId());
     }
 }

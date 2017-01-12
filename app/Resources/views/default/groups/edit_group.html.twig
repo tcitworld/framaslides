@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ 'group.edit.title'|trans }}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h4>{{ 'group.edit.title'|trans }}</h4>
+
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+
+                <div class="form-group">
+                    {{ form_label(form.name) }}
+                    {{ form_errors(form.name) }}
+                    {{ form_widget(form.name) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.defaultRole) }}
+                    {{ form_errors(form.defaultRole) }}
+                    {{ form_widget(form.defaultRole) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.acceptSystem) }}
+                    {{ form_errors(form.acceptSystem) }}
+                    {{ form_widget(form.acceptSystem) }}
+                </div>
+
+                <div class="form-group">
+                    {{ form_label(form.plainPassword) }}
+                    {{ form_errors(form.plainPassword) }}
+                    {{ form_widget(form.plainPassword) }}
+                </div>
+
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                {{ form_rest(form) }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
