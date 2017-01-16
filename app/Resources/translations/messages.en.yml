@@ -4,19 +4,22 @@ app.presentation: "appName is an online slide editor service"
 menu:
   newpresentation: New presentation
   mypresentations: My presentations
+  mypresentations.desc: View my presentations
   templates: Templates
   pictures: Pictures
+  pictures.desc: View my pictures
   disconnect: Disconnect
   login: Login
   register: Register
+  groups.desc: Groups list
   admin: Admin
+  config: Configuration
   search:
     placeholder: Search
 
 presentations:
-  nbversions: 'one version|%count% versions'
-  nbslides: 'only one slide|%count% slides'
-  nbpictures: "{0}no pictures|{1}only one picture|]1,Inf[%count% pictures"
+  title:
+    edit: Edit the title (not working)
   createdAt: 'Presentation created le %createdAt%'
   updatedAt: 'Last version %updatedAt%'
   empty: You don't have any presentations yet, do you want to create one ?
@@ -30,6 +33,28 @@ presentations:
     input: Public URL for the presentation
     delete: Delete the public link
     delete.details: If you delete the public link for this presentation, it will no longer be possible to access it through this link.
+  nbVersions:
+    label: 'one version|%count% versions'
+    desc: Number of versions
+  nbSlides:
+    label: 'only one slide|%count% slides'
+    desc: Number of slides
+  nbPictures:
+    label: "{0}no pictures|{1}only one picture|]1,Inf[%count% pictures"
+    desc: Number of pictures
+  edit:
+    desc: Edit the presentation
+  delete:
+    desc: Delete the presentation
+  bookmark:
+    desc: Manage the presentation
+  download:
+    desc: Download the presentation
+  preview:
+    desc: View the presentation
+
+search:
+  empty: No results found for the search "%term%"
 
 security:
   login:
@@ -50,8 +75,29 @@ config:
     password: Password
   form_settings:
     language_label: Language
+  form_user:
+    title: Modify your personal informations
+    name_label: Username
+    email_label: Email address
+    delete:
+      title: Delete your account
+      description: If you don't use your account, you can easily delete it by clicking on the button below
+      confirm: Confirm the deletion of the account
+      button: Delete my account
+  form_password:
+    description: You want to change your password?
+    old_password_label: Old password
+    new_password_label: New password
+    repeat_new_password_label: New password (confirm)
   form:
     save: Save
+  reset:
+    title: Reset your account
+    description: Resetting your account will delete all your presentations (public models and group shares included)
+    confirm: Confirm the deletion of all your presentations
+    presentations: Delete all my presentations
+
+
 
 English: English
 Français: French
@@ -74,6 +120,7 @@ info:
 
 templates:
   title: Template
+  all: Templates
   form:
     maketemplate: Make this presentation a template
     maketemplate.tooltip: This presentation will be accessible as a base for other presentations inside « Your templates »
@@ -91,9 +138,15 @@ templates:
   empty: You have no templates
   publicempty: No one published templates yet
 
-flashes.user.notice.added: User %username% added
-flashes.user.notice.updated: User %username% updated
-flashes.user.notice.deleted: User %username% deleted
+flashes:
+  user:
+    notice:
+      added: User %username% added
+      updated: User %username% updated
+      deleted: User %username% deleted
+  config:
+    notice:
+      config_saved: The configuration was saved
 
 preview:
   needlogin: You will need to login to edit this presentation
@@ -131,3 +184,22 @@ user:
     save: Save
     password_label: Password
     repeat_new_password_label: Repeat password
+
+group:
+  page_title: Groups
+  menu:
+    private: My groups
+    public: Public groups
+  list:
+    name: Group name
+    nbMembers: Number of members
+    action: Action
+    create_new_one: Create a new group
+  user:
+    inGroup: "{0}There's no one in this group|{1}You are the only one in this group|]1,Inf[You are %count% users in this group"
+    notInGroup: "{0}There's no one in this group|{1}There's only one user in this group|]1,Inf[%count% users in this group"
+  manage:
+    label: Manage the group
+  presentations: Presentations shared with my groups
+  leave: Leave the group
+  join: Join the group
