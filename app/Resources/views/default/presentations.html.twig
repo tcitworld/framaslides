@@ -46,7 +46,7 @@
                                     {% if presentation.groupShares | length > 0 %}
                                         {% for group in presentation.groupShares %}
                                              {% if app.user.inGroup(group) %}
-                                                <a href="{{ path('group-presentations', { 'group' : group.id }) }}"><span class="label label-primary"><i class="material-icons font-size-inherit vertical-align-middle">group_work</i> {{ group.name }}</span></a>
+                                                <a href="{{ path('group-presentations', { 'group' : group.id }) }}"><span class="label label-primary"><i class="material-icons font-size-inherit vertical-align-middle">group</i> {{ group.name }}</span></a>
                                              {% endif %}
                                         {% endfor %}
                                     {% endif %}
