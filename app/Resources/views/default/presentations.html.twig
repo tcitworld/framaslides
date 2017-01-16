@@ -41,7 +41,7 @@
                     <div class="card-block">
                         <div class="media">
                             <div class="media-body">
-                                <h4 class="card-title media-heading"><span class="title">{{ presentation.title }}</span> <i class="edit-title small material-icons pointer" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.title.edit' | trans }}">edit</i></h4>
+                                <h4 class="card-title media-heading">{{ presentation.title }}</h4>
                                 <p><a href="{{ path('versions', {'presentation': presentation.id }) }}"><span class="label label-default versions pointer">{{ 'presentations.nbVersions.label' | transchoice(presentation.versions | length) }}</span></a> {% if presentation.isTemplate %}<span class="label label-primary">{{ 'presentations.isTemplate' | trans }}</span>{% endif %} {% if presentation.isPublic %}<span class="label label-success">{{ 'presentations.isPublic' | trans }}</span>{% endif %}
                                     {% if presentation.groupShares | length > 0 %}
                                         {% for group in presentation.groupShares %}
@@ -72,10 +72,9 @@
                     <div class="card-footer">
                         <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}">edit</i></a>
                         {% if presentation.userCanManage(app.user) %}
+                            <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}">settings</i></a>
                            <a href="{{ path('delete-presentation-id', { 'presentation': presentation.id }) }}" class="delete" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}">delete</i></a>
-                            <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}">bookmark</i></a>
                         {% endif %}
-                        <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="download-json" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.download.desc' | trans }}">file_download</i></a>
                         {% if presentation.rendered %}
                         <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
                         <a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>{% endif %}

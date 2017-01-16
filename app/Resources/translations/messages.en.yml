@@ -20,8 +20,8 @@ menu:
 presentations:
   title:
     edit: Edit the title (not working)
-  createdAt: 'Presentation created le %createdAt%'
-  updatedAt: 'Last version %updatedAt%'
+  createdAt: Date of creation
+  updatedAt: Date of last update
   empty: You don't have any presentations yet, do you want to create one ?
   create: Create a new presentation
   explore: See templates
@@ -44,6 +44,7 @@ presentations:
     desc: Number of pictures
   edit:
     desc: Edit the presentation
+    back: Back to the presentations list
   delete:
     desc: Delete the presentation
   bookmark:
@@ -103,8 +104,10 @@ English: English
 Français: French
 
 version:
-  title: Version
-  lastnotdelete: You can't delete the last version
+  title: Versions for the presentation %presentation%:
+  lastnotdelete:
+    desc: You can't delete the last version
+    btn: Delete all old versions
   delete: Delete this version
   restore: Restore this version (creates a new version)
   download: Download this version
@@ -118,8 +121,14 @@ info:
       title: Version restored
       desc: A new corresponding version has been created
 
+template:
+  form_settings:
+    title_label: Presentation title
+    template_label: Make this presentation a model
+    public_label: Make this model public
+    groups_label: Shares with a group
 templates:
-  title: Template
+  title: Manage presentation %presentation%
   all: Templates
   form:
     maketemplate: Make this presentation a template

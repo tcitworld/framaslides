@@ -46,6 +46,7 @@ class TemplateController extends Controller
 
         return $this->render('default/forms/template.html.twig', [
             'form' => $form->createView(),
+            'presentation' => $presentation,
         ]);
     }
 

@@ -7,7 +7,7 @@
             <h4 class="modal-title" id="versionModalLabel">{{ 'version.title' | trans({ '%presentation%': presentation.title }) }}</h4>
             <div class="alert alert-warning alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'errors.default' | trans }}</strong> </div>
             <div class="alert alert-info alert-dismissible fade in hidden" role="alert"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button> <strong>{{ 'info.default' | trans }}</strong> <span class="desc"></span></div>
-            <a class="btn btn-default" href="{{ path('presentations') }}"><i class="material-icons vertical-align-middle md-18">keyboard_arrow_left</i> Retour à la liste des présentations</a>
+            <a class="btn btn-default" href="{{ path('presentations') }}"><i class="material-icons vertical-align-middle md-18">keyboard_arrow_left</i> {{ 'presentations.edit.back' | trans }}</a>
         </div>
         <div class="body">
             <ul class="list-group">

@@ -35,12 +35,14 @@ presentations:
   isTemplate: Modèle
   edit:
     desc: Éditer la présentation
+    back: Retour à la liste des présentations
   delete:
     desc: Supprimer la présentation
   bookmark:
-    desc: Marquer la présentation comme modèle ou publique
+    desc: Paramètres de la présentation
   download:
-    desc: Télécharger la présenation au format json
+    title: Télécharger la présentation
+    desc: "Télécharger la présentation en différents formats : le format json permet de la réimporter dans une autre instance strut et le format HTML (Zip) permet de visualiser la présentation hors-ligne"
   preview:
     desc: Voir la présentation
   isPublic: Public
@@ -124,8 +126,9 @@ template:
     template_label: Faire de cette présentation un modèle
     public_label: Rendre ce modèle public
     groups_label: Partages avec un groupe
+    title_label: Titre de la présentation
 templates:
-  title: Modèle
+  title: Modifier la présentation %presentation%
   form:
     maketemplate.tooltip: Cette présentation sera accessible comme base pour d'autres présentations dans « Vos modèles »
     makepublic.tooltip: Cette présentation sera accessible comme base pour d'autres présentations par tout le monde.
