@@ -13,7 +13,7 @@
         <figure>
             <img class="img-responsive img-rounded" src="{{ path('show-picture', {'uuid': picture.uuid}) }}" alt="{{ picture.fileName }}"/>
             <figcaption>{{ picture.fileName }}</figcaption>
-            <a href="{{ path('delete-picture', {'uuid': picture.uuid}) }}"><span class="glyphicon glyphicon-trash"></span></a>
+            <a href="{{ path('delete-picture', {'uuid': picture.uuid}) }}"><i class="material-icons">delete</i></a>
         </figure>
     {% endfor %}
     <div class="pull-right">

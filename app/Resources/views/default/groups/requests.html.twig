@@ -21,8 +21,8 @@
                         <tr>
                             <td>{{ request.username }}</td>
                             <td>
-                                <a class="btn btn-success" href="{{ path('group-activate', {'group': group.id, 'user': request.id, 'accept': 1}) }}"><i class="glyphicon glyphicon-ok"></i></a>
-                                <a class="btn btn-danger" href="{{ path('group-activate', {'group': group.id, 'user': request.id, 'accept': 2}) }}"><i class="glyphicon glyphicon-remove"></i></a>
+                                <a class="btn btn-success" href="{{ path('group-activate', {'group': group.id, 'user': request.id, 'accept': 1}) }}"><i class="material-icons">check</i></a>
+                                <a class="btn btn-danger" href="{{ path('group-activate', {'group': group.id, 'user': request.id, 'accept': 2}) }}"><i class="material-icons">close</i></a>
                             </td>
                         </tr>
                     {% endfor %}

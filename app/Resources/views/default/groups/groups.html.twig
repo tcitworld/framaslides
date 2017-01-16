@@ -35,10 +35,10 @@
                     <td>
                         {% if app.user in group.users and app.user.inGroup(group) %}
                             {% if app.user.getGroupRoleForUser(group) >= 5 %}
-                                <a href="{{ path('group-manage', { 'group': group.id }) }}" class="btn btn-standard"><i class="glyphicon glyphicon-cog" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.manage.label'|trans }}"></i></a>
+                                <a href="{{ path('group-manage', { 'group': group.id }) }}" class="btn btn-standard"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.manage.label'|trans }}">settings_applications</i></a>
                             {% endif %}
-                            <a href="{{ path('group-presentations', { 'group': group.id }) }}" class="btn btn-standard"><i class="glyphicon glyphicon-th-list" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.presentations'|trans }}"></i></a>
-                            <a href="{{ path('group_leave', { 'group': group.id }) }}" class="btn btn-warning"><i class="glyphicon glyphicon-log-out" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.leave'|trans }}"></i></a>
+                            <a href="{{ path('group-presentations', { 'group': group.id }) }}" class="btn btn-standard"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.presentations'|trans }}">view_list</i></a>
+                            <a href="{{ path('group_leave', { 'group': group.id }) }}" class="btn btn-warning"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.leave'|trans }}">exit_to_app</i></a>
                         {% elseif app.user in group.users and not app.user.inGroup(group) %}
                             {{ 'group.requests.sent' | trans }}
                         {% else %}
@@ -46,7 +46,7 @@
                             {% if group.acceptSystem == 3 %}
                                 <i class="material-icons md-18 vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.join'|trans }}">lock</i>
                             {% else %}
-                                <i class="glyphicon glyphicon-log-in" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.join'|trans }}"></i>
+                                <i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.join'|trans }}">input</i>
                             {% endif %}
                         </a>
                         {% endif %}
