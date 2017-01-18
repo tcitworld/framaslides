@@ -279,9 +279,6 @@ class PresentationController extends Controller
     {
         $this->checkUserPresentationAction($presentation);
 
-        // entry deleted, dispatch event about it!
-        // $this->get('event_dispatcher')->dispatch(EntryDeletedEvent::NAME, new EntryDeletedEvent($entry));
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($presentation);
         $em->flush();
