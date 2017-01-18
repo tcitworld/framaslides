@@ -2,6 +2,7 @@
 
 namespace Strut\StrutBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Strut\StrutBundle\Entity\Group;
 use Strut\StrutBundle\Form\Type\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -31,6 +32,17 @@ class TemplateController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $title = $presentation->getTitle();
+            $versions = $presentation->getVersions()->toArray();
+            $versions = array_map(function (Version $version) use ($title) {
+                $content = $version->getContent();
+                $data = json_decode($content);
+                $data->fileName = $title;
+                $content = json_encode($data);
+                $version->setContent($content);
+                return $version;
+            }, $versions);
+            $presentation->setVersions(new ArrayCollection($versions));
             $em->persist($presentation);
             $em->flush();
 
@@ -48,6 +60,16 @@ class TemplateController extends Controller
             'form' => $form->createView(),
             'presentation' => $presentation,
         ]);
+    }
+
+    private function changeFileNameInContent(string $title, Version $version): Version
+    {
+        $content = $version->getContent();
+        $data = json_decode($content);
+        $data->fileName = $title;
+        $content = json_encode($data);
+        $version->setContent($content);
+        return $version;
     }
 
     /**
