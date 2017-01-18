@@ -281,12 +281,22 @@ module.exports = function (grunt) {
                 {
                     expand: true,
                     dot: true,
-                    cwd: '<%= yeoman.app %>',
+                    cwd: '<%= yeoman.app %>/scripts/',
                     dest: 'web/scripts/libs/',
                     src: [
-                        'scripts/libs/require.js',
+                        'require.js',
+                        'highlight.pack.js'
                     ]
-                }
+                },
+                  {
+                    expand: true,
+                    dot: true,
+                    cwd: 'node_modules/',
+                    dest: 'web/scripts/libs/',
+                    src: [
+                      'highlight.js/**',
+                    ]
+                  },
                 ]
             }
         },
