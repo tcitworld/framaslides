@@ -159,13 +159,16 @@ $(document).ready(function() {
 
         var body = $('body');
 
+        body.prepend('<div class="popup"></div>');
+        var popup = $('.popup');
         {% if app.user and app.user != presentation.user %}
-        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-duplicate"></span></button></div>');
+        popup.prepend('<button class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-duplicate"></span></button>');
         {% elseif app.user == presentation.user %}
-        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="edit"><span class="glyphicon glyphicon-pencil"></span></button><button class="btn btn-default hidden" id="home"><span class="glyphicon glyphicon-home"></span></button></div>');
+        popup.prepend('<button class="btn btn-default hidden" id="edit"><span class="glyphicon glyphicon-pencil"></span></button><button class="btn btn-default hidden" id="home"><span class="glyphicon glyphicon-home"></span></button>');
         {% elseif app.request.attributes.get('_route') != 'share_presentation' %}
-        body.prepend('<div class="popup"><button class="btn btn-default hidden" id="login" data-toggle="tooltip" data-placement="right" title="{{ 'preview.needlogin' | trans }}"><span class="glyphicon glyphicon-lock"></span></button></div>');
+        popup.prepend('<button class="btn btn-default hidden" id="login" data-toggle="tooltip" data-placement="right" title="{{ 'preview.needlogin' | trans }}"><span class="glyphicon glyphicon-lock"></span></button>');
         {% endif %}
+        popup.append('<button class="btn btn-default hidden" id="fullscreen" data-toggle="tooltip" data-placement="right" title="{{ 'preview.fullscreen' | trans }}"><span class="glyphicon glyphicon-resize-full fullscreen-btn"></span></button>');
         var btn = $('.popup button');
 
           if (window.location.hash === '#/overview') {
@@ -184,6 +187,34 @@ $(document).ready(function() {
           }
         }, false);
 
+      function toggleFullScreen(element) {
+        if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement) {
+          if (element.requestFullscreen) {
+            element.requestFullscreen();
+          } else if (element.mozRequestFullScreen) {
+            element.mozRequestFullScreen();
+          } else if (element.webkitRequestFullscreen) {
+            element.webkitRequestFullscreen();
+          } else if (element.msRequestFullscreen) {
+            element.msRequestFullscreen();
+          } else {
+            return false;
+          }
+          return "on";
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else if (document.mozCancelFullScreen) {
+            document.mozCancelFullScreen();
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          } else {
+            return false;
+          }
+          return "off";
+        }
+      }
+
         body.on('click', '#edit', function() {
           window.location = window.location.origin + '{{ path('app', {'_fragment': presentation.title}) }}';
         });
@@ -195,6 +226,11 @@ $(document).ready(function() {
           body.on('click', '#login', function() {
             window.location = window.location.origin + '{{ path('fos_user_security_login') }}';
           });
+
+      body.on('click', '#fullscreen', function(elem) {
+        $('.fullscreen-btn').toggleClass('glyphicon-resize-full').toggleClass('glyphicon-resize-small');
+        toggleFullScreen(document.documentElement);
+      });
 
         body.on('click', '#fork', function() {
           var titre = prompt('Titre');
