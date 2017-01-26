@@ -52,6 +52,9 @@ $(() => {
   /**
    * Share stuff
    */
+
+  const modalData = { };
+
   $('.share').on('click', (event) => {
     event.preventDefault();
     const elem = $(event.target).parents('.card');
@@ -63,6 +66,10 @@ $(() => {
       if (response.ok) {
         $('#presentationshareurl').val(response.url);
         $('#btn-external').attr('href', response.url);
+        modalData.title = elem.attr('data-presentation-title');
+        modalData.id = elem.attr('data-presentation');
+        modalData.shareUrl = response.url;
+        shareModal.attr('data-presentation-title', elem.attr('data-presentation-title'));
         shareModal.attr('data-presentation', elem.attr('data-presentation'));
         shareModal.modal();
       }
@@ -90,6 +97,21 @@ $(() => {
         },
       });
     }
+  });
+
+  body.on('click', '#facebook', () => {
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(modalData.shareUrl)}&t=${encodeURIComponent(modalData.title)}`, 'das', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+    return false;
+  });
+
+  body.on('click', '#twitter', () => {
+    window.open(`http://twitter.com/share?text=${encodeURIComponent(modalData.title)}&url=${encodeURIComponent(modalData.shareUrl)}&hashtags=framasoft&title=`, 'das', 'location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');
+    return false;
+  });
+
+  body.on('click', '#diaspora', () => {
+    window.open(`http://sharetodiaspora.github.io/?url=${encodeURIComponent(modalData.shareUrl)}&title=${encodeURIComponent(modalData.title)}`, 'das', 'location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');
+    return false;
   });
 
   /**

@@ -120,3 +120,13 @@ h2 {
 .font-size-inherit {
   font-size: inherit;
 }
+
+.social-buttons {
+  margin-top: 15px;
+  img {
+    width: 30px;
+  }
+  a, a:link {
+    text-decoration: none;
+  }
+}

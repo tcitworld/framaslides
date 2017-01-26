@@ -259,7 +259,7 @@ $(document).ready(function() {
     <meta property="og:url" content="{{ app.request.uri }}" />
     {% set picturePath = app.request.schemeAndHttpHost ~ asset('img/slides.png') %}
     {% if presentation.pictures | length > 0 %}
-    {% set picturePath = path('show-picture', { 'uuid': (presentation.pictures | first).uuid }) %}
+    {% set picturePath = app.request.schemeAndHttpHost ~ path('show-picture', { 'uuid': (presentation.pictures | first).uuid }) %}
     {% endif %}
     <meta property="og:image" content="{{ picturePath }}" />
     <meta name="twitter:card" content="summary" />
