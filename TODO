@@ -1,0 +1,1 @@
+- When server is in maintenance (returns 503) notify it to the user inside strut.

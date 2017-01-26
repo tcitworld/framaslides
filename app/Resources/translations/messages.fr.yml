@@ -17,6 +17,9 @@ menu:
   search:
     placeholder: Rechercher
 
+strut:
+  page_title: Édition - Framaslides
+
 presentations:
   nbVersions:
     label: 'une version|%count% versions'
@@ -266,7 +269,7 @@ group:
     empty: Vous êtes seul membre de ce groupe
   manage:
     label: Gérer le groupe
-    title: Gestion du groupe %group%
+    title: Gestion du groupe « %group% »
   edit_user:
     title: Édition des droits d'un membre
     role: Rôle de l'utilisateur
