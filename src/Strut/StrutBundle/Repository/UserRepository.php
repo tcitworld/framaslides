@@ -53,4 +53,12 @@ class UserRepository extends EntityRepository
             ->where('usergroup.group = :group')->setParameter(':group', $group->getId())
             ->andWhere('usergroup.accepted = true');
     }
+
+    public function searchUsers($search): QueryBuilder
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.username LIKE :search')
+            ->orWhere('u.email LIKE :search')
+            ->setParameter(':search', '%' . $search . '%');
+    }
 }

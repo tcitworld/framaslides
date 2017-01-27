@@ -24,6 +24,14 @@ class GroupRepository extends EntityRepository
             ->where('g.acceptSystem < 10');
     }
 
+    public function findPublicGroupsByName(string $search): QueryBuilder
+	{
+		return $this->getBuilder()
+			->where('g.acceptSystem < 10')
+			->andWhere('g.name LIKE :name')
+			->setParameter(':name', '%' . $search . '%');
+	}
+
     public function findGroupsByUser(User $user): QueryBuilder
     {
         return $this->getBuilder()

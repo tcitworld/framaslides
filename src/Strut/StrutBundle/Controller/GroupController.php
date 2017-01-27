@@ -9,11 +9,13 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Strut\StrutBundle\Entity\Group;
 use Strut\StrutBundle\Entity\User;
 use Strut\StrutBundle\Entity\UserGroup;
 use Strut\StrutBundle\Form\Type\GroupPasswordValidationType;
 use Strut\StrutBundle\Form\Type\NewGroupType;
+use Strut\StrutBundle\Form\Type\SearchGroupType;
 use Strut\StrutBundle\Service\Sha256Salted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +53,51 @@ class GroupController extends Controller
             'currentPage' => $page,
         ]);
     }
+
+	/**
+	 * Search in users
+	 *
+	 * @Route("/groups/search/{page}", name="group_search", defaults={"page" = "1"}, requirements={"page" = "\d+"})
+	 * @Method("GET")
+	 * @param $page
+	 * @return Response
+	 */
+	public function searchAction(Request $request, int $page = 1, string $currentRoute = ''): Response
+	{
+		$form = $this->createForm(SearchGroupType::class);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			$groupName = $request->get('search_group')['term'];
+
+			$em = $this->getDoctrine()->getManager();
+
+			$users = $em->getRepository('Strut:Group')->findPublicGroupsByName($groupName);
+
+			$pagerAdapter = new DoctrineORMAdapter($users);
+			$pagerFanta = new Pagerfanta($pagerAdapter);
+			$pagerFanta->setMaxPerPage(10);
+
+			try {
+				$pagerFanta->setCurrentPage($page);
+			} catch (OutOfRangeCurrentPageException $e) {
+				if ($page > 1) {
+					return $this->redirect($this->generateUrl('user_index', ['page' => $pagerFanta->getNbPages()]), 302);
+				}
+			}
+
+			return $this->render('default/groups/groups.html.twig', array(
+				'groups' => $pagerFanta,
+				'searchTerm' => $groupName,
+			));
+		}
+
+		return $this->render('default/forms/search_group_form.html.twig', [
+			'form' => $form->createView(),
+			'currentRoute' => $currentRoute,
+		]);
+	}
 
     /**
      * @Route("/user-groups", name="my-groups", defaults={"page" = "1"})

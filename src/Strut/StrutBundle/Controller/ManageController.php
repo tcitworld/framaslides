@@ -6,8 +6,10 @@ use FOS\UserBundle\Doctrine\UserManager;
 use FOS\UserBundle\Event\UserEvent;
 use FOS\UserBundle\FOSUserEvents;
 use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
+use Strut\StrutBundle\Form\Type\SearchUserType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,6 +53,51 @@ class ManageController extends Controller
         return $this->render('default/manage.html.twig', array(
             'users' => $pagerFanta,
         ));
+    }
+
+    /**
+     * Search in users
+     *
+     * @Route("search/{page}", name="user_search", defaults={"page" = "1"}, requirements={"page" = "\d+"})
+     * @Method("GET")
+     * @param $page
+     * @return Response
+     */
+    public function searchAction(Request $request, int $page = 1, string $currentRoute = ''): Response
+    {
+        $form = $this->createForm(SearchUserType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        	$username = $request->get('search_user')['term'];
+
+            $em = $this->getDoctrine()->getManager();
+
+            $users = $em->getRepository('Strut:User')->searchUsers($username);
+
+            $pagerAdapter = new DoctrineORMAdapter($users);
+            $pagerFanta = new Pagerfanta($pagerAdapter);
+            $pagerFanta->setMaxPerPage(10);
+
+            try {
+                $pagerFanta->setCurrentPage($page);
+            } catch (OutOfRangeCurrentPageException $e) {
+                if ($page > 1) {
+                    return $this->redirect($this->generateUrl('user_index', ['page' => $pagerFanta->getNbPages()]), 302);
+                }
+            }
+
+            return $this->render('default/manage.html.twig', array(
+                'users' => $pagerFanta,
+				'searchTerm' => $username,
+            ));
+        }
+
+        return $this->render('default/forms/search_user_form.html.twig', [
+            'form' => $form->createView(),
+            'currentRoute' => $currentRoute,
+        ]);
     }
 
     /**
