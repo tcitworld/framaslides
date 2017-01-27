@@ -1,8 +1,8 @@
 <?php
 
-namespace Strut\StrutBundle\Form\Type;
+namespace Strut\GroupBundle\Form\Type;
 
-use Strut\StrutBundle\Entity\Group;
+use Strut\GroupBundle\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -53,7 +53,7 @@ class NewGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'Strut\StrutBundle\Entity\Group',
+            'data_class' => 'Strut\GroupBundle\Entity\Group',
         ]);
     }
 

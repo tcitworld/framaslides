@@ -1,14 +1,15 @@
 <?php
 
-namespace Strut\StrutBundle\Entity;
+namespace Strut\GroupBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\GroupInterface;
+use Strut\UserBundle\Entity\User;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\UserGroupRepository")
+ * @ORM\Entity(repositoryClass="Strut\GroupBundle\Repository\UserGroupRepository")
  * @UniqueEntity({"user_id", "group_id"})
  * @ORM\Table(name="fos_user_group")
  */
@@ -27,13 +28,13 @@ class UserGroup
     private $role;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="userGroups")
+     * @ORM\ManyToOne(targetEntity="Strut\UserBundle\Entity\User", inversedBy="userGroups")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\Group", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Strut\GroupBundle\Entity\Group", inversedBy="users")
      * @ORM\JoinColumn(name="group_id", referencedColumnName="id")
      */
     private $group;
@@ -44,7 +45,7 @@ class UserGroup
     private $accepted;
 
     /**
-     * @ORM\OneToOne(targetEntity="Strut\StrutBundle\Entity\Invitation", inversedBy="userGroup", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Strut\GroupBundle\Entity\Invitation", inversedBy="userGroup", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="invitation", referencedColumnName="code")
      */
     protected $invitation;

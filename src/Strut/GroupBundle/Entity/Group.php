@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Entity;
+namespace Strut\GroupBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\Group as BaseGroup;
@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\GroupRepository")
+ * @ORM\Entity(repositoryClass="Strut\GroupBundle\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
  * @UniqueEntity("name")
  */
@@ -78,7 +78,7 @@ class Group extends BaseGroup
     protected $plainPassword;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Presentation", mappedBy="groupShares", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Strut\StrutBundle\Entity\Presentation", mappedBy="groupShares", cascade={"persist"})
      */
     protected $presentations;
 

@@ -4,6 +4,7 @@ namespace Strut\StrutBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
+use Strut\UserBundle\Entity\User;
 
 /**
  * @ORM\Entity
@@ -21,7 +22,7 @@ class Config
     /**
      * @var User
      *
-     * @ORM\OneToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="config")
+     * @ORM\OneToOne(targetEntity="Strut\UserBundle\Entity\User", inversedBy="config")
      */
     private $user;
 

@@ -20,7 +20,7 @@ function(de, en, es, fr, nl, ru, ar, handlebars) {
 	var userlang;
 	$.ajax({
 	  method: 'GET',
-	  url: '/user-locale',
+	  url: '/users/locale',
     async: false,
     success: function (data) {
       userlang = data;

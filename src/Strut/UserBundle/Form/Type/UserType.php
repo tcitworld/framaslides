@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Form\Type;
+namespace Strut\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -44,7 +44,7 @@ class UserType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Strut\StrutBundle\Entity\User',
+            'data_class' => 'Strut\UserBundle\Entity\User',
         ));
     }
 }

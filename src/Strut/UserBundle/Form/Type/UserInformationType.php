@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Form\Type;
+namespace Strut\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;

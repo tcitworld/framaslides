@@ -9,9 +9,8 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Patchwork\Utf8;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Strut\StrutBundle\Entity\Group;
+use Strut\GroupBundle\Entity\Group;
 use Strut\StrutBundle\Entity\Presentation;
-use Strut\StrutBundle\Entity\Version;
 use Strut\StrutBundle\Form\Type\SearchEntryType;
 use Strut\StrutBundle\Repository\PresentationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -70,7 +69,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/group-presentations/{group}/{page}", name="group-presentations", defaults={"page" = "1"})
+     * @Route("/presentations/group/{group}/{page}", name="group-presentations", defaults={"page" = "1"}, requirements={"page": "\d+", "group": "\d+"})
      *
      * @param Request $request
      * @param Group $group
@@ -110,7 +109,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/group-presentations-list/{page}", name="group-presentations-list", defaults={"page" = "1"})
+     * @Route("/presentations/group/list/{page}", name="group-presentations-list", defaults={"page" = "1"})
      *
      * @param Request $request
      * @param int $page
@@ -232,7 +231,7 @@ class PresentationController extends Controller
 
 
     /**
-     * @Route("purge-versions/{presentation}", name="purge-version")
+     * @Route("/versions/purge/{presentation}", name="purge-version")
      * @param Presentation $presentation
      * @return JsonResponse
      */
@@ -252,7 +251,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/export-presentation/{presentation}", name="export-presentation")
+     * @Route("/presentation/export/{presentation}", name="export-presentation")
      * @param Presentation $presentation
      * @return Response
      */
@@ -270,7 +269,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/delete-presentation-id/{presentation}", name="delete-presentation-id")
+     * @Route("/presentation/delete/id/{presentation}", name="delete-presentation-id")
      * @param Request $request
      * @param Presentation $presentation
      * @return Response
@@ -320,7 +319,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("/share/{id}", requirements={"id" = "\d+"}, name="share")
+     * @Route("presentation/share/{id}", requirements={"id" = "\d+"}, name="share")
      *
      * @return Response
      */
@@ -346,7 +345,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("/share/delete/{id}", requirements={"id" = "\d+"}, name="delete_share")
+     * @Route("presentation/share/delete/{id}", requirements={"id" = "\d+"}, name="delete_share")
      *
      * @return Response
      */
@@ -386,7 +385,7 @@ class PresentationController extends Controller
     * @param int     $page
     * @param string $currentRoute
     *
-    * @Route("/search/{page}", name="search", defaults={"page" = "1"})
+    * @Route("presentation/search/{page}", name="search", defaults={"page" = "1"})
     *
     * @return Response
     */

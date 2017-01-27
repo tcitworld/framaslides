@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Form;
+namespace Strut\GroupBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,7 +25,7 @@ class AcceptInvitationFormType extends AbstractType
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'class' => 'AppBundle\Entity\Invitation',
+            'class' => 'Strut\GroupBundle\Entity\Invitation',
             'required' => true,
         ));
     }

@@ -13,7 +13,12 @@ homepage:
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
-wallabag_user:
-    resource: "@Strut/Controller/ManageController.php"
+strut_user:
+    resource: "@StrutUserBundle/Controller/"
     type: annotation
     prefix: /users
+
+strut_group:
+    resource: "@StrutGroupBundle/Controller/"
+    type: annotation
+    prefix: /groups

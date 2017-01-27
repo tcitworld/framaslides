@@ -4,18 +4,14 @@ namespace Strut\StrutBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Strut\StrutBundle\Form\Type\ChangePasswordType;
-use Strut\StrutBundle\Form\Type\UserInformationType;
+use Strut\UserBundle\Form\Type\UserInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Strut\StrutBundle\Entity\Config;
 use Strut\StrutBundle\Form\Type\ConfigType;
-
-// use Strut\StrutBundle\Form\ChangePasswordType;
-// use Strut\StrutBundle\Form\UserInformationType;
 
 class ConfigController extends Controller
 {
@@ -89,7 +85,7 @@ class ConfigController extends Controller
                 'pwd' => $pwdForm->createView(),
                 'user' => $userForm->createView(),
                 'enabled_users' => $this->getDoctrine()
-                    ->getRepository('Strut:User')
+                    ->getRepository('StrutUserBundle:User')
                     ->getSumEnabledUsers(),
             ],
         ]);
@@ -129,7 +125,7 @@ class ConfigController extends Controller
     public function deleteAccountAction(Request $request)
     {
         $enabledUsers = $this->getDoctrine()
-            ->getRepository('Strut:User')
+            ->getRepository('StrutUserBundle:User')
             ->getSumEnabledUsers();
 
         if ($enabledUsers <= 1) {

@@ -30,9 +30,9 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="nav-item" data-toggle="tooltip" data-placement="bottom" title="{{ 'menu.newpresentation' | trans }}"><a class="nav-link" href="{{ path('app') }}"><i class="material-icons">add</i></a></li>
                 {% if currentRoute == 'user_index' or currentRoute == 'user_search' %}
-                {{ render(controller('Strut:Manage:search')) }}
+                {{ render(controller('StrutUserBundle:Manage:search')) }}
                 {% elseif currentRoute == 'groups' or currentRoute == 'my-groups' or currentRoute == 'group_search' %}
-                {{ render(controller('Strut:Group:search')) }}
+                {{ render(controller('StrutGroupBundle:Group:search')) }}
                 {% else %}
                 {{ render(controller('Strut:Presentation:searchForm', {'currentRoute': app.request.attributes.get('_route')})) }}
                 {% endif %}

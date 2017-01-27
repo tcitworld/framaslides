@@ -11,8 +11,8 @@ namespace Strut\StrutBundle\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Strut\StrutBundle\Entity\Group;
-use Strut\StrutBundle\Entity\User;
+use Strut\GroupBundle\Entity\Group;
+use Strut\UserBundle\Entity\User;
 
 class PresentationRepository extends EntityRepository
 {

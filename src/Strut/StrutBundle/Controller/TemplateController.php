@@ -3,7 +3,7 @@
 namespace Strut\StrutBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Strut\StrutBundle\Entity\Group;
+use Strut\GroupBundle\Entity\Group;
 use Strut\StrutBundle\Form\Type\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

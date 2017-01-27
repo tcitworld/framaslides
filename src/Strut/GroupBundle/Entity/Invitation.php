@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Entity;
+namespace Strut\GroupBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 

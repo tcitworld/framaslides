@@ -32,7 +32,7 @@ class TemplateType extends AbstractType
             ->add('groupShares', EntityType::class, [
                 'label' => 'template.form_settings.groups_label',
                 'required' => false,
-                'class' => 'Strut\StrutBundle\Entity\Group',
+                'class' => 'Strut\GroupBundle\Entity\Group',
                 'multiple'  => true,
                 'expanded'  => true,
                 'choices' => $options['attr']['user']->getGroups(),

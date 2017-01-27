@@ -1,15 +1,18 @@
 <?php
 
-namespace Strut\StrutBundle\Entity;
+namespace Strut\UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use FOS\UserBundle\Model\GroupInterface;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
+use Strut\GroupBundle\Entity\Group;
+use Strut\GroupBundle\Entity\UserGroup;
+use Strut\StrutBundle\Entity\Config;
+use Strut\StrutBundle\Entity\Presentation;
 
 /**
- * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Strut\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  */
 class User extends BaseUser
@@ -36,21 +39,21 @@ class User extends BaseUser
     protected $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="Presentation", mappedBy="user", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Strut\StrutBundle\Entity\Presentation", mappedBy="user", cascade={"remove"})
      */
     protected $presentations;
 
     /**
      * @var Config
      *
-     * @ORM\OneToOne(targetEntity="Config", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="Strut\StrutBundle\Entity\Config", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $config;
 
     /**
      * @var ArrayCollection
      *
-     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Strut\GroupBundle\Entity\UserGroup", mappedBy="user", cascade={"persist", "remove"})
      */
     protected $userGroups;
 

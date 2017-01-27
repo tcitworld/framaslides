@@ -6,6 +6,3 @@ services:
               - "%strut.languages%"
           tags:
               - { name: form.type }
-
-    sha256salted_encoder:
-          class: Strut\StrutBundle\Service\Sha256Salted

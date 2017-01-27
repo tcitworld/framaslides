@@ -1,12 +1,12 @@
 <?php
 
-namespace Strut\StrutBundle\Controller;
+namespace Strut\GroupBundle\Controller;
 
-use Strut\StrutBundle\Entity\Group;
-use Strut\StrutBundle\Entity\Invitation;
-use Strut\StrutBundle\Entity\User;
-use Strut\StrutBundle\Entity\UserGroup;
-use Strut\StrutBundle\Form\Type\SendInvitationFormType;
+use Strut\GroupBundle\Entity\Group;
+use Strut\GroupBundle\Entity\Invitation;
+use Strut\UserBundle\Entity\User;
+use Strut\GroupBundle\Entity\UserGroup;
+use Strut\GroupBundle\Form\Type\SendInvitationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

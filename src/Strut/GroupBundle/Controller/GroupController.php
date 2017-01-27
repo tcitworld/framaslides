@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Controller;
+namespace Strut\GroupBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 use Monolog\Logger;
@@ -10,13 +10,13 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Strut\StrutBundle\Entity\Group;
-use Strut\StrutBundle\Entity\User;
-use Strut\StrutBundle\Entity\UserGroup;
-use Strut\StrutBundle\Form\Type\GroupPasswordValidationType;
-use Strut\StrutBundle\Form\Type\NewGroupType;
-use Strut\StrutBundle\Form\Type\SearchGroupType;
-use Strut\StrutBundle\Service\Sha256Salted;
+use Strut\GroupBundle\Entity\Group;
+use Strut\UserBundle\Entity\User;
+use Strut\GroupBundle\Entity\UserGroup;
+use Strut\GroupBundle\Form\Type\GroupPasswordValidationType;
+use Strut\GroupBundle\Form\Type\NewGroupType;
+use Strut\GroupBundle\Form\Type\SearchGroupType;
+use Strut\GroupBundle\Service\Sha256Salted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +25,7 @@ use Symfony\Component\Serializer\Encoder\EncoderInterface;
 class GroupController extends Controller
 {
     /**
-     * @Route("/groups", name="groups", defaults={"page" = "1"})
+     * @Route("/", name="groups", defaults={"page" = "1"})
      * @param Request $request
      * @param int $page
      * @return Response
@@ -35,7 +35,7 @@ class GroupController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         /** @var QueryBuilder $groups */
-        $groups = $em->getRepository('Strut:Group')->findPublicGroups();
+        $groups = $em->getRepository('StrutGroupBundle:Group')->findPublicGroups();
         $pagerAdapter = new DoctrineORMAdapter($groups->getQuery(), true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
         $pagerFanta->setMaxPerPage(9);
@@ -57,7 +57,7 @@ class GroupController extends Controller
 	/**
 	 * Search in users
 	 *
-	 * @Route("/groups/search/{page}", name="group_search", defaults={"page" = "1"}, requirements={"page" = "\d+"})
+	 * @Route("/search/{page}", name="group_search", defaults={"page" = "1"}, requirements={"page" = "\d+"})
 	 * @Method("GET")
 	 * @param $page
 	 * @return Response
@@ -73,7 +73,7 @@ class GroupController extends Controller
 
 			$em = $this->getDoctrine()->getManager();
 
-			$users = $em->getRepository('Strut:Group')->findPublicGroupsByName($groupName);
+			$users = $em->getRepository('StrutGroupBundle:Group')->findPublicGroupsByName($groupName);
 
 			$pagerAdapter = new DoctrineORMAdapter($users);
 			$pagerFanta = new Pagerfanta($pagerAdapter);
@@ -110,7 +110,7 @@ class GroupController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         /** @var QueryBuilder $groups */
-        $groups = $em->getRepository('Strut:Group')->findGroupsByUser($this->getUser());
+        $groups = $em->getRepository('StrutGroupBundle:Group')->findGroupsByUser($this->getUser());
         $pagerAdapter = new DoctrineORMAdapter($groups->getQuery(), true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
         $pagerFanta->setMaxPerPage(9);
@@ -130,7 +130,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/join-group/{group}", name="group_join")
+     * @Route("/join/{group}", name="group_join")
      * @param Group $group
      * @return Response
      */
@@ -149,7 +149,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-password/{group}", name="group_password")
+     * @Route("/password/{group}", name="group_password")
      */
     public function checkPasswordAction(Request $request, Group $group): Response
     {
@@ -188,7 +188,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/delete-group/{group}", name="group_delete")
+     * @Route("/delete/{group}", name="group_delete")
      * @param Group $group
      * @return Response
      */
@@ -215,7 +215,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/leave-group/{group}", name="group_leave")
+     * @Route("/leave/{group}", name="group_leave")
      * @param Group $group
      * @return Response
      */
@@ -250,7 +250,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/new-group", name="group_new")
+     * @Route("/new", name="group_new")
      */
     public function createNewGroupAction(Request $request): Response
     {
@@ -285,7 +285,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-requests/{group}/{page}", name="group-requests", defaults={"page" = "1"})
+     * @Route("/requests/{group}/{page}", name="group-requests", defaults={"page" = "1"})
      * @param Request $request
      * @param int $page
      * @return Response
@@ -318,7 +318,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-activate/{group}/{user}/{accept}", name="group-activate", requirements={"accept" = "\d+"})
+     * @Route("/activate/{group}/{user}/{accept}", name="group-activate", requirements={"accept" = "\d+"})
      * @param Group $group
      * @param User $user
      * @param $accept
@@ -344,7 +344,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-manage/{group}/{page}", name="group-manage", defaults={"page" = "1"})
+     * @Route("/manage/{group}/{page}", name="group-manage", defaults={"page" = "1"})
      * @param Group $group
      * @return Response
      */
@@ -376,7 +376,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-user-edit/{group}/{user}", name="group-user-edit")
+     * @Route("/user-edit/{group}/{user}", name="group-user-edit")
      * @param Request $request
      * @param Group $group
      * @param User $user
@@ -412,7 +412,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-user-exclude/{group}/{user}", name="group-user-exclude")
+     * @Route("/user-exclude/{group}/{user}", name="group-user-exclude")
      * @param Group $group
      * @param User $user
      * @return Response
@@ -443,7 +443,7 @@ class GroupController extends Controller
     }
 
     /**
-     * @Route("/group-edit/{group}", name="group-edit")
+     * @Route("/edit/{group}", name="group-edit")
      * @param Request $request
      * @param Group $group
      * @param User $user

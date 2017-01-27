@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Form\Type;
+namespace Strut\UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SearchGroupType extends AbstractType
+class SearchUserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

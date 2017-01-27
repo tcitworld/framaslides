@@ -4,7 +4,7 @@ namespace Strut\StrutBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Strut\StrutBundle\Entity\User;
+use Strut\UserBundle\Entity\User;
 
 /**
  * VersionRepository

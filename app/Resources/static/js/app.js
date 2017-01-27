@@ -22,7 +22,7 @@ window.jQuery = jQuery;
 /**
  * Save user locale
  */
-cachedFetched('/user-locale')
+cachedFetched('/users/locale')
   .then(r => r.text())
   .then(locale => moment.locale(locale));
 

@@ -5,8 +5,10 @@ namespace Strut\StrutBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
+use Strut\GroupBundle\Entity\Group;
 use Strut\StrutBundle\Entity\Version;
 use JMS\Serializer\Annotation\Exclude;
+use Strut\UserBundle\Entity\User;
 
 /**
  * Presentation.
@@ -94,13 +96,13 @@ class Presentation
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Group", inversedBy="presentations", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Strut\GroupBundle\Entity\Group", inversedBy="presentations", cascade={"persist"})
      */
     private $groupShares;
 
     /**
      * @Exclude
-     * @ORM\ManyToOne(targetEntity="Strut\StrutBundle\Entity\User", inversedBy="presentations")
+     * @ORM\ManyToOne(targetEntity="Strut\UserBundle\Entity\User", inversedBy="presentations")
      *
      */
     private $user;

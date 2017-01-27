@@ -3,7 +3,7 @@
 namespace Strut\StrutBundle\Command;
 
 use Strut\StrutBundle\Entity\Config;
-use Strut\StrutBundle\Entity\User;
+use Strut\UserBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

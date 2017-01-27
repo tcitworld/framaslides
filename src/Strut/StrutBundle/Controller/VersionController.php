@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 class VersionController extends Controller
 {
     /**
-     * @Route("/p/{presentation}/versions/{page}", name="versions", defaults={"page" = "1"})
+     * @Route("/presentation/{presentation}/versions/{page}", name="versions", defaults={"page" = "1"})
      * @param Presentation $presentation
      * @param int $page
      * @return Response
@@ -45,7 +45,7 @@ class VersionController extends Controller
     }
 
     /**
-     * @Route("/delete-version-web/{version}", name="delete-version-web")
+     * @Route("/version/delete/{version}", name="delete-version-web")
      * @param Version $version
      * @return RedirectResponse
      */
@@ -61,7 +61,7 @@ class VersionController extends Controller
     }
 
     /**
-     * @Route("/restore-version/{version}", name="restore-version")
+     * @Route("/version/restore/{version}", name="restore-version")
      * @param Version $version
      * @return RedirectResponse
      */
@@ -84,7 +84,7 @@ class VersionController extends Controller
     }
 
     /**
-     * @Route("/export-version/{version}", name="export-version")
+     * @Route("/version/export/{version}", name="export-version")
      * @param Version $version
      * @return Response
      */

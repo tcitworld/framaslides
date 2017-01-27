@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Controller;
+namespace Strut\UserBundle\Controller;
 
 use FOS\UserBundle\Doctrine\UserManager;
 use FOS\UserBundle\Event\UserEvent;
@@ -9,14 +9,14 @@ use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
-use Strut\StrutBundle\Form\Type\SearchUserType;
+use Strut\UserBundle\Form\Type\SearchUserType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Strut\StrutBundle\Entity\User;
+use Strut\UserBundle\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,7 +36,7 @@ class ManageController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $users = $em->getRepository('Strut:User')->findAll();
+        $users = $em->getRepository('StrutUserBundle:User')->findAll();
 
         $pagerAdapter = new ArrayAdapter($users);
         $pagerFanta = new Pagerfanta($pagerAdapter);
@@ -74,7 +74,7 @@ class ManageController extends Controller
 
             $em = $this->getDoctrine()->getManager();
 
-            $users = $em->getRepository('Strut:User')->searchUsers($username);
+            $users = $em->getRepository('StrutUserBundle:User')->searchUsers($username);
 
             $pagerAdapter = new DoctrineORMAdapter($users);
             $pagerFanta = new Pagerfanta($pagerAdapter);
@@ -116,7 +116,7 @@ class ManageController extends Controller
         $user = $userManager->createUser();
         // enable created user by default
 
-        $form = $this->createForm('Strut\StrutBundle\Form\Type\NewUserType', $user, [
+        $form = $this->createForm('Strut\UserBundle\Form\Type\NewUserType', $user, [
             'validation_groups' => ['Profile'],
         ]);
         $form->handleRequest($request);
@@ -154,7 +154,7 @@ class ManageController extends Controller
     public function editAction(Request $request, User $user): Response
     {
         $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('Strut\StrutBundle\Form\Type\UserType', $user);
+        $editForm = $this->createForm('Strut\UserBundle\Form\Type\UserType', $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {

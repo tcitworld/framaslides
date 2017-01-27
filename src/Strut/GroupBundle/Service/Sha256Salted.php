@@ -1,6 +1,6 @@
 <?php
 
-namespace Strut\StrutBundle\Service;
+namespace Strut\GroupBundle\Service;
 
 use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 

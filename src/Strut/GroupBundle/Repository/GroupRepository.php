@@ -1,10 +1,10 @@
 <?php
 
-namespace Strut\StrutBundle\Repository;
+namespace Strut\GroupBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Strut\StrutBundle\Entity\User;
+use Strut\UserBundle\Entity\User;
 
 class GroupRepository extends EntityRepository
 {
@@ -35,7 +35,7 @@ class GroupRepository extends EntityRepository
     public function findGroupsByUser(User $user): QueryBuilder
     {
         return $this->getBuilder()
-            ->join('Strut\StrutBundle\Entity\UserGroup', 'u', 'WITH', 'u.group = g.id')
+            ->join('Strut\GroupBundle\Entity\UserGroup', 'u', 'WITH', 'u.group = g.id')
             ->where('u.user = :user')->setParameter(':user', $user->getId());
     }
 }

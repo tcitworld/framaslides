@@ -1,8 +1,8 @@
 <?php
 
-namespace Strut\StrutBundle\Form\Type;
+namespace Strut\GroupBundle\Form\Type;
 
-use Strut\StrutBundle\Entity\Group;
+use Strut\GroupBundle\Entity\Group;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -40,7 +40,7 @@ class UserGroupType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'Strut\StrutBundle\Entity\UserGroup',
+            'data_class' => 'Strut\GroupBundle\Entity\UserGroup',
         ));
     }
 }

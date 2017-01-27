@@ -1,11 +1,11 @@
 <?php
 
-namespace Strut\StrutBundle\Repository;
+namespace Strut\GroupBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Strut\StrutBundle\Entity\User;
+use Strut\UserBundle\Entity\User;
 
 class UserGroupRepository extends EntityRepository
 {

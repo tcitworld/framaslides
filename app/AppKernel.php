@@ -23,6 +23,8 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Webfactory\Bundle\PiwikBundle\WebfactoryPiwikBundle(),
             new Strut\StrutBundle\Strut(),
+			new Strut\UserBundle\StrutUserBundle(),
+			new Strut\GroupBundle\StrutGroupBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
