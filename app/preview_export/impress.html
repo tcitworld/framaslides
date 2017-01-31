@@ -159,16 +159,16 @@ $(document).ready(function() {
 
         var body = $('body');
 
-        body.prepend('<div class="popup"></div>');
+        body.prepend('<div class="popup btn-group" role="group" aria-label="Action buttons"></div>');
         var popup = $('.popup');
         {% if app.user and app.user != presentation.user %}
-        popup.prepend('<button class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-duplicate"></span></button>');
+        popup.prepend('<button type="button" class="btn btn-default hidden" id="fork"><span class="glyphicon glyphicon-duplicate"></span></button>');
         {% elseif app.user == presentation.user %}
-        popup.prepend('<button class="btn btn-default hidden" id="edit"><span class="glyphicon glyphicon-pencil"></span></button><button class="btn btn-default hidden" id="home"><span class="glyphicon glyphicon-home"></span></button>');
+        popup.prepend('<button type="button" class="btn btn-default hidden" id="edit"><span class="glyphicon glyphicon-pencil"></span></button><button class="btn btn-default hidden" id="home"><span class="glyphicon glyphicon-home"></span></button>');
         {% elseif app.request.attributes.get('_route') != 'share_presentation' %}
-        popup.prepend('<button class="btn btn-default hidden" id="login" data-toggle="tooltip" data-placement="right" title="{{ 'preview.needlogin' | trans }}"><span class="glyphicon glyphicon-lock"></span></button>');
+        popup.prepend('<button type="button" class="btn btn-default hidden" id="login" data-toggle="tooltip" data-placement="right" title="{{ 'preview.needlogin' | trans }}"><span class="glyphicon glyphicon-lock"></span></button>');
         {% endif %}
-        popup.append('<button class="btn btn-default hidden" id="fullscreen" data-toggle="tooltip" data-placement="right" title="{{ 'preview.fullscreen' | trans }}"><span class="glyphicon glyphicon-resize-full fullscreen-btn"></span></button>');
+        popup.append('<button type="button" class="btn btn-default hidden" id="fullscreen" data-toggle="tooltip" data-placement="right" title="{{ 'preview.fullscreen' | trans }}"><span class="glyphicon glyphicon-resize-full fullscreen-btn"></span></button>');
         var btn = $('.popup button');
 
           if (window.location.hash === '#/overview') {
@@ -238,7 +238,7 @@ $(document).ready(function() {
             return;
           }
           $.ajax({
-            url: '{{ path('create-from-template', {'id': presentation.id}) }}',
+            url: '{{ path('create-from-template', {'template': presentation.id}) }}',
             method: 'POST',
             data: {
               title: titre,

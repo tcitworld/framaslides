@@ -75,6 +75,7 @@
                             <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}">settings</i></a>
                            <a href="{{ path('delete-presentation-id', { 'presentation': presentation.id }) }}" class="delete" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}">delete</i></a>
                         {% endif %}
+                        <a class="fork" href="{{ path('create-from-template', {'template': presentation.id}) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'templates.fork.newpresentation.desc' | trans }}">content_copy</i></a>
                         {% if presentation.rendered %}
                         <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
                         <a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>{% endif %}
@@ -111,5 +112,4 @@
     </div>
 </div>
 {% include 'default/modals/share.html.twig' %}
-
 {% endblock content %}

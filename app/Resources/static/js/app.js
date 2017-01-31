@@ -45,7 +45,11 @@ $(() => {
   /**
    * Initialize copy/paste
    */
-  new Clipboard('.btn-copy'); // eslint-disable-line no-new
+  const clipboard = new Clipboard('.btn-copy'); // eslint-disable-line no-new
+
+  clipboard.on('success', () => {
+    $('#presentationsharecopybutton').popover('show');
+  });
 
   const body = $('body');
 
@@ -142,33 +146,5 @@ $(() => {
       makepublic.prop('checked', false);
       makepublic.parent().parent().addClass('disabled');
     }
-  });
-
-
-  /**
-   * Fork presentation
-   */
-  $('.fork').on('click', (event) => {
-    event.preventDefault();
-    const elem = $(event.target).parents('.card');
-    const templateModal = $('#forkModal');
-    templateModal.attr('data-presentation', elem.attr('data-presentation'));
-    templateModal.modal();
-  });
-
-  /**
-   * Save fork stuff
-   */
-  body.on('click', '#fork-save', () => {
-    $.ajax({
-      method: 'POST',
-      url: `create-from-template/${$('#forkModal').attr('data-presentation')}`,
-      data: {
-        title: $('#presentationtitle').val(),
-      },
-      success: () => {
-        $('#forkModal').modal('hide');
-      },
-    });
   });
 });

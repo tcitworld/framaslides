@@ -3,7 +3,6 @@
 namespace Strut\StrutBundle\Form\Type;
 
 use Doctrine\ORM\EntityRepository;
-use Strut\StrutBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

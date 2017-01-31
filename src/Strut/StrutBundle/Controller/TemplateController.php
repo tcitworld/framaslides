@@ -4,6 +4,7 @@ namespace Strut\StrutBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Strut\GroupBundle\Entity\Group;
+use Strut\StrutBundle\Form\Type\ForkType;
 use Strut\StrutBundle\Form\Type\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -95,59 +96,55 @@ class TemplateController extends Controller
     }
 
     /**
-     * @Route("create-from-template/{id}", name="create-from-template")
+     * @Route("template/fork/{template}", name="create-from-template")
      * @param Request $request
-     * @param Presentation $presentation
+     * @param Presentation $template
      * @return JsonResponse
      */
-    public function createCopyFromTemplateAction(Request $request, Presentation $presentation): JsonResponse
+    public function createCopyFromTemplateAction(Request $request, Presentation $template): Response
     {
-        $logger = $this->get('logger');
+    	$presentation = new Presentation($this->getUser());
 
-        if (!$presentation->isTemplate() && !$request->request->has('export')) {
-            $logger->warn('User ' . $this->getUser()->getName() . ' tried to fork a presentation which is not a template');
-            throw new InvalidArgumentException();
-        }
-        if (!$presentation->isPublic() && $presentation->getUser() !== $this->getUser()) {
-            $logger->warn('User ' . $this->getUser()->getName() . ' tried to fork a presentation which is not public and not his own');
-            throw new InvalidArgumentException();
-        }
+    	$form = $this->createForm(ForkType::class, $presentation);
+    	$form->handleRequest($request);
 
-        if (!$request->request->has('title')) {
-            $logger->warn('Title missing for forking template');
-            throw new InvalidArgumentException();
-        }
-        $title = $request->request->get('title');
+		$logger = $this->get('logger');
 
-        $em = $this->getDoctrine()->getManager();
+		if (!$template->isPublic() && !$template->isTemplate() && $template->getUser() !== $this->getUser()) {
+			$logger->warn('User ' . $this->getUser()->getUsername() . ' tried to fork a presentation which is not public and not his own');
+			throw new InvalidArgumentException();
+		}
 
-        $content = $presentation->getLastVersion()->getContent();
+    	if ($form->isSubmitted() && $form->isValid()) {
 
-        $logger->info("A new version has been created for presentation " . $presentation->getTitle());
+			$em = $this->getDoctrine()->getManager();
 
-        /**
-         * Modify content for fileName
-         */
-        $data = json_decode($content);
-        $data->fileName = $title;
-        $content = json_encode($data);
+			$content = $template->getLastVersion()->getContent();
 
-        $version = new Version();
-        $version->setContent($content);
-        $em->persist($version);
+			$logger->info("A new version has been created for presentation " . $presentation->getTitle());
 
-        $logger->info('The user is '. $this->getUser());
-        $newPresentation = new Presentation($this->getUser());
-        $newPresentation->setTitle($title);
-        $newPresentation->addVersion($version);
-        $logger->info("A new presentation has been created " . $newPresentation->getTitle());
-        $em->persist($newPresentation);
 
-        $em->flush();
+			$version = new Version();
+			$version->setContent($content);
 
-        $json = $this->get('jms_serializer')->serialize($newPresentation, 'json');
+			$this->changeFileNameInContent($presentation->getTitle(), $version);
 
-        return (new JsonResponse())->setJson($json);
+			$em->persist($version);
+
+			$logger->info('The user is ' . $this->getUser());
+			$presentation->addVersion($version);
+			$logger->info("A new presentation has been created " . $presentation->getTitle());
+			$em->persist($presentation);
+
+			$em->flush();
+
+			return $this->redirectToRoute('app', ['_fragment' => $presentation->getTitle()]);
+
+		}
+		return $this->render('default/forms/fork.html.twig', [
+			'form' => $form->createView(),
+			'presentation' => $presentation,
+		]);
     }
 
     /**

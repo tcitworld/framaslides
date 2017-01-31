@@ -57,6 +57,7 @@ presentations:
     input: URL publique de la présentation
     delete: Supprimer le lien public de la présentation
     delete.details: En supprimant le lien public de la présentation, il ne sera plus possible d'y accéder par lien public
+    copy.success: Le lien a été copié dans le presse-papiers
 
 security:
   login:
@@ -139,7 +140,7 @@ templates:
     presentationtitle: Titre de la nouvelle présentation
     presentationtitle.short: Titre
     newpresentation: Nouvelle présentation
-    newpresentation.desc: Vous allez créer une nouvelle présentation basée sur ce modèle
+    newpresentation.desc: Vous allez créer une nouvelle présentation basée sur cette présentation
   mine: "Mes modèles (privés)"
   all: Modèles
   public: "Modèles publics"
