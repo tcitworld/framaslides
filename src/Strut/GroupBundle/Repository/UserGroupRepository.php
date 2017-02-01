@@ -3,9 +3,7 @@
 namespace Strut\GroupBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
-use Strut\UserBundle\Entity\User;
 
 class UserGroupRepository extends EntityRepository
 {

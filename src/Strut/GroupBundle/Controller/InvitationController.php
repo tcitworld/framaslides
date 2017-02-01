@@ -8,7 +8,6 @@ use Strut\UserBundle\Entity\User;
 use Strut\GroupBundle\Entity\UserGroup;
 use Strut\GroupBundle\Form\Type\SendInvitationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -100,7 +99,7 @@ class InvitationController extends Controller
 
             $message = \Swift_Message::newInstance()
                 ->setSubject($this->get('translator')->trans('group.invitation.email.subject', ['%group%' => $userGroup->getGroup()->getName()]))
-                ->setFrom('nepasrepondre@framasoft.org') // TODO : Récupérer dans config.yml
+				->setFrom($this->getParameter('fos_user.from_email.address'))
                 ->setTo($user->getEmail())
                 ->setBody(
                     $this->renderView(
@@ -146,7 +145,6 @@ class InvitationController extends Controller
     public function validInvitationAction(Invitation $invitation): Response
     {
         if ($this->getUser() != $invitation->getUserGroup()->getUser()) {
-            var_dump($invitation->getUserGroup()->getUser());
             throw $this->createAccessDeniedException();
         }
 

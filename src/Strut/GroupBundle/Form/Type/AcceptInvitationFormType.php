@@ -4,7 +4,6 @@ namespace Strut\GroupBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ORM\EntityRepository;
 use AppBundle\Form\DataTransformer\InvitationToCodeTransformer;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

@@ -2,8 +2,6 @@
 
 namespace Strut\StrutBundle\Controller;
 
-use Pagerfanta\Exception\OutOfRangeCurrentPageException;
-use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;

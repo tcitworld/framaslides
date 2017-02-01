@@ -3,7 +3,6 @@
 namespace Strut\GroupBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
-use Monolog\Logger;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
@@ -20,7 +19,6 @@ use Strut\GroupBundle\Service\Sha256Salted;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Encoder\EncoderInterface;
 
 class GroupController extends Controller
 {
@@ -422,8 +420,6 @@ class GroupController extends Controller
         $logger = $this->get('logger');
         $logger->info('User ' . $this->getUser()->getUsername() . ' wants to exclude user ' . $user->getUsername() . ' from group ' . $group->getName());
 
-        var_dump($this->getUser()->getUserGroupFromGroup($group));
-        var_dump($this->getUser()->inGroup($group));
         if (!$this->getUser()->inGroup($group) || $this->getUser()->getGroupRoleForUser($group) < Group::ROLE_MANAGE_USERS) {
             $logger->info('User ' . $this->getUser()->getUsername() . ' has not enough rights on group ' . $group->getName() . ' to exclude user ' . $user->getUsername());
             throw $this->createAccessDeniedException();

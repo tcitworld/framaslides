@@ -9,9 +9,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Strut\StrutBundle\Entity\Config;
 use Strut\StrutBundle\Form\Type\ConfigType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ConfigController extends Controller
 {
@@ -118,7 +118,7 @@ class ConfigController extends Controller
      *
      * @param Request $request
      *
-     * @throws AccessDeniedHttpException
+     * @throws AccessDeniedException
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -129,7 +129,7 @@ class ConfigController extends Controller
             ->getSumEnabledUsers();
 
         if ($enabledUsers <= 1) {
-            throw new AccessDeniedHttpException();
+            throw new AccessDeniedException();
         }
 
         $user = $this->getUser();

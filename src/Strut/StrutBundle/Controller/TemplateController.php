@@ -8,7 +8,6 @@ use Strut\StrutBundle\Form\Type\ForkType;
 use Strut\StrutBundle\Form\Type\TemplateType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Entity\Version;
 use Symfony\Component\HttpFoundation\JsonResponse;
