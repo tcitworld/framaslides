@@ -152,11 +152,12 @@ $(document).ready(function() {
         }
         hljs.initHighlighting();
 
-        if ("ontouchstart" in document.documentElement) {
-            document.querySelector(".hint").innerHTML =
-                    "<p>Tap on the left or right to navigate</p>";
-        }
+        {% set clean = app.request.query.get('format') is defined and app.request.query.get('format') == 'pdf' %}
 
+        {% if clean %}
+            document.querySelector(".impress-enabled .hint").style.display = 'none';
+
+        {% else %}
         var body = $('body');
 
         body.prepend('<div class="popup btn-group" role="group" aria-label="Action buttons"></div>');
@@ -250,6 +251,8 @@ $(document).ready(function() {
           });
 
         });
+
+      {% endif %}
     });
 });
 </script>
