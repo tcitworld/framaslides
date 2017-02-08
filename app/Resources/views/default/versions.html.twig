@@ -40,7 +40,7 @@
         <div class="footer">
             {% if versions | length > 1 %}
                 <span>{{ 'version.lastnotdelete.desc' | trans }}</span>
-                <button type="button" class="btn btn-warning" id="purgeVersions">{{ 'version.lastnotdelete.btn' | trans }}</button>
+                <a href="{{ path('purge-version', {'presentation': presentation.id}) }}"><button type="button" class="btn btn-warning">{{ 'version.lastnotdelete.btn' | trans }}</button></a>
             {% endif %}
         </div>
     </div>

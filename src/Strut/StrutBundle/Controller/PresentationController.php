@@ -232,7 +232,7 @@ class PresentationController extends Controller
      * @param Presentation $presentation
      * @return JsonResponse
      */
-    public function purgeVersionsAction(Presentation $presentation): JsonResponse
+    public function purgeVersionsAction(Presentation $presentation): Response
     {
         $this->checkUserPresentationAction($presentation);
         $em = $this->getDoctrine()->getManager();
@@ -243,8 +243,7 @@ class PresentationController extends Controller
             }
         }
         $em->flush();
-        $json = $this->get('jms_serializer')->serialize($presentation, 'json');
-        return (new JsonResponse())->setJson($json);
+		return $this->redirect($this->generateUrl('versions', ['presentation' => $presentation->getId() ]), 302);
     }
 
     /**

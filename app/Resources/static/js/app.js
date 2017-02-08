@@ -91,18 +91,6 @@ $(() => {
     });
   });
 
-  body.on('click', '#purgeVersions', () => {
-    const confirm = window.confirm('Voulez-vous vraiment supprimer toutes les anciennes versions ?');
-    if (confirm) {
-      $.ajax({
-        url: `purge-versions/${$('#versionModal').attr('data-presentation')}`,
-        success: () => {
-          $('#versionModal').modal('hide');
-        },
-      });
-    }
-  });
-
   body.on('click', '#facebook', () => {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(modalData.shareUrl)}&t=${encodeURIComponent(modalData.title)}`, 'das', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
     return false;
