@@ -65,7 +65,7 @@ function(Backbone, ActionHandlers, StorageModal, StorageInterface , PreviewLaunc
 		},
 
 		render: function() {
-			this.$el.html(this._template({generators: this._generators, chosen: this._generators[this._index]}));
+			this.$el.html(this._template({ preview: lang.preview}));
 			this._bind();
 			this._$readout = this.$el.find('.chosen');
 			$(this.$el.find('.check')[this._index]).css('visibility', '');
