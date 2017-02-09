@@ -33,7 +33,7 @@ class TemplateType extends AbstractType
                 'class' => 'Strut\GroupBundle\Entity\Group',
                 'multiple'  => true,
                 'expanded'  => true,
-                'choices' => $options['attr']['user']->getGroups(),
+                'choices' => $this->getGroups($options),
             ])
             ->add('save', SubmitType::class, [
                 'label' => 'config.form.save',
@@ -52,4 +52,14 @@ class TemplateType extends AbstractType
     {
         return 'template';
     }
+
+    private function getGroups($options) {
+    	$groups = [];
+		foreach ($options['attr']['user']->getGroups() as $group) {
+			if ($options['attr']['user']->inGroup($group)) {
+				$groups[] = $group;
+			}
+		}
+		return $groups;
+	}
 }

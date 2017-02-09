@@ -145,7 +145,7 @@ class ConfigController extends Controller
     }
 
     /**
-     * Remove all annotations OR tags OR entries for the current user.
+     * Remove all presentations for the current user.
      *
      * @Route("/reset", name="config_reset")
      *
@@ -164,4 +164,23 @@ class ConfigController extends Controller
 
         return $this->redirect($this->generateUrl('config').'#set3');
     }
+
+	/**
+	 * Switch view mode for current user.
+	 *
+	 * @Route("/config/view-mode", name="switch_view_mode")
+	 *
+	 * @param Request $request
+	 *
+	 * @return RedirectResponse
+	 */
+	public function changeViewModeAction(Request $request)
+	{
+		$user = $this->getUser();
+		$user->getConfig()->setListMode(!$user->getConfig()->getListMode());
+		$em = $this->getDoctrine()->getManager();
+		$em->persist($user);
+		$em->flush();
+		return $this->redirect($request->headers->get('referer'));
+	}
 }

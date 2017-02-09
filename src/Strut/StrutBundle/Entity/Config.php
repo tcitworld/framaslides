@@ -33,6 +33,20 @@ class Config
      */
     private $lang;
 
+	/**
+	 * @var int
+	 *
+	 * @ORM\Column(name="list_mode", type="integer", nullable=true)
+	 */
+	private $listMode = self::CARDS;
+
+	const CARDS = 0;
+	const LIST = 1;
+
+	/**
+	 * Config constructor.
+	 * @param UserInterface $user
+	 */
     public function __construct(UserInterface $user)
     {
         $this->user = $user;
@@ -54,4 +68,24 @@ class Config
     {
         $this->lang = $lang;
     }
+
+	/**
+	 * @return int
+	 */
+	public function getListMode()
+	{
+		return $this->listMode;
+	}
+
+	/**
+	 * @param int $listMode
+	 *
+	 * @return Config
+	 */
+	public function setListMode($listMode)
+	{
+		$this->listMode = $listMode;
+
+		return $this;
+	}
 }

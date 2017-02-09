@@ -5,6 +5,7 @@
 {% endblock stylesheets %}
 
 {% block content %}
+{% set listMode = app.user.config.listMode %}
 {% set currentRoute = app.request.attributes.get('_route') %}
 {% if currentRoute == 'homepage' %}
     {% set currentRoute = 'presentations' %}
@@ -12,6 +13,7 @@
     {% set currentRoute = app.request.query.get('currentRoute') %}
 {% endif %}
 <div class="container ombre">
+    <a href="{{ path('switch_view_mode') }}"><i class="material-icons">{% if listMode == 0 %}view_list{% else %}view_module{% endif %}</i></a>
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" {% if currentRoute == 'presentations' or currentRoute == 'homepage' %}class="active"{% endif %}><a href="{{ path('presentations') }}">{{ 'menu.mypresentations' | trans }}</a></li>
         <li role="presentation" {% if currentRoute == 'templates' or currentRoute == 'templates-published' or currentRoute == 'templates-public' %}class="active"{% endif %}><a href="{{ path('templates') }}">{{ 'templates.all' | trans }}</a></li>
@@ -39,6 +41,7 @@
         </div>
     {% endif %}
     <div class="row">
+        {% if listMode == 0 %}
         {% if currentRoute == 'presentations' and presentations.currentPage == 1 and app.request.attributes.get('_route') != 'search' and presentations | length > 0 %}
         <div class="col-xs-12 col-sm-4">
             <div class="card thumbnail" style="">
@@ -98,6 +101,71 @@
                 </div>
             </div>
         {% endfor %}
+        {% else %}
+            {% if presentations | length > 0 %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Création</th>
+                        <th>Mise à jour</th>
+                        <th>Versions</th>
+                        <th>Groupes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for presentation in presentations %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}">edit</i></a>
+                                {% if presentation.rendered %}
+                                    <a class="play right" href="{{ path('preview', {'type': 'impress', 'title': presentation.title }) }}" target="_blank"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>
+                                {% endif %}
+                                {{ presentation.title }}</td>
+                            <td>{{ presentation.createdAt | date("d/m/Y") }}</td>
+                            <td>{{ presentation.getLastVersionDate | time_diff }}</td>
+                            <td><a href="{{ path('versions', {'presentation': presentation.id }) }}">{{ 'presentations.nbVersions.label' | transchoice(presentation.versions | length) }}</a></td>
+                            <td>{% if presentation.groupShares | length > 0 %}
+                                {% for group in presentation.groupShares %}
+                                    {% if app.user.inGroup(group) %}
+                                        <a href="{{ path('group-presentations', { 'group' : group.id }) }}">{{ group.name }}</a>
+                                    {% endif %}
+                                {% endfor %}
+                                {% else %}
+                                    Présentation non partagée
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if presentation.userCanManage(app.user) %}
+                                    <a href="{{ path('template', {'presentation': presentation.id }) }}" class="publish" data-presentation="{{ presentation.id }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.bookmark.desc' | trans }}">settings</i></a>
+                                    <a href="{{ path('delete-presentation-id', { 'presentation': presentation.id }) }}" class="delete pull-right" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}">delete</i></a>
+                                {% endif %}
+                                <a class="fork" href="{{ path('create-from-template', {'template': presentation.id}) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'templates.fork.newpresentation.desc' | trans }}">content_copy</i></a>
+                                {% if presentation.rendered %}
+                                    <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
+                                {% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Titre</th>
+                        <th>Création</th>
+                        <th>Mise à jour</th>
+                        <th>Versions</th>
+                        <th>Groupes</th>
+                        <th>Actions</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <a class="btn btn-primary" href="{{ path('app') }}">
+            {{ 'presentations.create' | trans }}
+        </a>
+            {% endif %}
+        {% endif %}
     </div>
     <div class="pull-right">
         {% if presentations.getNbPages > 1 %}
