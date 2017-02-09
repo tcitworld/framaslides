@@ -387,7 +387,7 @@ class GroupController extends Controller
         }
 
         $groupUser = $user->getUserGroupFromGroup($group);
-        $editForm = $this->createForm('Strut\StrutBundle\Form\Type\UserGroupType', $groupUser);
+        $editForm = $this->createForm('Strut\GroupBundle\Form\Type\UserGroupType', $groupUser);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -405,6 +405,7 @@ class GroupController extends Controller
 
         return $this->render('default/groups/edit_user.html.twig', array(
             'user' => $user,
+			'group' => $group,
             'edit_form' => $editForm->createView(),
         ));
     }

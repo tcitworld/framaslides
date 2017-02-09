@@ -1,6 +1,7 @@
 body {
-  min-height:100vh;
-  height:100vh;
+  min-height: 100vh;
+  height: 100vh;
+  background: #eee !important;
 }
 
 .container {
@@ -15,29 +16,34 @@ body {
 }
 
 header {
-
   .strut-logo img {
     height: 58px;
   }
 
   a.logo {
     text-decoration: none;
+    font-size: 40px;
+    font-family: "DejaVu Sans";
 
     h1 {
       font-size: 48px;
+      font-weight: bold;
     }
   }
 }
 
 nav.navbar {
-  background-color:#B49CD9;
+  background-color: #fff;
+  border-color: #e7e7e7;
 
   a.navbar-brand {
     text-decoration: none;
     font-size: 40px;
+    font-family: "DejaVu Sans";
+    font-weight: bold;
   }
 
-  #search_entry_term {
+  .navbar-form .input-group input {
     height: 38px;
   }
 }
@@ -51,13 +57,12 @@ h2 {
 }
 
 .item-hidden {
-  transition: opacity .4s ease-out;
+  transition: opacity 0.4s ease-out;
   opacity: 0;
   width: 0;
 }
 
 .card-footer {
-
   .glyphicon {
     font-size: 2.5rem;
   }
@@ -123,10 +128,44 @@ h2 {
 
 .social-buttons {
   margin-top: 15px;
+
   img {
     width: 30px;
   }
-  a, a:link {
+
+  a,
+  a:link {
     text-decoration: none;
   }
+}
+
+/* Framasoft-compatible styles */
+.ombre {
+  background-color: #fff;
+  box-shadow: -4px 6px 9px rgba(50, 50, 50, 0.5);
+}
+
+.container {
+  .ombre {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
+
+  background-color: #fff;
+  padding: 10px 30px 20px;
+}
+
+img.ombre {
+  box-shadow: 0 2px 6px rgba(50, 50, 50, 0.4);
+  margin: 10px;
+  padding: 0;
+  width: 90%;
+}
+
+.delete {
+  color: #d9534f;
+}
+
+.delete:hover {
+  color: #d43f3a;
 }

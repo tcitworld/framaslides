@@ -1,0 +1,20 @@
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="deleteModalLabel">{{ 'presentations.delete.modal.title' | trans }}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger">
+                    {{ 'presentations.delete.modal.body' | trans }}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="delete-cancel" data-dismiss="modal">{{ 'presentations.delete.modal.cancel' | trans }}</button>
+                <button type="button" class="btn btn-danger" id="delete-confirm">{{ 'presentations.delete.modal.confirm' | trans }}</button>
+            </div>
+        </div>
+    </div>
+</div>

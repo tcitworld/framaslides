@@ -38,9 +38,15 @@ presentations:
   isTemplate: Modèle
   edit:
     desc: Éditer la présentation
+    cancel: Annuler
     back: Retour à la liste des présentations
   delete:
     desc: Supprimer la présentation
+    modal:
+      title: Supprimer la présentation ?
+      body: Voulez-vous vraiment supprimer la présentation ?
+      cancel: Annuler
+      confirm: Supprimer la présentation
   bookmark:
     desc: Paramètres de la présentation
   download:
@@ -48,6 +54,12 @@ presentations:
     desc: "Télécharger la présentation en différents formats : le format json permet de la réimporter dans une autre instance strut et le format HTML (Zip) permet de visualiser la présentation hors-ligne"
   preview:
     desc: Voir la présentation
+    opening:
+      title: Ouverture de la présentation en cours…
+      cancel: Annuler
+      tip:
+        title: Astuce
+        text: Pour sauvegarder votre présentation hors-ligne, vous pouvez sauvegarder la page (complète) dans votre navigateur.
   isPublic: Public
   title:
     edit: Éditer le titre (non-fonctionnel)
@@ -278,6 +290,7 @@ group:
     title: Éditer le groupe
     requests: Voir les demandes d'ajout
     invitations: Voir les invitations
+    cancel: Annuler
   menu:
     public: Groupes publics
     private: Mes groupes

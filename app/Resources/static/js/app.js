@@ -11,6 +11,7 @@ const template = require('./views/versions.twig'); // eslint-disable-line
  * CSS Imports
  */
 require('../css/app.scss');
+require('bootstrap/dist/css/bootstrap.css');
 require('../../../../node_modules/material-design-icons/iconfont/material-icons.css');
 
 /**
@@ -133,6 +134,42 @@ $(() => {
       makepublic.attr('disabled', 'true');
       makepublic.prop('checked', false);
       makepublic.parent().parent().addClass('disabled');
+    }
+  });
+
+  /**
+   * Preview Modal
+   */
+  $('.play').on('click', (e) => {
+    const previewModal = $('#previewModal');
+    previewModal.modal();
+    const target = $(e.target).parent().attr('href');
+    const timer = setTimeout(
+      () => {
+        const win = window.open(target);
+        win.onload = () => previewModal.modal('hide');
+      },
+          3000);
+    previewModal.on('hide.bs.modal', () => clearTimeout(timer));
+    return false;
+  });
+
+  /**
+   * Delete modal
+   */
+  let deleteTarget = false;
+
+  $('.delete').on('click', (e) => {
+    deleteTarget = $(e.target).parent().attr('href');
+    $('#deleteModal').modal();
+    return false;
+  });
+
+  body.on('click', '#delete-cancel', () => $('#deleteModal').modal('hide'));
+
+  body.on('click', '#delete-confirm', () => {
+    if (deleteTarget) {
+      window.location = deleteTarget;
     }
   });
 });

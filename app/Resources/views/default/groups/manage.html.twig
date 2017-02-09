@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container ombre">
         <div class="row">
             <div class="input-field col s12">
 
@@ -85,7 +85,7 @@
                             </td>
                             <td>
                                 <a href="{{ path('group-user-edit', { 'group': group.id, 'user': user.id }) }}" class="btn btn-primary"><i class="material-icons md-18" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.members.edit'|trans }}">edit</i></a>
-                                <a class="btn btn-danger" href="{{ path('group-user-exclude', { 'group': group.id, 'user': user.id }) }}"><i class="material-icons md-18" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.members.exclude'|trans }}">exit_to_app</i></a>
+                                <a class="btn btn-danger" href="{{ path('group-user-exclude', { 'group': group.id, 'user': user.id }) }}"><i class="material-icons md-18" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.members.exclude'|trans }}">clear</i></a>
                             </td>
                         </tr>
                         {% endif %}

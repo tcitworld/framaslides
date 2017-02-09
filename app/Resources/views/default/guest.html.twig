@@ -6,7 +6,7 @@
     <p class="lead">Éditez vos présentations en ligne</p>
     <hr class="trait" role="presentation">
 </header>
-<main>
+<main class="container ombre">
     <div class="row">
         <div class="col-md-8 text-center">
             <p class="ombre">
@@ -44,7 +44,7 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <a class="btn btn-secondary" href="{{ path('fos_user_registration_register') }}">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
+                            <a class="btn btn-success" href="{{ path('fos_user_registration_register') }}">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
                             <button class="btn btn-primary" type="submit" name="send">{{ 'security.login.submit'|trans }}</button>
                         </div>
                     </li>

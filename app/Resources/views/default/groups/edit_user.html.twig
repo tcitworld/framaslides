@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    <div class="container">
+    <div class="container ombre">
         <div class="row">
             <div class="col-md-6">
                 <h4>{{ 'group.edit_user.title'|trans }}</h4>
@@ -19,6 +19,7 @@
                 </div>
 
                 {{ form_widget(edit_form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                <a class="btn btn-default" href="{{ path('group-manage', {'group': group.id}) }}">{{ 'group.edit.cancel' | trans }}</a>
                 {{ form_widget(edit_form._token) }}
                 {{ form_end(edit_form) }}
             </div>

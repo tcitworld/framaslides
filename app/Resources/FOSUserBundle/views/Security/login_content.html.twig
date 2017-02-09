@@ -44,7 +44,7 @@
 
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
-                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-secondary">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
+                <a href="{{ path('fos_user_registration_register') }}" class="btn btn-success">{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}</a>
                 <button class="btn btn-primary" type="submit" name="send">{{ 'security.login.submit'|trans }}</button>
                 <div class="card-action center">
                     <a href="{{ path('fos_user_resetting_request') }}">{{ 'resetting.request.submit'|trans({}, 'FOSUserBundle') }}</a>
@@ -52,12 +52,12 @@
             </form>
         </div>
     </div>
-    <hr class="trait" role="presentation" />
+    <hr />
     <div class="row">
         <div class="col-md-4" id="tuto-video">
             <h2>Documentation</h2>
             <p class="text-center" role="presentation"><span class="glyphicon glyphicon-book"></span></p>
-            Pour vous aider dans l'utilisation de <b class="frama">Frama</b><b class="vert">slides</b> et de la mise en place de la synchronisation sur vos appareils, nous avons rédigé une documentation complète ainsi qu'une FAQ.
+            <p>Pour vous aider dans l'utilisation de <b class="frama">Frama</b><b class="vert">slides</b> et de la mise en place de la synchronisation sur vos appareils, nous avons rédigé une documentation complète ainsi qu'une FAQ.</p>
             <p class="text-center"><a href="#" class="btn btn-primary">Lire la documentation</a></p>
         </div>
 

@@ -3,7 +3,7 @@
 {% block title %}{{ 'group.invitation.list.title'|trans }}{% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container ombre">
         {% if invitedUsers | length > 0 %}
             <table class="table">
                 <thead>
@@ -28,6 +28,7 @@
                     <h2>{{ 'group.invitation.list.empty' | trans({'%group%': group.name }) }}</h2>
                 </div>
             {% endif %}
-        <a class="btn btn-default" href="{{ path('group-invitation', {'group': group.id}) }}">{{ 'group.invitation.new.title' | trans }}</a>
+        <a class="btn btn-primary" href="{{ path('group-invitation', {'group': group.id}) }}">{{ 'group.invitation.new.title' | trans }}</a>
+        <a class="btn btn-default" href="{{ path('group-manage', {'group': group.id}) }}">{{ 'group.edit.cancel' | trans }}</a>
     </div>
 {% endblock %}

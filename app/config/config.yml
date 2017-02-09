@@ -8,6 +8,7 @@ imports:
 parameters:
     locale: fr
     pictures_directory: '%kernel.root_dir%/../web/assets/pics'
+    framanav: false
 
 framework:
     #esi:             ~
@@ -51,6 +52,8 @@ twig:
         "%kernel.root_dir%/../dist/": Strut
     form_themes:
         - "bootstrap_3_layout.html.twig"
+    globals:
+        framanav: %framanav%
 
 assetic:
     debug:          '%kernel.debug%'

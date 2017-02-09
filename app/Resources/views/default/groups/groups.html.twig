@@ -5,7 +5,7 @@
 {% block content %}
 {% set currentRoute = app.request.attributes.get('_route') %}
 
-    <div class="container">
+    <div class="container ombre">
 
         <ul class="nav nav-tabs nav-justified">
             <li role="presentation" {% if currentRoute == 'my-groups' %}class="active"{% endif %}><a href="{{ path('my-groups') }}">{{ 'group.menu.private' | trans }}</a></li>
@@ -38,7 +38,7 @@
                                 <a href="{{ path('group-manage', { 'group': group.id }) }}" class="btn btn-standard"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.manage.label'|trans }}">settings_applications</i></a>
                             {% endif %}
                             <a href="{{ path('group-presentations', { 'group': group.id }) }}" class="btn btn-standard"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.presentations'|trans }}">view_list</i></a>
-                            <a href="{{ path('group_leave', { 'group': group.id }) }}" class="btn btn-warning"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.leave'|trans }}">exit_to_app</i></a>
+                            <a href="{{ path('group_leave', { 'group': group.id }) }}" class="btn btn-danger"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'group.leave'|trans }}">clear</i></a>
                         {% elseif app.user in group.users and not app.user.inGroup(group) %}
                             {{ 'group.requests.sent' | trans }}
                         {% else %}

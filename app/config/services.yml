@@ -12,19 +12,19 @@ services:
           factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
           arguments:
               - Strut:Presentation
-              - Strut:User
+              - StrutUserBundle:User
 
   strut.users_repository:
           class: Strut\UserBundle\Repository\UsersRepository
           factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
           arguments:
-              - Strut:User
+              - StrutUserBundle:User
 
   strut.user_group_repository:
           class: Strut\GroupBundle\Repository\UserGroupRepository
           factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
           arguments:
-              - Strut:UserGroup
+              - StrutGroupBundle:UserGroup
 
   strut.version_repository:
             class: Strut\StrutBundle\Repository\VersionRepository
