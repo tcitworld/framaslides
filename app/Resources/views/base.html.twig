@@ -77,7 +77,9 @@
         </div>
     {% endfor %}
 {% endblock messages %}
+<main>
 {% block content %}{% endblock content %}
+</main>
 <script src="{{ asset('strut.bundle.js') }}"></script>
 {{ piwik_code() }}
 </body>
