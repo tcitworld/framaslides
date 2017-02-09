@@ -117,7 +117,7 @@
                 </thead>
                 <tbody>
                     {% for presentation in presentations %}
-                        <tr>
+                        <tr data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}">
                             <td>
                                 <a href="{{ path('app', {'_fragment': presentation.title }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}">edit</i></a>
                                 {% if presentation.rendered %}

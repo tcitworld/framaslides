@@ -62,7 +62,10 @@ $(() => {
 
   $('.share').on('click', (event) => {
     event.preventDefault();
-    const elem = $(event.target).parents('.card');
+    let elem = $(event.target).parents('.card');
+    if (!$(event.target).parents('.card').length) { // for list view
+      elem = $(event.target).parents('tr');
+    }
     const shareModal = $('#shareModal');
 
     fetch($(event.target).parent().attr('href'), {
