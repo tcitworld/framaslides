@@ -8,7 +8,12 @@
     <div class="row">
         <div class="input-field col s12">
             <p class="help">{{ 'user.manage.description'|trans|raw }}</p>
-
+            {% set nbUsers = users | length %}
+            {% if nbActivatedUsers is defined %}
+                <p class="alert alert-info">{{ 'user.manage.stats' | trans({'%users%': nbUsers, '%activedusers%': nbActivatedUsers}) }}</p>
+            {% else %}
+                <p class="alert alert-info">{{ 'user.manage.searchstats' | transchoice(nbUsers, {'%search%': searchTerm}) }}</p>
+            {% endif %}
             <table class="table">
                 <thead>
                 <tr>

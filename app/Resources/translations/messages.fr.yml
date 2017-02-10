@@ -219,6 +219,8 @@ user:
     edit_action: Éditer l'utilisateur
     action: Action
     description: Ici vous pouvez gérer vos utilisateurs (ajout, édition et suppression)
+    stats: Il y a %users% utilisateurs inscrits dont %activedusers% se sont connectés au moins une fois.
+    searchstats: "{0}Aucun utilisateur trouvé pour la recherche %search%|{1}Un seul utilisateur trouvé pour la recherche %search%|]1,Inf[%count% utilisateurs trouvés pour la recherche %search%."
   page_title: Gestion des utilisateurs
   edit_user: Éditer un utilisateur existant
   new_user: Créer un nouvel utilisateur

@@ -37,6 +37,7 @@ class ManageController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('StrutUserBundle:User')->findAll();
+        $nbActivatedUsers = $em->getRepository('StrutUserBundle:User')->getSumEnabledUsers();
 
         $pagerAdapter = new ArrayAdapter($users);
         $pagerFanta = new Pagerfanta($pagerAdapter);
@@ -52,6 +53,7 @@ class ManageController extends Controller
 
         return $this->render('default/manage.html.twig', array(
             'users' => $pagerFanta,
+			'nbActivatedUsers' => $nbActivatedUsers,
         ));
     }
 
