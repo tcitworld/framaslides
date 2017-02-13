@@ -89,12 +89,6 @@ class PresentationRepository extends EntityRepository
             ->setParameter(':group', $group->getId());
     }
 
-    public function findAllGroupShared(): QueryBuilder
-    {
-        return $this->createQueryBuilder('p')
-            ->join('p.groupShares', 'g');
-    }
-
     public function removeAllByUser(User $user)
     {
         $this->getEntityManager()

@@ -3,6 +3,7 @@
 namespace Strut\StrutBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
+use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
@@ -116,10 +117,14 @@ class PresentationController extends Controller
     {
         $repository = $this->get('strut.presentation_repository');
 
-        /** @var QueryBuilder $presentations */
-        $presentations = $repository->findAllGroupShared();
+        $userGroups = $this->getUser()->getGroups();
+        $presentations = [];
 
-        $pagerAdapter = new DoctrineORMAdapter($presentations->getQuery(), true, false);
+        foreach ($userGroups as $group) {
+			$presentations = array_merge($presentations, $repository->findByGroup($group)->getQuery()->getResult());
+		}
+
+        $pagerAdapter = new ArrayAdapter($presentations, true, false);
         $pagerFanta = new Pagerfanta($pagerAdapter);
         $pagerFanta->setMaxPerPage(9);
 
