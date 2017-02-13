@@ -38,5 +38,6 @@ define({
   picture_incorrect: "The entered picture URL appears to be incorrect",
   preview: 'Preview',
   upload: 'Upload',
-  video_info: 'Supports <strong>webm & YouTube</strong>.<br/>Try: http://www.youtube.com/watch?v=vHUsdkmr-SM'
+  video_info: 'Supports <strong>webm & YouTube</strong>.<br/>Try: http://www.youtube.com/watch?v=vHUsdkmr-SM',
+  saveWarning: 'You need to save the presentation before viewing it'
 });

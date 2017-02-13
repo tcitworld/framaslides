@@ -65,6 +65,7 @@ function(StorageProviders, PreviewLauncher) {
 		savePresentation: function(identifier, data, cb, saveAction, model) {
 			this.store(identifier, data, cb, saveAction);
 
+			model.setExistStatus();	
       /** Also save preview */
       var previewLauncher = new PreviewLauncher(model);
       var generators = model.registry

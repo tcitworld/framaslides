@@ -38,5 +38,6 @@ define({
   picture_incorrect: "L'URL de l'image entrée semble être incorrecte",
   preview: 'Aperçu',
   upload: 'Téléverser',
-  video_info: 'Supporte <strong>webm & YouTube</strong>.<br/>Essayez par exemple&nbsp;: http://www.youtube.com/watch?v=vHUsdkmr-SM'
+  video_info: 'Supporte <strong>webm & YouTube</strong>.<br/>Essayez par exemple&nbsp;: http://www.youtube.com/watch?v=vHUsdkmr-SM',
+  saveWarning: 'Vous devez enregistrer la présentation avant de pouvoir la visionner'
 });

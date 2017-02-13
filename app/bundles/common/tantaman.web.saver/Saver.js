@@ -18,7 +18,7 @@ define(function() {
 			this.exportables.forEach(function(exportable) {
 				var data = exportable.export();
 				var identifier = exportable.identifier();
-				this.storageInterface.store(identifier, data, null, false, this.model);
+				this.storageInterface.savePresentation(identifier, data, null, false, this.model);
 			}, this);
 		},
 

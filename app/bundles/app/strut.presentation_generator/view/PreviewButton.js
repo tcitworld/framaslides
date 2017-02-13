@@ -32,7 +32,7 @@ function(Backbone, ActionHandlers, StorageModal, StorageInterface , PreviewLaunc
 		  if (this._editorModel.getExistStatus()) {
         this._previewLauncher.launch(this._generators[this._index]);
       } else {
-		    alert('Vous devez enregistrer la présentation avant de pouvoir la visionner');
+		    alert(lang.saveWarning);
         //this.saveAsModal.show(ActionHandlers.save, lang.save_as);
       }
 		},
