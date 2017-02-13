@@ -248,8 +248,10 @@ class User extends BaseUser
     public function inGroup(Group $group): bool
     {
         if ($group::ACCESS_REQUEST === $group->getAcceptSystem()) {
-            $userGroup = $this->getUserGroupFromGroup($group);
-            return $userGroup->isAccepted();
+            if ($userGroup = $this->getUserGroupFromGroup($group)) {
+				return $userGroup->isAccepted();
+			}
+			return false;
         }
         return null !== $this->getUserGroupFromGroup($group);
     }
