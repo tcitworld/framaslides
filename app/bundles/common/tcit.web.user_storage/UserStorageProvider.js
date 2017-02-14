@@ -21,7 +21,7 @@ define(function() {
 
 			}).success(function(data) {
 				var presentations = data.map(function(elem) {
-					return elem.title;
+					return {id: elem.id, name: elem.title };
 				});
 				cb(presentations);
 			});
@@ -43,7 +43,9 @@ define(function() {
 				method: 'GET',
 				url: '/presentation/' + path,
 			}).success(function (data) {
-				cb(JSON.parse(data));
+				var prez = JSON.parse(data);
+				prez.fileName = path;
+				cb(prez);
 			});
 			return this;
 		},
@@ -51,9 +53,8 @@ define(function() {
 		setContents: function(path, data, cb, saveAction) {
 			$.ajax({
 				method: 'POST',
-				url: '/new-presentation',
+				url: '/new-presentation/' + path,
 				data: {
-					presentation: path,
 					data: JSON.stringify(data),
 					newEntry: (saveAction !== undefined && saveAction !== false) ? 1 : 0
 				}
@@ -63,7 +64,22 @@ define(function() {
 				}
 			});
 			return this;
-		}
+		},
+
+		create: function (identifier, data, cb) {
+			console.log('sending create call');
+      $.ajax({
+        method: 'POST',
+        url: '/create-presentation/',
+        data: {
+          data: JSON.stringify(data),
+          title: identifier
+        }
+      }).success(function(data) {
+      	console.log(data);
+      	cb(data);
+			});
+    }
 	};
 
 	return UserStorageProvider;

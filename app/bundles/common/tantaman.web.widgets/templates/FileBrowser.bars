@@ -1,6 +1,6 @@
 <input type="text" class="fileName"></input>
 <ul class="nav nav-pills nav-stacked">
 	{{#files}}
-	<li data-fileName="{{.}}"><a>{{.}} <button class="close pull-right">×</button></a></li>
+	<li data-fileName="{{id}}" data-title="{{name}}"><a>{{name}} <button class="close pull-right">×</button></a></li>
 	{{/files}}
 </ul>

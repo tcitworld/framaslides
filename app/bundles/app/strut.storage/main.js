@@ -33,7 +33,7 @@ function(StorageModal,
 			menuItems.push(new MenuItem({ title: lang.open, modal: storageModal, handler: ActionHandlers.open }));
 
       menuItems.push(new SaveMenuItem(storageModal, editorModel, storageInterface));
-			menuItems.push(new MenuItem({title: lang.save_as, modal: storageModal, handler: ActionHandlers.save }));
+			menuItems.push(new MenuItem({title: lang.save_as, modal: storageModal, handler: ActionHandlers.saveNew }));
 
 			menuItems.push({
 				$el: $('<li class="divider"></li>'),

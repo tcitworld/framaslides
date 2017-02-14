@@ -17,47 +17,43 @@ class APIController extends Controller
      */
     public function getPresentationsJsonAction(): JsonResponse
     {
+
         $repository = $this->get('strut.presentation_repository');
+
+		/** @var Presentation[] $presentations */
+		/** User presentations */
         $presentations = $repository->findByUser($this->getUser());
+
+		$userGroups = $this->getUser()->getGroups();
+		foreach ($userGroups as $group) {
+			$presentations = array_merge($presentations, $repository->findByGroup($group)->getQuery()->getResult());
+		}
+
         $json = $this->get('jms_serializer')->serialize($presentations, 'json');
         return (new JsonResponse())->setJson($json);
     }
 
     /**
-     * @Route("/presentation/{presentationTitle}", name="presentation")
+     * @Route("/presentation/{presentation}", name="presentation")
      * @param $presentationTitle
      * @return JsonResponse
      */
-    public function getPresentationDataAction($presentationTitle): JsonResponse
+    public function getPresentationDataAction(Presentation $presentation): JsonResponse
     {
-        $presentation = $this->get('strut.presentation_repository')->findOneBy([
-            'title' => $presentationTitle,
-            'user' => $this->getUser(),
-        ]);
-        /** @var Presentation $presentation */
-        if (!$presentation) {
-            return new JsonResponse([], 404);
-        }
+		$this->checkUserPresentationAction($presentation);
+
         $presentationData = $presentation->getLastVersion()->getContent();
         $json = $this->get('jms_serializer')->serialize($presentationData, 'json');
         return (new JsonResponse())->setJson($json);
     }
 
     /**
-     * @Route("/delete-presentation/{presentationTitle}", name="delete-presentation")
+     * @Route("/delete-presentation/{presentation}", name="delete-presentation")
      * @param $presentationTitle
      * @return JsonResponse
      */
-    public function deletePresentationAction($presentationTitle): JsonResponse
+    public function deletePresentationAction(Presentation $presentation): JsonResponse
     {
-        $presentation = $this->get('strut.presentation_repository')->findOneBy([
-            'title' => $presentationTitle,
-            'user' => $this->getUser(),
-        ]);
-        /** @var Presentation $presentation */
-        if (!$presentation) {
-            return new JsonResponse([], 404);
-        }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($presentation);
@@ -66,26 +62,50 @@ class APIController extends Controller
         return new JsonResponse();
     }
 
+	/**
+	 * @Route("/create-presentation/", name="create-presentation")
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+    public function createPresentationAction(Request $request): JsonResponse
+	{
+		$data = $request->get('data');
+		$title = $request->get('title');
+
+		$em = $this->getDoctrine()->getManager();
+		$logger = $this->get('logger');
+
+		$version = new Version();
+		$version->setContent($data);
+		$em->persist($version);
+		$logger->info("Created version " . $version->getId());
+
+		$presentation = new Presentation($this->getUser());
+		$presentation->setTitle($title);
+		$presentation->addVersion($version);
+		$logger->info("A new presentation has been created " . $presentation->getTitle());
+		$em->persist($presentation);
+
+		$em->flush();
+
+		$json = $this->get('jms_serializer')->serialize($presentation, 'json');
+
+		return (new JsonResponse())->setJson($json);
+	}
+
     /**
-     * @Route("/new-presentation", name="new-presentation")
+     * @Route("/new-presentation/{presentation}", name="new-presentation", requirements={"presentation": "\d+"})
      * @param Request $request
      * @return JsonResponse
      */
-    public function saveAction(Request $request): JsonResponse
+    public function saveAction(Request $request, Presentation $presentation): JsonResponse
     {
+
+    	$this->checkUserPresentationAction($presentation);
         $data = $request->get('data');
-        $newEntry = (bool) $request->get('newEntry', 0);
-        $name = $request->get('presentation');
 
         $em = $this->getDoctrine()->getManager();
         $logger = $this->get('logger');
-
-        /** @var Presentation $presentation */
-        $presentation = $this->get('strut.presentation_repository')->findOneBy(
-            [
-                'user' => $this->getUser(),
-                'title' => $name,
-            ]);
 
         if ($presentation && $data === $presentation->getLastVersion()->getContent()) {
             $logger->info("Tried to save but there's no change for presentation " . $presentation->getId());
@@ -102,12 +122,6 @@ class APIController extends Controller
         if ($presentation) { // If the presentation already exists, just add a new version
             $logger->info("Version  " . $version->getId() . " has been added to presentation " . $presentation->getId());
             $presentation->addVersion($version);
-        } elseif ($newEntry) { // otherwise, let's create an new presentation
-            $presentation = new Presentation($this->getUser());
-            $presentation->setTitle($name);
-            $presentation->addVersion($version);
-            $logger->info("A new presentation has been created " . $presentation->getTitle());
-            $em->persist($presentation);
         } else {
             return new JsonResponse([]);
         }
@@ -120,22 +134,14 @@ class APIController extends Controller
     }
 
     /**
-     * @Route("/save-preview/{title}", name="save-preview")
+     * @Route("/save-preview/{presentation}", name="save-preview", requirements={"presentation": "\d+"})
      * @param Request $request
      * @param string $title
      * @return JsonResponse
      */
-    public function savePreviewAction(Request $request, string $title): JsonResponse
+    public function savePreviewAction(Request $request, Presentation $presentation): JsonResponse
     {
-        /** @var Presentation $presentation */
-        $presentation = $this->get('strut.presentation_repository')->findOneBy(
-            [
-                'user' => $this->getUser(),
-                'title' => $title,
-            ]);
-        if (!$presentation) {
-            return new JsonResponse([], 404);
-        }
+		$this->checkUserPresentationAction($presentation);
 
         $previewData = $request->get('previewData');
         $previewConfig = $request->get('previewConfig');
@@ -146,4 +152,27 @@ class APIController extends Controller
         $em->flush();
         return new JSONResponse();
     }
+
+	/**
+	 * Check if the logged user can manage the given entry.
+	 *
+	 * @param Presentation $presentation
+	 */
+	private function checkUserPresentationAction(Presentation $presentation)
+	{
+		if (null === $this->getUser()) {
+			$this->get('logger')->info('user is null');
+			throw $this->createAccessDeniedException("Can't find user for this presentation");
+		}
+
+		if ($this->getUser()->getId() != $presentation->getUser()->getId() && $presentation->getGroupShares()->isEmpty()) {
+			$this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getUsername());
+			throw $this->createAccessDeniedException("You don't have the rights to access this presentation.");
+		}
+
+		if (!$presentation->getGroupShares()->isEmpty() && empty(array_intersect($this->getUser()->getGroups()->toArray(), $presentation->getGroupShares()->toArray()))) {
+			$this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' is not in one of the groups for presentation ' . $presentation->getTitle());
+			throw $this->createAccessDeniedException('You are not in the group to access this presentation');
+		}
+	}
 }

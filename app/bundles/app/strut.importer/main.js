@@ -26,6 +26,8 @@ function(MenuItem, ServiceCollection, HiddenOpen, Iterator, lang) {
 
 		function next() {
 			if (iter.hasNext()) {
+				console.log('miam');
+				console.log(file);
 				iter.next().import(file, editorModel, next);
 			}
 		}

@@ -87,8 +87,13 @@ define(['libs/backbone',
 				num += 1;
 				window.sessionMeta.num = num;
 
+				this.setExistStatus(false);
+
+				console.log('inside newPresentation editormodel');
+        window.location.hash = '';
+
 				this.importPresentation({
-	        		fileName: "presentation-" + num,
+	        		fileName: "new-prez",
 	        		slides: []
 	      		});
 				this._deck.create();
@@ -113,8 +118,16 @@ define(['libs/backbone',
         return this._deck.get('exists');
       },
 
-			setExistStatus: function () {
-				this._deck.set('exists', true);
+			setExistStatus: function (exists) {
+				this._deck.set('exists', exists);
+      },
+
+			getBackendId: function () {
+				return this._deck.get('backendId');
+      },
+
+      setBackendId: function (backendId) {
+				this._deck.set('backendId');
       },
 
 			importPresentation: function(rawObj) {
@@ -131,15 +144,20 @@ define(['libs/backbone',
 			},
 
 			fileName: function() {
+				console.log('fileName called');
 				var fname = this._deck.get('fileName');
 				if (fname == null) {
 					// TODO...
-					fname = 'presentation-unnamed';
+					fname = 'new-prez';
 					this._deck.set('fileName', fname);
 				}
 
 				return fname;
 			},
+
+			setFileName: function (newFileName) {
+				this._deck.set('fileName', newFileName);
+      },
 
 			deck: function() {
 				return this._deck;

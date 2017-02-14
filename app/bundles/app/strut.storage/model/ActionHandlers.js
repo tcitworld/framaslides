@@ -2,29 +2,60 @@ define(
 function() {
 	return {
 		save: function(storageInterface, model, filename, cb) {
-			storageInterface.savePresentation(filename, model.exportPresentation(filename), cb, true, model);
+			console.log('exists status when saving');
+			console.log(model.getExistStatus());
+			if (!model.getExistStatus()) {
+        storageInterface.saveNewPresentation(filename, model.exportPresentation(filename), cb, true, model);
+        model.setExistStatus(true);
+			} else {
+        storageInterface.savePresentation(filename, model.exportPresentation(filename), cb, true, model);
+      }
 		},
 
-		open: function(storageInterface, model, filename, cb) {
-			storageInterface.savePresentation(
-				model.fileName(),
-				model.exportPresentation(model.fileName()),
-				function () {
-					storageInterface.load(filename, function(data, err) {
-						if (!err) {
-							console.log(data);
-							model.importPresentation(data);
-						} else {
-							console.log(err);
-							console.log(err.stack);
-						}
+    saveNew: function(storageInterface, model, filename, cb) {
+      storageInterface.saveNewPresentation(filename, model.exportPresentation(filename), cb, true, model);
+    },
 
-						cb(null, err);
-					});
-				}, false, model);
+		open: function(storageInterface, model, filename, cb) {
+		  console.log('before opening : ');
+		  console.log(model.getExistStatus());
+      console.log(model.fileName());
+			if (model.getExistStatus() === false) {
+        storageInterface.load(filename, function(data, err) {
+          if (!err) {
+            console.log('data here !');
+            console.log(data);
+            model.importPresentation(data);
+          } else {
+            console.log(err);
+            console.log(err.stack);
+          }
+
+          cb(null, err);
+        });
+			} else {
+        storageInterface.savePresentation(
+          model.fileName(),
+          model.exportPresentation(model.fileName()),
+          function () {
+            storageInterface.load(filename, function (data, err) {
+              if (!err) {
+                console.log('data here !');
+                console.log(data);
+                model.importPresentation(data);
+              } else {
+                console.log(err);
+                console.log(err.stack);
+              }
+
+              cb(null, err);
+            });
+          }, false, model);
+      }
 		},
 
 		new_: function(model) {
+		  model.setExistStatus(false);
 			model.newPresentation();
 		}
 	};
