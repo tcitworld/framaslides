@@ -20,12 +20,8 @@ function(Backbone, ActionHandlers, ErrorModal, lang) {
 			console.log(this.model.getExistStatus());
 			console.log('model filename');
 			console.log(fileName);
-			if (this.model.getExistStatus() === false || fileName === "new-prez") {
-				if (fileName === "new-prez") {
-          this.saveAsModal.show(ActionHandlers.saveNew, lang.save_as);
-        } else {
-          this.saveAsModal.show(ActionHandlers.save, lang.save_as);
-				}
+			if (fileName === "new-prez") {
+				this.saveAsModal.show(ActionHandlers.saveNew, lang.save_as);
 			} else {
 				ActionHandlers.save(this.storageInterface, this.model, fileName, ErrorModal.show);
 			}

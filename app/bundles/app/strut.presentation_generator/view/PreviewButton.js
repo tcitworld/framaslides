@@ -18,22 +18,15 @@ function(Backbone, ActionHandlers, StorageModal, StorageInterface , PreviewLaunc
 			this._generatorChanged();
 
 			this._template = JST['strut.presentation_generator/Button'];
-
-      /* var storageInterface = new StorageInterface(this._editorModel.registry);
-
-      this.saveAsModal = new StorageModal({
-        editorModel: this._editorModel,
-        storageInterface: storageInterface
-      });
-      */
 		},
 
 		_launch: function() {
-		  if (this._editorModel.getExistStatus()) {
+			console.log(this._editorModel.getExistStatus());
+			console.log(this._editorModel.fileName());
+		  if (this._editorModel.fileName() != 'new-prez') {
         this._previewLauncher.launch(this._generators[this._index]);
       } else {
 		    alert(lang.saveWarning);
-        //this.saveAsModal.show(ActionHandlers.save, lang.save_as);
       }
 		},
 

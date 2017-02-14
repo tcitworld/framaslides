@@ -4,12 +4,7 @@ function() {
 		save: function(storageInterface, model, filename, cb) {
 			console.log('exists status when saving');
 			console.log(model.getExistStatus());
-			if (!model.getExistStatus()) {
-        storageInterface.saveNewPresentation(filename, model.exportPresentation(filename), cb, true, model);
-        model.setExistStatus(true);
-			} else {
-        storageInterface.savePresentation(filename, model.exportPresentation(filename), cb, true, model);
-      }
+      storageInterface.savePresentation(filename, model.exportPresentation(filename), cb, true, model);
 		},
 
     saveNew: function(storageInterface, model, filename, cb) {

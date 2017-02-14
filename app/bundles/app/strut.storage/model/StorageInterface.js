@@ -93,7 +93,7 @@ function(StorageProviders, PreviewLauncher) {
           }
         });
         if (cb) {
-          cb(null, null);
+          cb(data, null);
         }
       });
     }

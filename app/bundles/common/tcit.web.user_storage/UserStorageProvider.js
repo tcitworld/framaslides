@@ -33,7 +33,8 @@ define(function() {
 				method: 'GET',
 				url: '/delete-presentation/' + path
 			}).success(function (data) {
-				cb(JSON.parse(data));
+				console.log(data);
+				cb(data);
 			});
 			return this;
 		},

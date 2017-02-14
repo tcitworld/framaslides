@@ -18,7 +18,6 @@ define(function() {
 			// var identifier = exportable.identifier();
 			this.exportables.forEach(function(exportable) {
 				var data = exportable.export();
-				console.log('saving before opening !');
 				var identifier = this.model.getBackendId();
 				this.storageInterface.savePresentation(identifier, data, null, false, this.model);
 			}, this);

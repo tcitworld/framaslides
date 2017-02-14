@@ -133,6 +133,11 @@ define(['libs/backbone',
 			importPresentation: function(rawObj) {
 				// deck disposes iteself on import?
 				console.log('New file name: ' + rawObj.fileName);
+				if (rawObj.fileName != 'new-prez') {
+					this._deck.set('exists', true);
+				}
+				console.log('Exists status :');
+				console.log(this._deck.get('exists'));
 				this._deck.import(rawObj);
 			},
 

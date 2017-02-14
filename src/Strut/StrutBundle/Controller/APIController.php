@@ -48,7 +48,7 @@ class APIController extends Controller
     }
 
     /**
-     * @Route("/delete-presentation/{presentation}", name="delete-presentation")
+     * @Route("/delete-presentation/{presentation}", name="delete-presentation", requirements={"presentation": "\d+"})
      * @param $presentationTitle
      * @return JsonResponse
      */
@@ -59,7 +59,7 @@ class APIController extends Controller
         $em->remove($presentation);
         $em->flush();
 
-        return new JsonResponse();
+        return new JsonResponse(['success' => true]);
     }
 
 	/**
