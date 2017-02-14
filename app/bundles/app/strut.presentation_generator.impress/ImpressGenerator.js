@@ -2,6 +2,9 @@ define(["handlebars", "common/Math2", "marked", "strut/deck/Utils"],
 function(Handlebars, Math2, marked, DeckUtils) {
 	var ImpressGenerator;
 	var slideConfig = window.config.slide;
+	marked.setOptions({
+    sanitize: true,
+	});
 
 	ImpressGenerator = (function() {
 
