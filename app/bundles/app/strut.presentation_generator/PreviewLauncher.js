@@ -30,7 +30,7 @@ define(function() {
 			}).success(function() {
 			  if (!openWindow) {
           window.previewWind = window.open(
-            '/preview/' + editorModel.fileName() + '/' + generator.id + generator.getSlideHash(editorModel),
+            '/preview/' + editorModel.fileName() + '/' + generator.getSlideHash(editorModel),
             window.location.href);
 
           var sourceWind = window;

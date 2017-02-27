@@ -129,7 +129,7 @@ define(["common/Calcium",
 				this.set('cannedTransition', rawObj.cannedTransition);
 				var bgs = new CustomBackgrounds(rawObj.customBackgrounds);
 				this.set('customBackgrounds', bgs);
-				this.set('exists', true);
+				this.set('exists', rawObj.fileName != 'new-prez');
 				this.undoHistory.clear();
 
 				// TODO: go through and dispose of all old slides...?

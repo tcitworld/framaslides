@@ -10,6 +10,7 @@ function(Saver) {
 	var proto = ExitSaver.prototype = Object.create(Saver.prototype);
 
 	proto._unloaded = function() {
+		console.log('here');
 		this.__save();
 	};
 

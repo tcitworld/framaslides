@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
 class GroupController extends Controller
 {
     /**
-     * @Route("/", name="groups", defaults={"page" = "1"})
+     * @Route("/{page}", name="groups", defaults={"page" = "1"}, requirements={"page" = "\d+"})
      * @param Request $request
      * @param int $page
      * @return Response

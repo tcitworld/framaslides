@@ -63,15 +63,40 @@ function(StorageProviders, PreviewLauncher) {
 		},
 
 		savePresentation: function(identifier, data, cb, saveAction, model) {
+
 			this.store(identifier, data, cb, saveAction);
 
-			model.setExistStatus();	
+			model.setExistStatus(true);
       /** Also save preview */
       var previewLauncher = new PreviewLauncher(model);
       var generators = model.registry
         .getBest('strut.presentation_generator.GeneratorCollection');
       previewLauncher.launch(generators[0], true);
-		}
+		},
+
+		saveNewPresentation: function (identifier, data, cb, saveAction, model) {
+      this.currentProvider().create(identifier, data, function (data) {
+        model.setFileName(data.id);
+        model.setBackendId(data.id);
+
+        var previewStr = model.registry.getBest('strut.presentation_generator.GeneratorCollection')[0].generate(model.deck());
+        var previewConfig = JSON.stringify({
+          surface: model.deck().get('surface')
+        });
+
+        $.ajax({
+          type: 'POST',
+          url: '/save-preview/' + data.id,
+          data: {
+            previewData: previewStr,
+            previewConfig: previewConfig
+          }
+        });
+        if (cb) {
+          cb(data, null);
+        }
+      });
+    }
 	};
 
 	return StorageInterface;

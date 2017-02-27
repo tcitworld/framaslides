@@ -20,9 +20,12 @@ function(EditorView, EditorModel) {
     		if (window.location.hash.startsWith('#')) {
     			// Load it up.
     			var storageInterface = registry.getBest('strut.StorageInterface');
-    			storageInterface.load(window.location.hash.slice(1), function(pres, err) {
+    			var backendId = window.location.hash.slice(1);
+    			storageInterface.load(backendId, function(pres, err) {
     				if (!err) {
     					model.importPresentation(pres);
+    					model.setExistStatus(true);
+    					model.setBackendId(backendId);
     				} else {
     					console.log(err);
     					console.log(err.stack);

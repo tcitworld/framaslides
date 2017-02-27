@@ -45,7 +45,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/templates-public", name="templates-public", defaults={"page" = "1"})
+     * @Route("/templates-public/{page}", name="templates-public", defaults={"page" = "1"})
      * @param Request $request
      * @param int $page
      * @return Response
@@ -56,7 +56,7 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/templates-published", name="templates-published", defaults={"page" = "1"})
+     * @Route("/templates-published/{page}", name="templates-published", defaults={"page" = "1"})
      * @param Request $request
      * @param int $page
      * @return Response
@@ -203,13 +203,15 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/preview/{title}/{type}/", name="preview")
+     * @Route("/preview/{presentation}/", name="preview", requirements={"presentation": "\d+"})
      * @param Presentation $presentation
      * @param $type
      * @return Response
      */
-    public function previewPresentationAction(Presentation $presentation, $type): Response
+    public function previewPresentationAction(Presentation $presentation, string $type = "impress"): Response
     {
+
+		$this->checkUserPresentationAction($presentation);
         switch ($type) {
             case 'impress':
                 return $this->render('@Strut/preview_export/impress.html', [
