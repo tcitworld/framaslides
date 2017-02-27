@@ -172,11 +172,16 @@ class GroupController extends Controller
 
                 $this->get('session')->getFlashBag()->add(
                     'notice',
-                    $this->get('translator')->trans('flashes.group.notice.password_success', ['%group%' => $group->getName()])
+                    $this->get('translator')->trans('flashes.group.notice.password.success', ['%group%' => $group->getName()])
                 );
 
                 return $this->redirectToRoute('my-groups');
-            }
+            } else {
+				$this->get('session')->getFlashBag()->add(
+					'error',
+					$this->get('translator')->trans('flashes.group.notice.password.incorrect', ['%group%' => $group->getName()])
+				);
+			}
         }
         $logger->info('Form not submitted');
 

@@ -181,7 +181,9 @@ flashes:
       presentation_reset: L'utilisateur a été remis à zéro
   group:
     notice:
-      password_success: Vous avez rejoint le groupe %groupe% !
+      password:
+        success: Vous avez rejoint le groupe %group% !
+        incorrect: Mot de passe incorrect
       user:
         edited: Droits de l'utilisateur %user% dans le groupe %group% mis à jour
       edited: Groupe %group% mis à jour

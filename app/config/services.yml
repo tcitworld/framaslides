@@ -64,3 +64,6 @@ services:
           - "%strut.language%"
       tags:
           - { name: kernel.event_subscriber }
+
+  sha256salted_encoder:
+      class: Strut\GroupBundle\Service\Sha256Salted
