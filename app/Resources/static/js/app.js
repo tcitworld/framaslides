@@ -101,12 +101,12 @@ $(() => {
   });
 
   body.on('click', '#twitter', () => {
-    window.open(`http://twitter.com/share?text=${encodeURIComponent(modalData.title)}&url=${encodeURIComponent(modalData.shareUrl)}&hashtags=framasoft&title=`, 'das', 'location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');
+    window.open(`https://twitter.com/share?text=${encodeURIComponent(modalData.title)}&url=${encodeURIComponent(modalData.shareUrl)}&hashtags=framasoft&title=`, 'das', 'location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');
     return false;
   });
 
   body.on('click', '#diaspora', () => {
-    window.open(`http://sharetodiaspora.github.io/?url=${encodeURIComponent(modalData.shareUrl)}&title=${encodeURIComponent(modalData.title)}`, 'das', 'location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');
+    window.open(`https://share.diasporafoundation.org/?url=${encodeURIComponent(modalData.shareUrl)}&title=${encodeURIComponent(modalData.title)}`, 'das', 'location=no,links=no,scrollbars=no,toolbar=no,width=620,height=550');
     return false;
   });
 
