@@ -38,7 +38,7 @@ class Config
 	 *
 	 * @ORM\Column(name="list_mode", type="integer", nullable=true)
 	 */
-	private $listMode = self::CARDS;
+	private $listMode = self::LIST;
 
 	const CARDS = 0;
 	const LIST = 1;
