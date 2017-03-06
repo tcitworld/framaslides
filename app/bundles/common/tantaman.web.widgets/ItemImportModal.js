@@ -5,9 +5,7 @@ define(['libs/backbone', 'libs/lutim', 'libs/uploadPicture', 'handlebars'],
 function(Backbone, Lutim, UploadPicture, Handlebars) {
 	var modalCache = {};
 	var reg = /[a-z]+:/;
-	// With a slash at the end !
-	// var lutimAddress = 'http://127.0.0.1:8080/';
-	// var lutim = new Lutim(lutimAddress);
+
   var address = '/picture';
   var uploadPicture = new UploadPicture(address);
 
@@ -46,7 +44,15 @@ function(Backbone, Lutim, UploadPicture, Handlebars) {
 			this.cb = cb;
 			return this.$el.modal('show');
 		},
+
+		checkXSS: function (url) {
+			return url.substr(0, 11) === 'javascript:';
+		},
+
 		okClicked: function() {
+			if (this.checkXSS(this.src)) {
+				return;
+			}
 			if (!this.$el.find(".ok").hasClass("disabled")) {
 				this.cb(this.src);
 				return this.$el.modal('hide');
@@ -101,6 +107,9 @@ function(Backbone, Lutim, UploadPicture, Handlebars) {
 				this.src = this.$input.val();
 				return this.okClicked();
 			} else {
+				if (this.checkXSS(this.$input.val())) {
+					return;
+				}
 				this.loadItem();
 			}
 		},
