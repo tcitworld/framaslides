@@ -18,7 +18,7 @@ require.config({
     	lang: "../locales/lang",
     	lexed: '../components/lexed/lexed',
     	codemirror: '../components/codemirror',
-    	'marked': '../components/marked/marked',
+    	'marked': '../../node_modules/marked/marked.min',
 
     	// build - rmap
     	// 'strut/presentation_generator/bespoke': '../bundles/app/strut.presentation_generator.bespoke',
