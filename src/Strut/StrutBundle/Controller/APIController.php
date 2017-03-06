@@ -26,7 +26,7 @@ class APIController extends Controller
 
 		$userGroups = $this->getUser()->getGroups();
 		foreach ($userGroups as $group) {
-			$presentations = array_merge($presentations, $repository->findByGroup($group)->getQuery()->getResult());
+			$presentations = array_unique(array_merge($presentations, $repository->findByGroup($group)->getQuery()->getResult()), SORT_REGULAR);
 		}
 
         $json = $this->get('jms_serializer')->serialize($presentations, 'json');

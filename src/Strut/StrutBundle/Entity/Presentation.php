@@ -96,6 +96,8 @@ class Presentation
 
     /**
      * @var ArrayCollection
+	 *
+	 * @Exclude
      * @ORM\ManyToMany(targetEntity="Strut\GroupBundle\Entity\Group", inversedBy="presentations", cascade={"persist"})
      */
     private $groupShares;
