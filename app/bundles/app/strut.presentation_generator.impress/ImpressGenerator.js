@@ -80,6 +80,14 @@ function(Handlebars, Math2, marked, DeckUtils) {
 				return a || b;
 			});
 
+			Handlebars.registerHelper("xss", function (url) {
+        if (url.substr(0, 11) === 'javascript:') {
+        	return '';
+				} else {
+        	return url;
+				}
+      });
+
 			Handlebars.registerHelper("determineBG", function(slide, deck) {
 				var bg = DeckUtils.slideBackground(slide, deck, {surfaceForDefault: true, transparentForSurface: true});
 				if (bg && bg.indexOf('img:') == 0)
