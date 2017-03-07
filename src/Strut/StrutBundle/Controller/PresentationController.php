@@ -138,9 +138,12 @@ class PresentationController extends Controller
             }
         }
 
+		$firstPicture = $this->get('strut.slides.first_picture');
+
         return $this->render(':default:presentations.html.twig', [
             'presentations' => $pagerFanta,
             'currentPage' => $page,
+			'firstPicture' => $firstPicture
         ]);
     }
 
@@ -195,10 +198,13 @@ class PresentationController extends Controller
             }
         }
 
+        $firstPicture = $this->get('strut.slides.first_picture');
+
         return $this->render(':default:presentations.html.twig', [
             'presentations' => $pagerFanta,
             'currentPage' => $page,
             'searchTerm' => $searchTerm,
+			'firstPicture' => $firstPicture,
         ]);
     }
 

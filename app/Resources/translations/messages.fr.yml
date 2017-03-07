@@ -36,6 +36,16 @@ presentations:
   create: Créer une nouvelle présentation
   explore: Voir les modèles publics
   isTemplate: Modèle
+  info:
+    desc: Voir les statistiques du document.
+    title: Statistiques du document
+    nb:
+      slides: "{0}Aucune slide|{1}une seule slide|]1,Inf[%count% slides"
+      images: "{0}Aucune image|{1}une seule image|]1,Inf[%count% images"
+      texts: "{0}Aucun texte|{1}un seul texte|]1,Inf[%count% textes"
+      videos: "{0}Aucune vidéo|{1}une seule vidéo|]1,Inf[%count% vidéos"
+      frames: "{0}Aucun site web intégré|{1}un seul site web intégré|]1,Inf[%count% sites web intégrés"
+      shapes: "{0}Aucune forme|{1}une seule forme|]1,Inf[%count% formes"
   edit:
     desc: Éditer la présentation
     cancel: Annuler

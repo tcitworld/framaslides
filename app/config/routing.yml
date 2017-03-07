@@ -22,3 +22,8 @@ strut_group:
     resource: "@StrutGroupBundle/Controller/"
     type: annotation
     prefix: /groups
+
+strut_slides:
+    resource: "@StrutSlideBundle/Controller/"
+    type: annotation
+    prefix: /slides

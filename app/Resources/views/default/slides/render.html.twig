@@ -1,0 +1,195 @@
+<html>
+    <head>
+        <style type="text/css">
+            {{ presentation.customStylesheet }}
+        </style>
+        <title>{{ presentation.fileName }}</title>
+
+        <style>
+            .componentContainer {
+                position: absolute;
+                line-height: normal;
+                /*-webkit-transform-origin: 135% 135%;
+                -moz-transform-origin: 135% 135%;
+                transform-origin: 135% 135%;*/
+            }
+
+            .transformContainer {
+                -webkit-transform-origin: 0 0;
+                -moz-transform-origin: 0 0;
+                transform-origin: 0 0;
+            }
+
+            .bg {
+                width: 100%;
+                height: 100%;
+            }
+        </style>
+
+        <style>
+            {% if isBGImg(presentation.surface) %}
+                .strut-surface {
+                    {{ getBGImgStyle(presentation.surface) }}
+                }
+            {% endif %}
+            {% if isBGImg(presentation.background) %}
+                .slideContainer {
+                    {{ getBGImgStyle(presentation.background) }}
+                }
+            {% endif %}
+            {% for slide in presentation.slides %}
+                {% if isBGImg(slide.surface) %}
+                    .strut-surface > .strut-slide-{{ loop.index }} {
+                        {{ getBGImgStyle(slide.surface) }}
+                    }
+                {% endif %}
+                {% if isBGImg(slide.background) %}
+                    .slideContainer.strut-slide-{{ loop.index }} {
+                        {{ getBGImgStyle(slide.background) }}
+                    }
+                {% endif %}
+            {% endfor %}
+        </style>
+
+
+        <link rel="stylesheet" href="{{ asset('preview_export/css/themes/default-reset.css') }}">
+        <link rel="stylesheet" href="{{ asset('preview_export/css/main.css') }}" type='text/css' />
+        <link rel="stylesheet" href="{{ asset('preview_export/reveal/css/theme/default.css') }}" id="theme">
+
+        {% include 'default/slides/fonts.html.twig' %}
+
+        <link rel='stylesheet' href="{{ asset('styles/strut.themes/backgroundClasses.css') }}" type='text/css' />
+        <link rel='stylesheet' href="{{ asset('styles/strut.themes/surfaceClasses.css') }}" type='text/css' />
+        <link rel='stylesheet' href="{{ asset('scripts/libs/highlight.js/styles/solarized-dark.css') }}" type='text/css' />
+        <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type='image/png' />
+        <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}" type='image/png' />
+
+        <style>
+            .reveal.themedArea {
+                display: block;
+                position: absolute;
+                top: 0px;
+                left: 0px;
+                z-index: 0;
+                width: 100%;
+                height: 100%;
+            }
+
+            .popup {
+                position: absolute;
+                pointer-events: auto;
+                top: 15px;
+                left: 15px;
+                z-index: 2000;
+            }
+        </style>
+        <script type="text/javascript" src="{{ asset('preview_export/scripts/dataset-shim.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('preview_export/scripts/impress.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('preview_export/scripts/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('scripts/libs/highlight.pack.js') }}"></script>
+        <!--<script src="{{ asset('nav/nav.js') }}" type="text/javascript"></script>-->
+        <script type="text/javascript" src="{{ asset('preview_export/scripts/onready.js') }}"></script>
+
+        <script>
+          $(document).ready(function() {
+            ready(function () {
+              if (!window.presStarted) {
+                startPres(document, window);
+                impress().init();
+              }
+              hljs.initHighlighting();
+
+              if ("ontouchstart" in document.documentElement) {
+                document.querySelector(".hint").innerHTML =
+                  "<p>Tap on the left or right to navigate</p>";
+              }
+            });
+          });
+        </script>
+
+    </head>
+    <body>
+
+        <div class="fallback-message">
+            <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
+            <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
+        </div>
+
+        <div class="bg {% if isBGClass(presentation.surface) %}{{ presentation.surface }} {% endif %}strut-surface">
+
+        <div class="bg innerBg">
+            <div id="impress">
+                {% for slide in presentation.slides %}
+                <div class="step"
+                     data-state="strut-slide-{{loop.index}}{{ determineSurface(slide, presentation) }}"
+                     data-x="{{ slide.scaleX }}"
+                     data-y="{{ slide.scaleY }}"
+                     {% if slide.rotateX %}
+                        data-rotate-x="{{ slide.rotateX | toDeg }}"
+                     {% endif %}
+                     {% if slide.rotateY %}
+                        data-rotate-y="{{ slide.rotateY | toDeg }}"
+                     {% endif %}
+                     {% if slide.rotateZ %}
+                        data-rotate-z="{{ slide.rotateZ | toDeg }}"
+                     {% endif %}
+                     {% if slide.z %}
+                        data-z="{{ z }}"
+                     {% endif %}
+                     {% if slide.impScale %}
+                        data-scale="{{ slide.impScale }}"
+                     {% endif %}
+                >
+                    <div class="{{ determineBG(slide, presentation) }} slideContainer strut-slide-{{loop.index}}" style="width: 1024px; height: 768px;">
+                        <div class="themedArea">
+                            {% if slide.markdown is defined %}
+                                {{ slide.markdown | markdown }}
+                            {% endif %}
+                        </div>
+                        {% for component in slide.components %}
+                        <div
+                                class="componentContainer {% if component.customClasses is defined %}{{ component.customClasses }}{% endif %}"
+                                style="top: {{ component.y | round }}px;
+                                        left: {{  component.x | round }}px;
+                                        -webkit-transform: {% if component.rotate is not null %}rotate({{ component.rotate }}rad){% endif %} {% if component.skewX is not null %}skewX({{ component.skewX }}rad){% endif %} {% if component.skewY is not null %}skewY({{ component.skewY }}rad){% endif %};
+                                        -moz-transform: {% if component.rotate is not null %}rotate({{ component.rotate }}rad){% endif %} {% if component.skewX is not null %}skewX({{ component.skewX }}rad){% endif %} {% if component.skewY is not null %}skewY({{ component.skewY }}rad){% endif %};
+                                        transform: {% if component.rotate is not null %}rotate({{ component.rotate }}rad){% endif %} {% if component.skewX is not null %}skewX({{ component.skewX }}rad){% endif %} {% if component.skewY is not null %}skewY({{ component.skewY }}rad){% endif %};
+                                        width: {% if component.scale.width is defined %}{{ component.scale.width | round }}px{% endif %};
+                                        height: {% if component.scale.height is defined %}{{ component.scale.height | round }}px{% endif %};">
+                            <div
+                                    class="transformContainer"
+                                    style="transform: {% if component.scale.x is defined and component.scale.y is defined %}scale({{ component.scale.x | round(2) }}, {{ component.scale.y | round(2) }}){% endif %};">
+                            {% if component.type == 'Image' and component.imageType == 'SVG' %}
+                                <img src="{{ component.src }}" style="width: 100%; height: 100%">
+                            {% elseif component.type == 'Image' and component.imageType != 'SVG' %}
+                                <img src="{{ component.src }}">
+                            {% elseif component.type == 'TextBox' %}
+                                <div style="font-size: {{ component.size }}px;" class="antialias">
+                                    {{ component.text | raw }}
+                                </div>
+                            {% elseif component.type == 'Video' and component.videoType == 'html5' %}
+                                <video controls>
+                                    <source src="{{component.src}}" type="{{component.srcType}}">
+                                </video>
+                            {% elseif component.type == 'Video' and component.videoType != 'html5' %}
+                                <iframe width="{{component.scale.width}}" height="{{component.scale.height}}" src="https://www.youtube.com/embed/{{component.shortSrc}}" frameborder="0" allowfullscreen></iframe>
+                            {% elseif component.type == 'WebFrame' %}
+                                <iframe width="960" height="768" src="{{ component.src }}"></iframe>
+                            {% elseif component.type == 'Shape' %}
+                                {{ adaptSVG(component) | raw }}
+                            {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+                <div id="overview" class="step" data-state="strut-slide-overview" data-x="" data-y="" data-scale="9"></div>
+            </div>
+            <div class="hint">
+                <p>Utilisez la barre d'espace ou bien les touches fléchées pour naviguer</p>
+            </div>
+        </div>
+
+    </body>
+</html>

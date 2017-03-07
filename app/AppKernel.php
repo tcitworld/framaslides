@@ -25,6 +25,8 @@ class AppKernel extends Kernel
             new Strut\StrutBundle\Strut(),
 			new Strut\UserBundle\StrutUserBundle(),
 			new Strut\GroupBundle\StrutGroupBundle(),
+			new Strut\SlideBundle\StrutSlideBundle(),
+			new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

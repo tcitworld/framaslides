@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 use Strut\GroupBundle\Entity\Group;
+use Strut\SlideBundle\Entity\Stats;
 use Strut\StrutBundle\Entity\Version;
 use JMS\Serializer\Annotation\Exclude;
 use Strut\UserBundle\Entity\User;

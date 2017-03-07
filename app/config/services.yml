@@ -1,12 +1,4 @@
-# Learn more about services, parameters and containers at
-# http://symfony.com/doc/current/book/service_container.html
-parameters:
-#    parameter_name: value
-
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
   strut.presentation_repository:
           class: Strut\StrutBundle\Repository\PresentationRepository
           factory: [ "@doctrine.orm.default_entity_manager", getRepository ]
@@ -67,3 +59,24 @@ services:
 
   sha256salted_encoder:
       class: Strut\GroupBundle\Service\Sha256Salted
+
+  strut.slides.stats:
+      class: Strut\SlideBundle\Helper\ProvideStats
+      arguments:
+          - "@strut.slides.mapper"
+
+  strut.slides.first_picture:
+        class: Strut\SlideBundle\Helper\FirstPicture
+        arguments:
+            - "@strut.slides.mapper"
+
+  strut.slides.mapper:
+        class: Strut\SlideBundle\Helper\PresentationMapper
+        arguments:
+            - "@logger"
+
+  strut.twig_extension:
+          class: Strut\SlideBundle\Twig\StrutExtension
+          public: false
+          tags:
+              - { name: twig.extension }

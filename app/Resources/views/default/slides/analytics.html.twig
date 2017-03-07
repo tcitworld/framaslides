@@ -1,0 +1,14 @@
+
+<h4>{{ 'presentations.info.title' | trans }}</h4>
+<div class="row">
+    <div class="col-md-6">
+        <p><i class="material-icons vertical-align-middle">library_books</i>{{ 'presentations.info.nb.slides' | transchoice(presentation.slides | length) }}</p>
+        <p><i class="material-icons vertical-align-middle">text_format</i>{{ 'presentations.info.nb.texts' | transchoice(stats.nbTextAreas) }}</p>
+        <p><i class="material-icons vertical-align-middle">collections</i>{{ 'presentations.info.nb.images' | transchoice(stats.nbImages) }}</p>
+    </div>
+    <div class="col-md-6">
+        <p><i class="material-icons vertical-align-middle">video_library</i>{{ 'presentations.info.nb.videos' | transchoice(stats.nbVideos) }}</p>
+        <p><i class="material-icons vertical-align-middle">web</i>{{ 'presentations.info.nb.frames' | transchoice(stats.nbFrames) }}</p>
+        <p><i class="material-icons vertical-align-middle">gesture</i>{{ 'presentations.info.nb.shapes' | transchoice(stats.nbShapes) }}</p>
+    </div>
+</div>
