@@ -18,6 +18,12 @@
                             <a class="btn btn-default " href="{{ path('export-version', {'version': version.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Télécharger cette version">
                                 <i class="material-icons md-18 vertical-align-middle">file_download</i>
                             </a>
+                            <a class="btn btn-default " href="{{ path('slide-version-preview', {'version': version.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Voir cette version">
+                                <i class="material-icons md-18 vertical-align-middle">slideshow</i>
+                            </a>
+                            <a class="btn btn-default pull-right" role="button" data-toggle="collapse" href="#version-details-{{ version.id }}" aria-expanded="false" aria-controls="version-details-{{ version.id }}">
+                                <i class="material-icons md-18 vertical-align-middle">more_horiz</i>
+                            </a>
                             {% if loop.first and not versions.hasPreviousPage %}
                             {% else %}
                                 <a class="btn btn-danger pull-right" href="{{ path('delete-version-web', {'version': version.id}) }}" data-toggle="tooltip" data-placement="bottom" title="Supprimer cette version">
@@ -27,6 +33,11 @@
                                     <i class="material-icons md-18 vertical-align-middle">restore</i>
                                 </a>
                             {% endif %}
+                        </div>
+                        <div class="collapse version-details" id="version-details-{{ version.id }}">
+                            <div class="well">
+                                {{ render(controller('StrutSlideBundle:Analyser:analyse', {'presentation': presentation.id})) }}
+                            </div>
                         </div>
                     </li>
                 {% endfor %}

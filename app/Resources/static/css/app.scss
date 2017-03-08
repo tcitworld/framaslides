@@ -178,6 +178,11 @@ main {
   min-height: 70vh;
 }
 
-a, a:link {
+a,
+a:link {
   text-decoration: none !important;
+}
+
+.version-details {
+  margin-top: 15px;
 }

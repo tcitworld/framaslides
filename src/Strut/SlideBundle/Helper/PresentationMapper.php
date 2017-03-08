@@ -6,11 +6,12 @@ use JsonMapper;
 use Psr\Log\LoggerInterface;
 use Strut\SlideBundle\Entity\Presentation as PresentationEntity;
 use Strut\StrutBundle\Entity\Presentation;
+use Strut\StrutBundle\Entity\Version;
 
 class PresentationMapper {
 
-	/** @var Presentation */
-	private $presentation;
+	/** @var string */
+	private $content;
 
 	/** @var LoggerInterface */
 	private $logger;
@@ -23,19 +24,25 @@ class PresentationMapper {
 
 	public function setPresentation(Presentation $presentation): PresentationMapper
 	{
-		$this->presentation = $presentation;
+		$this->content = $presentation->getLastVersion()->getContent();
+		return $this;
+	}
+
+	public function setVersion(Version $version): PresentationMapper
+	{
+		$this->content = $version->getContent();
 		return $this;
 	}
 
 	public function mapper()
 	{
-		$presentationJson = json_decode($this->presentation->getLastVersion()->getContent());
+		$presentationJson = json_decode($this->content);
 
 		$mapper = new JsonMapper();
 
 		$mapper->setLogger($this->logger);
 		$mapper->classMap['scale'] = 'Scale';
-		$this->logger->info('Mapping presentation ' . $this->presentation->getId() . ' to classes');
+		$this->logger->info('Mapping to classes');
 		$presentationEntity = $mapper->map($presentationJson, new PresentationEntity());
 
 		return $presentationEntity;

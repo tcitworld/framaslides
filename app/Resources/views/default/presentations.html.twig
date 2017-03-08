@@ -84,7 +84,7 @@
                         <a class="fork" href="{{ path('create-from-template', {'template': presentation.id}) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'templates.fork.newpresentation.desc' | trans }}">content_copy</i></a>
                         {% if presentation.rendered %}
                         <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
-                        <a class="play right" href="{{ path('preview', {'type': 'impress', 'presentation': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>{% endif %}
+                        <a class="play right" href="{{ path('slide-preview', {'presentation': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>{% endif %}
                         {% if presentation.userCanManage(app.user) %}
                             <a href="{{ path('delete-presentation-id', { 'presentation': presentation.id }) }}" class="delete pull-right" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}">delete</i></a>
                         {% endif %}
@@ -112,7 +112,7 @@
                                     <td>
                                         <a href="{{ path('app', {'_fragment': presentation.id }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}">edit</i></a>
                                         {% if presentation.rendered %}
-                                            <a class="play right" href="{{ path('preview', {'type': 'impress', 'presentation': presentation.id }) }}" target="_blank"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>
+                                            <a class="play right" href="{{ path('slide-preview', {'presentation': presentation.id }) }}" target="_blank"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>
                                         {% endif %}
                                         {{ presentation.title }}</td>
                                     <td>{{ presentation.createdAt | date("d/m/Y") }}</td>

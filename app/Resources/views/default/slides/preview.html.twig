@@ -1,0 +1,2 @@
+{% set slide = presentation.slides | first %}
+{% include 'default/slides/slide.html.twig' with {'slide': slide, 'presentation': presentation} %}

@@ -143,7 +143,7 @@ class PresentationController extends Controller
         return $this->render(':default:presentations.html.twig', [
             'presentations' => $pagerFanta,
             'currentPage' => $page,
-			'firstPicture' => $firstPicture
+			'firstPicture' => $firstPicture,
         ]);
     }
 

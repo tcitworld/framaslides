@@ -2,6 +2,8 @@
 
 namespace Strut\SlideBundle\Twig;
 
+use HTMLPurifier;
+use HTMLPurifier_Config;
 use Strut\SlideBundle\Entity\Components\Shape;
 use Strut\SlideBundle\Entity\Presentation;
 use Strut\SlideBundle\Entity\Slide;
@@ -13,6 +15,8 @@ class StrutExtension extends Twig_Extension {
 	{
 		return [
 			new \Twig_SimpleFilter('toDeg', [$this, 'toDeg']),
+			new \Twig_SimpleFilter('checkxss', [$this, 'checkxss']),
+			new \Twig_SimpleFilter('purifier', [$this, 'purifier'])
 		];
 	}
 
@@ -111,5 +115,30 @@ class StrutExtension extends Twig_Extension {
 			$retval = str_replace('<svg ', '<svg ' . $attr_insert, $shape->getMarkup());
 		}
 		return $retval;
+	}
+
+	public function checkxss(string $url): string
+	{
+		if (substr($url, 0, 4) == 'http') {
+			return $url;
+		} else {
+			return '';
+		}
+	}
+
+	public function purifier(string $text): string
+	{
+		$elements = 'p,br,strong,em,strike,ol,ul,li,h1,h2,h3,dl,dd,dt,pre,code,q,blockquote,abbr,cite,table,thead,tbody,th,tr,td,a[href|target|rel|id],img[src|title|alt|width|height|style]';
+
+		$schemes = [
+			'http' => true,
+			'https' => true,
+			'mailto' => true
+		];
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('URI.AllowedSchemes', $schemes);
+		$config->set('HTML.Allowed', $elements);
+		$purifier = new HTMLPurifier($config);
+		return $purifier->purify($text);
 	}
 }

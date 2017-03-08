@@ -1,0 +1,31 @@
+<div class="step"
+     data-state="strut-slide-{{loop.index}}{{ determineSurface(slide, presentation) }}"
+     data-x="{{ slide.scaleX }}"
+     data-y="{{ slide.scaleY }}"
+        {% if slide.rotateX %}
+            data-rotate-x="{{ slide.rotateX | toDeg }}"
+        {% endif %}
+        {% if slide.rotateY %}
+            data-rotate-y="{{ slide.rotateY | toDeg }}"
+        {% endif %}
+        {% if slide.rotateZ %}
+            data-rotate-z="{{ slide.rotateZ | toDeg }}"
+        {% endif %}
+        {% if slide.z %}
+            data-z="{{ z }}"
+        {% endif %}
+        {% if slide.impScale %}
+            data-scale="{{ slide.impScale }}"
+        {% endif %}
+>
+    <div class="{{ determineBG(slide, presentation) }} slideContainer strut-slide-{{loop.index}}" style="width: 1024px; height: 768px;">
+        <div class="themedArea">
+            {% if slide.markdown is defined %}
+                {{ slide.markdown | markdown | purifier | raw}}
+            {% endif %}
+        </div>
+        {% for component in slide.components %}
+            {% include 'default/slides/component.html.twig' with {'component': component} %}
+        {% endfor %}
+    </div>
+</div>

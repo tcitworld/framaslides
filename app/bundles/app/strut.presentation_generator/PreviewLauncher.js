@@ -20,22 +20,13 @@ define(function() {
         surface: this._editorModel.deck().get('surface')
       });
 
-			$.ajax({
-				type: 'POST',
-				url: '/save-preview/' + editorModel.fileName(),
-				data: {
-					previewData: previewStr,
-          previewConfig: previewConfig
-				},
-			}).success(function() {
-			  if (!openWindow) {
+			if (!openWindow) {
           window.previewWind = window.open(
-            '/preview/' + editorModel.fileName() + '/' + generator.getSlideHash(editorModel),
+            '/slides/preview/' + editorModel.fileName() + generator.getSlideHash(editorModel),
             window.location.href);
 
           var sourceWind = window;
         }
-			});
 		}
 	};
 

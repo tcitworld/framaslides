@@ -41,7 +41,7 @@ class Presentation {
 	private $deckVersion;
 
 	/** @var int */
-	private $overviewX;
+	private $overviewX = 0;
 
 	/** @var int */
 	private $overviewY;
@@ -142,34 +142,22 @@ class Presentation {
 		$this->deckVersion = $deckVersion;
 	}
 
-	/**
-	 * @return mixed
-	 */
 	public function getOverviewX()
 	{
-		return $this->overviewX;
+		return $this->overviewX != null ?: 0 ;
 	}
 
-	/**
-	 * @param mixed $overviewX
-	 */
-	public function setOverviewX($overviewX)
+	public function setOverviewX($overviewX = 0)
 	{
 		$this->overviewX = $overviewX;
 	}
 
-	/**
-	 * @return int
-	 */
-	public function getOverviewY(): int
+	public function getOverviewY()
 	{
-		return $this->overviewY;
+		return $this->overviewY != null ?: 0 ;
 	}
 
-	/**
-	 * @param int $overviewY
-	 */
-	public function setOverviewY(int $overviewY)
+	public function setOverviewY($overviewY = 0)
 	{
 		$this->overviewY = $overviewY;
 	}

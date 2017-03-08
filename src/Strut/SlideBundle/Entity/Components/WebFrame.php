@@ -2,6 +2,7 @@
 
 namespace Strut\SlideBundle\Entity\Components;
 
+use HTMLPurifier;
 use Strut\SlideBundle\Entity\Component;
 
 class WebFrame extends Component
@@ -15,7 +16,7 @@ class WebFrame extends Component
 	{
 		parent::__construct($component);
 
-		$this->src = $component->src;
+		$this->setSrc($component->src);
 	}
 
 	/**
@@ -31,6 +32,7 @@ class WebFrame extends Component
 	 */
 	public function setSrc(string $src)
 	{
-		$this->src = $src;
+		$purifier = new HTMLPurifier();
+		$this->src = $purifier->purify($src);
 	}
 }

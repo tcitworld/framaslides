@@ -1,0 +1,33 @@
+<div
+        class="componentContainer {% if component.customClasses is defined %}{{ component.customClasses }}{% endif %}"
+        style="top: {{ component.y | round }}px;
+                left: {{  component.x | round }}px;
+                -webkit-transform: {% if component.rotate is not null %}rotate({{ component.rotate }}rad){% endif %} {% if component.skewX is not null %}skewX({{ component.skewX }}rad){% endif %} {% if component.skewY is not null %}skewY({{ component.skewY }}rad){% endif %};
+                -moz-transform: {% if component.rotate is not null %}rotate({{ component.rotate }}rad){% endif %} {% if component.skewX is not null %}skewX({{ component.skewX }}rad){% endif %} {% if component.skewY is not null %}skewY({{ component.skewY }}rad){% endif %};
+                transform: {% if component.rotate is not null %}rotate({{ component.rotate }}rad){% endif %} {% if component.skewX is not null %}skewX({{ component.skewX }}rad){% endif %} {% if component.skewY is not null %}skewY({{ component.skewY }}rad){% endif %};
+                width: {% if component.scale.width is defined %}{{ component.scale.width | round }}px{% endif %};
+                height: {% if component.scale.height is defined %}{{ component.scale.height | round }}px{% endif %};">
+    <div
+            class="transformContainer"
+            style="transform: {% if component.scale.x is defined and component.scale.y is defined %}scale({{ component.scale.x | round(2) }}, {{ component.scale.y | round(2) }}){% endif %};">
+        {% if component.type == 'Image' and component.imageType == 'SVG' %}
+            <img src="{{ component.src }}" style="width: 100%; height: 100%">
+        {% elseif component.type == 'Image' and component.imageType != 'SVG' %}
+            <img src="{{ component.src }}">
+        {% elseif component.type == 'TextBox' %}
+            <div style="font-size: {{ component.size }}px;" class="antialias">
+                {{ component.text | raw }}
+            </div>
+        {% elseif component.type == 'Video' and component.videoType == 'html5' %}
+            <video controls>
+                <source src="{{component.src}}" type="{{component.srcType}}">
+            </video>
+        {% elseif component.type == 'Video' and component.videoType != 'html5' %}
+            <iframe width="{{component.scale.width}}" height="{{component.scale.height}}" src="https://www.youtube.com/embed/{{component.shortSrc}}" frameborder="0" allowfullscreen></iframe>
+        {% elseif component.type == 'WebFrame' %}
+            <iframe width="960" height="768" src="{{ component.src | checkxss }}"></iframe>
+        {% elseif component.type == 'Shape' %}
+            {{ adaptSVG(component) | raw }}
+        {% endif %}
+    </div>
+</div>
