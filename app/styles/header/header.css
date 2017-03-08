@@ -1,13 +1,13 @@
 .header .divider-vertical {
-	height: 54px;
+  height: 54px;
 }
 
 .header .navbar-inner {
-	border-radius: 0;
+  border-radius: 0;
 }
 
 .header .navbar {
-	margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .navbar-inner {
@@ -16,12 +16,12 @@
 }
 
 .row-fluid .header {
-	position: relative;
+  position: relative;
 }
 
 .header .tablets {
-	position: absolute;
-	top: 55px;
-	left: 150px;
-	z-index: 2;
+  position: absolute;
+  top: 55px;
+  left: 150px;
+  z-index: 2;
 }

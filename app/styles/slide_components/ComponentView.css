@@ -1,135 +1,134 @@
 .component .label {
-	visibility: hidden;
-	background: none;
-	font-size: 100px;
-	color: rgba(255, 255, 255, .7);
-	text-shadow: 0 0 .2em rgba(50, 50, 50, .7) !important;
+  visibility: hidden;
+  background: none;
+  font-size: 100px;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 0.2em rgba(50, 50, 50, 0.7) !important;
 }
 
 .component.textBox li {
-	line-height: 1em;
+  line-height: 1em;
 }
 
 .component .label {
-	font-size: 25px;
+  font-size: 25px;
 }
 
 .component .positioningCtrls .label {
-	font-size: 30px;
-	margin-right: -10px;
+  font-size: 30px;
+  margin-right: -10px;
 }
 
 .component input {
-	visibility: hidden;
+  visibility: hidden;
 }
 
 .component .content-scale {
-	transform-origin: 0 0;
-	-webkit-transform-origin: 0 0;
-	-moz-transform-origin: 0 0;
+  -webkit-transform-origin: 0 0;
+          transform-origin: 0 0;
 }
 
 .component .content {
-	-webkit-transform-origin: 50% 50%;
-	-moz-transform-origin: 50% 50%;
-	transform-origin: 50% 50%;
-	white-space: nowrap;
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+  white-space: nowrap;
 }
 
 .component .content-scale:not(.svg) {
-	display: inline-block;
+  display: inline-block;
 }
 
 .component .content:not(.svg) {
-	display: inline-block;
+  display: inline-block;
 }
 
 .component.ui-selected .label {
-	visibility: visible;
+  visibility: visible;
 }
 
 .component .removeBtn {
-	z-index: 100;
+  z-index: 100;
 }
 
 .component.ui-selected input {
-	visibility: visible;
+  visibility: visible;
 }
 
 .component .topLabel {
-	position: absolute;
-	left: 30%;
-	top: -25px;
+  position: absolute;
+  left: 30%;
+  top: -25px;
 }
 
 .component .topLabel .skewx {
-	cursor: w-resize;
+  cursor: w-resize;
 }
 
 .component .topLabel .rotates {
-	cursor: w-resize;
+  cursor: w-resize;
 }
 
 .component .leftLabel {
-	position: absolute;
-	left: -45px;
-	top: 40%;
-	transform: rotate(-90deg);
-	-moz-transform: rotate(-90deg);
-	-webkit-transform: rotate(-90deg);
+  position: absolute;
+  left: -45px;
+  top: 40%;
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
 }
 
 .component .leftLabel .skewy {
-	cursor: s-resize;
+  cursor: s-resize;
 }
 
 .component .leftLabel .rotates {
-	cursor: s-resize;
+  cursor: s-resize;
 }
 
 .component .scale {
-	position: absolute;
-	right: -35px;
-	bottom: -25px;
-	cursor: se-resize;
-	font-size: 40px;
-	transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-webkit-transform: rotate(45deg);
+  position: absolute;
+  right: -35px;
+  bottom: -25px;
+  cursor: se-resize;
+  font-size: 40px;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
 }
 
 .component .rightLabel {
-	position: absolute;
-	right: -45px;
-	top: 50%;
-	cursor: n-resize;
+  position: absolute;
+  right: -45px;
+  top: 50%;
+  cursor: n-resize;
 }
 
 .component .positioningCtrls {
-	position: absolute;
-	bottom: -35px;
-	font-size: 18px;
+  position: absolute;
+  bottom: -35px;
+  font-size: 18px;
 }
 
 .component input {
-	width: 25px;
-	height: 12px;
-	line-height: 12px;
+  width: 25px;
+  height: 12px;
+  line-height: 12px;
 }
 
 .component {
-	position: absolute;
-	line-height: normal;
-	/*padding: 2px;*/
-	cursor: pointer;
-	margin: 0px;
-	min-height: 25px;
-	min-width: 25px;
+  position: absolute;
+  line-height: normal;
+
+  /* padding: 2px; */
+  cursor: pointer;
+  margin: 0;
+  min-height: 25px;
+  min-width: 25px;
 }
 
 .component {
-	-moz-user-select: none;
-	-webkit-user-select: none;
+ -webkit-user-select: none;
+    -moz-user-select: none;
+     -ms-user-select: none;
+         user-select: none;
 }
 
 .component .content {
@@ -143,38 +142,43 @@
 }
 
 .component.transitionSlideSnapshot > .content {
-	outline: none;
-	outline-offset: 0px;
+  outline: none;
+  outline-offset: 0;
 }
 
 
 .component.transitionSlideSnapshot .slideDrawer {
-	outline: none;
-	outline-offset: 0px;
+  outline: none;
+  outline-offset: 0;
 }
 
 /** Firefox outline bug fix */
-.component.transitionSlideSnapshot.ui-selecting:before,
-.component.transitionSlideSnapshot.ui-selected:before {
-    content: '';
-    margin: 0; padding: 0;
-    position: absolute; z-index: -1;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    outline: 1px dashed black;
+.component.transitionSlideSnapshot.ui-selecting::before,
+.component.transitionSlideSnapshot.ui-selected::before {
+  content: "";
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  outline: 1px dashed black;
 }
 
 .component.transitionSlideSnapshot .content {
-	outline: 0px;
-	overflow: hidden;
+  outline: 0;
+  overflow: hidden;
 }
 
 .component.editable .content {
-	cursor: auto;
-  	outline: 0px;
-  	outline: 2px solid red;
-	-moz-user-select: text;
-	-webkit-user-select: text;
+  cursor: auto;
+  outline: 2px solid red;
+ -webkit-user-select: text;
+    -moz-user-select: text;
+     -ms-user-select: text;
+         user-select: text;
 }
 
 .component.dragged:hover {
@@ -182,24 +186,24 @@
 }
 
 .component .close-btn-red-20 {
-	display: none;
-	position: absolute;
-	top: 0px;
-	left: -7px;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: -7px;
 }
 
 .component:hover .close-btn-red-20 {
-	display: inline;
+  display: inline;
 }
 
 .component .shape-color-picker {
-	background: #000;
-	visibility: hidden;
-	position: absolute;
-	right: -60px;
-	top: 0px;
+  background: #000;
+  visibility: hidden;
+  position: absolute;
+  right: -60px;
+  top: 0;
 }
 
 .component.ui-selected .shape-color-picker {
-	visibility: visible;
+  visibility: visible;
 }

@@ -1,38 +1,35 @@
 .slideTable {
-	position: absolute;
-	left: 0px;
-	z-index: 1;
-	top: 56px;
-	bottom: 0px;
-	right: 0px;
+  position: absolute;
+  left: 0;
+  z-index: 1;
+  top: 56px;
+  bottom: 0;
+  right: 0;
 }
 
 .cannedTransitionsView {
-	padding: 80px;
-	background: #EEE;
-	background: whitesmoke;
-	box-sizing: border-box;
+  padding: 80px;
+  background: #eee;
+  box-sizing: border-box;
 }
 
 .cannedTransitionsView .thumbnail {
-	border-width: 2px;
+  border-width: 2px;
 }
 
 .cannedTransitionsView .thumbnail:hover {
-	border-color: #5BB75B;
+  border-color: #5bb75b;
 }
 
 .cannedTransitionsView .thumbnail.active {
-	border: 2px solid #5BB75B;
-	-webkit-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-	-moz-box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
-	box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
+  border: 2px solid #5bb75b;
+  box-shadow: 0 1px 4px rgba(0, 105, 214, 0.25);
 }
 
 .bespoke-link {
-	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	padding: 5px;
-	background: #ccc;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+  background: #ccc;
 }
