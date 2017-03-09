@@ -304,10 +304,24 @@ module.exports = function (grunt) {
             all: {
                 rjsConfig: '<%= yeoman.app %>/scripts/main.js'
             }
-        }
-    });
+        },
 
-    // grunt.renameTask('regarde', 'watch');
+        postcss: {
+          options: {
+            processors: [
+              require('postcss-unprefix'),
+              require('postcss-flexboxfixer'),
+              require('postcss-gradientfixer'),
+              require('autoprefixer')({browsers: 'last 2 versions, > 5%'})
+            ]
+          },
+          dist: {
+            src: 'app/styles/**/*.css'
+          }
+        }
+      });
+
+  grunt.loadNpmTasks('grunt-postcss');
 
     grunt.registerTask('server', function (target) {
         if (target === 'dist') {
@@ -336,7 +350,6 @@ module.exports = function (grunt) {
         'requirejs',
         'imagemin',
         'htmlmin',
-        'concat',
         // 'cssmin',
         // 'uglify',
         'copy:dist',
@@ -349,5 +362,9 @@ module.exports = function (grunt) {
         // 'jshint',
         'test',
         'build'
+    ]);
+
+    grunt.registerTask('postcss' [
+      'postcss'
     ]);
 };

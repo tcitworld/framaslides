@@ -1,44 +1,46 @@
 .logo {
-	width: 100px;
-	height: 32px;
-	margin-left: 5px;
-	padding: 0px 20px 0px 5px;
-	background: #FFF;
+  width: 100px;
+  height: 32px;
+  margin-left: 5px;
+  padding: 0 20px 0 5px;
+  background: #fff;
 }
 
 .logo-bg {
-	/*background-image: url('img/strut-logo-32-light.png');*/
-	display: inline-block;
-	/*width: 100px;*/
-	/*height: 32px;*/
-	font-size:20px;
-	padding-top: 5px;
+  /* background-image: url('img/strut-logo-32-light.png'); */
+  display: inline-block;
+
+  /* width: 100px; */
+
+  /* height: 32px; */
+  font-size: 20px;
+  padding-top: 5px;
 }
 
 .logo-bg .frama {
-	color: #6A5687;
+  color: #6a5687;
 }
 
 .logo-bg .services {
-    color: #8E9C48;
+  color: #8e9c48;
 }
 
 .logo-holder {
-	margin-top: 5px;
-	margin-left: -8px;
+  margin-top: 5px;
+  margin-left: -8px;
 }
 
 .logo:hover {
-	background-position: 5px 0;
+  background-position: 5px 0;
 }
 
 .logo-group .logo .caret {
-	position: absolute;
-	right: 6px;
-	top: 5px;
+  position: absolute;
+  right: 6px;
+  top: 5px;
 }
 
 .logo-holder .dropdown-menu .label {
-	position: absolute;
-	right: 5px;
+  position: absolute;
+  right: 5px;
 }
