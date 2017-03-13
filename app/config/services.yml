@@ -80,3 +80,7 @@ services:
           public: false
           tags:
               - { name: twig.extension }
+  strut.check_rights:
+      class: Strut\StrutBundle\Helper\CheckRights
+      arguments:
+          - "@logger"

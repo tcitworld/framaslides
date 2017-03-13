@@ -40,7 +40,7 @@ class APIController extends Controller
      */
     public function getPresentationDataAction(Presentation $presentation): JsonResponse
     {
-		$this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         $presentationData = $presentation->getLastVersion()->getContent();
         $json = $this->get('jms_serializer')->serialize($presentationData, 'json');
@@ -101,7 +101,7 @@ class APIController extends Controller
     public function saveAction(Request $request, Presentation $presentation): JsonResponse
     {
 
-    	$this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
         $data = $request->get('data');
 
         $em = $this->getDoctrine()->getManager();
@@ -141,7 +141,7 @@ class APIController extends Controller
      */
     public function savePreviewAction(Request $request, Presentation $presentation): JsonResponse
     {
-		$this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         $previewData = $request->get('previewData');
         $previewConfig = $request->get('previewConfig');
@@ -152,27 +152,4 @@ class APIController extends Controller
         $em->flush();
         return new JSONResponse();
     }
-
-	/**
-	 * Check if the logged user can manage the given entry.
-	 *
-	 * @param Presentation $presentation
-	 */
-	private function checkUserPresentationAction(Presentation $presentation)
-	{
-		if (null === $this->getUser()) {
-			$this->get('logger')->info('user is null');
-			throw $this->createAccessDeniedException("Can't find user for this presentation");
-		}
-
-		if ($this->getUser()->getId() != $presentation->getUser()->getId() && $presentation->getGroupShares()->isEmpty()) {
-			$this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getUsername());
-			throw $this->createAccessDeniedException("You don't have the rights to access this presentation.");
-		}
-
-		if (!$presentation->getGroupShares()->isEmpty() && empty(array_intersect($this->getUser()->getGroups()->toArray(), $presentation->getGroupShares()->toArray()))) {
-			$this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' is not in one of the groups for presentation ' . $presentation->getTitle());
-			throw $this->createAccessDeniedException('You are not in the group to access this presentation');
-		}
-	}
 }

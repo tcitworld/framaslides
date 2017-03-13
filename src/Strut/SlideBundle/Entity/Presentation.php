@@ -2,13 +2,6 @@
 
 namespace Strut\SlideBundle\Entity;
 
-use Strut\SlideBundle\Entity\Slide;
-use Strut\SlideBundle\Entity\Components\Image;
-use Strut\SlideBundle\Entity\Components\Shape;
-use Strut\SlideBundle\Entity\Components\TextBox;
-use Strut\SlideBundle\Entity\Components\Video;
-use Strut\SlideBundle\Entity\Components\WebFrame;
-
 class Presentation {
 
 	/**
@@ -144,7 +137,7 @@ class Presentation {
 
 	public function getOverviewX()
 	{
-		return $this->overviewX != null ?: 0 ;
+		return $this->overviewX !== null ?: 0 ;
 	}
 
 	public function setOverviewX($overviewX = 0)
@@ -154,7 +147,7 @@ class Presentation {
 
 	public function getOverviewY()
 	{
-		return $this->overviewY != null ?: 0 ;
+		return $this->overviewY !== null ?: 0 ;
 	}
 
 	public function setOverviewY($overviewY = 0)
@@ -166,9 +159,9 @@ class Presentation {
 		return get_object_vars($this);
 	}
 
-	static function object_to_array($obj) {
+	public static function object_to_array($obj) {
 		if(is_object($obj)) {
-			if ($obj instanceof Slide or $obj instanceof Component) {
+			if ($obj instanceof Slide || $obj instanceof Component) {
 				$obj = $obj->toArray();
 			} else {
 				$obj = get_object_vars($obj);

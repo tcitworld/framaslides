@@ -113,13 +113,35 @@ class UserGroup
         return $this->accepted;
     }
 
-    public function setInvitation($invitation)
+	/**
+	 * @param $invitation
+	 */
+	public function setInvitation(Invitation $invitation)
     {
         $this->invitation = $invitation;
     }
 
-    public function getInvitation()
+	/**
+	 * @return Invitation
+	 */
+	public function getInvitation()
     {
         return $this->invitation;
     }
+
+	/**
+	 * @return int
+	 */
+	public function getId(): int
+	{
+		return $this->id;
+	}
+
+	/**
+	 * @param int $id
+	 */
+	public function setId(int $id)
+	{
+		$this->id = $id;
+	}
 }

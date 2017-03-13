@@ -58,12 +58,12 @@ class StrutExtension extends Twig_Extension {
 		$result = '';
 		if ($slide) {
 			$result = $slide->getSurface();
-			if ($result === 'bg-default' || $result == null) {
+			if ($result === 'bg-default' || $result === null) {
 				$result = $presentation->getSurface();
 			}
 		}
 
-		if ($result == null) {
+		if ($result === null) {
 			$result = $presentation->getSurface() || 'bg-default';
 		}
 
@@ -79,7 +79,7 @@ class StrutExtension extends Twig_Extension {
 		$surface = $this->determineSurface($slide, $presentation);
 		if ($slide) {
 			$result = $slide->getBackground();
-			if ($result == 'bg-default' || $result == null) {
+			if ($result == 'bg-default' || $result === null) {
 				$result = $presentation->getBackground() || 'bg-transparent';
 			}
 
@@ -89,10 +89,6 @@ class StrutExtension extends Twig_Extension {
 		} else {
 			$result = $presentation->getBackground() || 'bg-default';
 		}
-
-		// if ($result == 'bg-default') {
-		//	$result = $surface;
-		// }
 
 		if ($result && substr($result, 0, 4) == 'img:') {
 			return '';

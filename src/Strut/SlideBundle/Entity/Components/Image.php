@@ -13,7 +13,7 @@ class Image extends Component
 	/** @var string */
 	private $src;
 
-	function __construct($component)
+	public function __construct($component)
 	{
 		parent::__construct($component);
 		$this->imageType = $component->imageType;

@@ -88,4 +88,20 @@ class Config
 
 		return $this;
 	}
+
+	/**
+	 * @return User
+	 */
+	public function getUser(): User
+	{
+		return $this->user;
+	}
+
+	/**
+	 * @param User $user
+	 */
+	public function setUser(User $user)
+	{
+		$this->user = $user;
+	}
 }

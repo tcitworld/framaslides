@@ -217,7 +217,7 @@ class PresentationController extends Controller
     public function previewPresentationAction(Presentation $presentation, string $type = "impress"): Response
     {
 
-		$this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
         switch ($type) {
             case 'impress':
                 return $this->render('@Strut/preview_export/impress.html', [
@@ -247,7 +247,7 @@ class PresentationController extends Controller
      */
     public function purgeVersionsAction(Presentation $presentation): Response
     {
-        $this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
         $em = $this->getDoctrine()->getManager();
         $versions = $presentation->getVersions();
         foreach ($versions as $version) {
@@ -285,7 +285,7 @@ class PresentationController extends Controller
      */
     public function deletePresentationAction(Request $request, Presentation $presentation): Response
     {
-        $this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($presentation);
@@ -297,29 +297,6 @@ class PresentationController extends Controller
         );
 
         return $this->redirectToRoute('presentations');
-    }
-
-    /**
-     * Check if the logged user can manage the given entry.
-     *
-     * @param Presentation $presentation
-     */
-    private function checkUserPresentationAction(Presentation $presentation)
-    {
-        if (null === $this->getUser()) {
-            $this->get('logger')->info('user is null');
-            throw $this->createAccessDeniedException("Can't find user for this presentation");
-        }
-
-        if ($this->getUser()->getId() != $presentation->getUser()->getId() && $presentation->getGroupShares()->isEmpty()) {
-            $this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getUsername());
-            throw $this->createAccessDeniedException("You don't have the rights to access this presentation.");
-        }
-
-        if (!$presentation->getGroupShares()->isEmpty() && empty(array_intersect($this->getUser()->getGroups()->toArray(), $presentation->getGroupShares()->toArray()))) {
-            $this->get('logger')->info('user ' . $this->getUser()->getUsername() . ' is not in one of the groups for presentation ' . $presentation->getTitle());
-            throw $this->createAccessDeniedException('You are not in the group to access this presentation');
-        }
     }
 
 
@@ -334,7 +311,7 @@ class PresentationController extends Controller
      */
     public function shareAction(Presentation $presentation): Response
     {
-        $this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         if (null === $presentation->getUuid()) {
             $presentation->generateUuid();
@@ -360,7 +337,7 @@ class PresentationController extends Controller
      */
     public function deleteShareAction(Presentation $presentation): Response
     {
-        $this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         $presentation->cleanUuid();
 
