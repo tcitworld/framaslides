@@ -41,5 +41,8 @@ define({
   video_info: 'Supporte <strong>webm & YouTube</strong>.<br/>Essayez par exemple&nbsp;: http://www.youtube.com/watch?v=vHUsdkmr-SM',
   picture_info: "Cliquez sur <strong>\"Téléverser\"</strong> pour choisir une image sur votre ordinateur, ou <strong>copiez-collez</strong> directement l'adresse d'une image en ligne.",
   website_info: "<strong>Attention</strong>, un certain nombre de sites web refusent d'être intégrés ainsi. Il est donc possible que vous n'obteniez rien.",
-  saveWarning: 'Vous devez enregistrer la présentation avant de pouvoir la visionner.\nPour effectuer cela, rendez-vous dans le menu principal en cliquant sur le bouton en haut à gauche.'
+  saveWarning: 'Vous devez enregistrer la présentation avant de pouvoir la visionner.\nPour effectuer cela, rendez-vous dans le menu principal en cliquant sur le bouton en haut à gauche.',
+  all_slides: 'Toutes les diapositives',
+  selected_slide: 'Diapositive active',
+  custom_color: 'Couleur personnalisée'
 });

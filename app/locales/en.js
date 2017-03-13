@@ -41,5 +41,8 @@ define({
   video_info: 'Supports <strong>webm & YouTube</strong>.<br/>Try: http://www.youtube.com/watch?v=vHUsdkmr-SM',
   picture_info: "Click on <strong>\"upload\"</strong> to choose a picture on your computer, or <strong>copy paste</strong> directly the adress of a picture online.",
   website_info: "<strong>Be warned</strong>, that a lot of websites will not allow being integrated like this. It's therefore possible that you won't get anything.",
-  saveWarning: 'You need to save the presentation before viewing it.\nTo do so, go to the main menu by clicking on the top left button.'
+  saveWarning: 'You need to save the presentation before viewing it.\nTo do so, go to the main menu by clicking on the top left button.',
+  all_slides: 'All slides',
+  selected_slide: 'Selected slide',
+  custom_color: 'Custom color'
 });

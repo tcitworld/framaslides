@@ -3,7 +3,7 @@
 	{{#lang title}}{{/lang}}</a>
 <ul class="dropdown-menu" role="menu">
 	<li class="dropdown-submenu">
-		<a tabindex="-1" href="#">All Slides</a>
+		<a tabindex="-1" href="#">{{#lang 'all_slides'}}{{/lang}}</a>
 		<ul class="dropdown-menu horizontalDropdown allSlides" style="min-width: 127px; width: 127px">
 			{{#backgrounds}}
 			<li><a class="{{klass}} thumbnail" alt="{{description}}" data-class="{{klass}}"></a></li>
@@ -14,7 +14,7 @@
 		</ul>
 	</li>
 	<li class="dropdown-submenu">
-		<a tabindex="-1" href="#">Selected Slide</a>
+		<a tabindex="-1" href="#">{{#lang 'selected_slide'}}{{/lang}}</a>
 		<ul class="dropdown-menu horizontalDropdown" style="min-width: 127px; width: 127px">
 			{{#backgrounds}}
 			<li><a class="{{klass}} thumbnail" alt="{{description}}" data-class="{{klass}}"></a></li>
