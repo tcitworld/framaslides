@@ -41,6 +41,10 @@
   border-left: 4px solid transparent;
 }
 
+.tablets-toggle.btn.btn-plast::before {
+  content: "Experts";
+}
+
 .tablets .iconBtns {
   margin-bottom: 0;
 }
