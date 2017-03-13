@@ -34,7 +34,7 @@ class APIController extends Controller
     }
 
     /**
-     * @Route("/presentation/{presentation}", name="presentation")
+     * @Route("/presentation/{presentation}", name="presentation", requirements={"presentation" = "\d+"})
      * @param $presentationTitle
      * @return JsonResponse
      */
