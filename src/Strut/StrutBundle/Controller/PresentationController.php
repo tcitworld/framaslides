@@ -361,8 +361,13 @@ class PresentationController extends Controller
      */
     public function sharePresentationAction(Presentation $presentation): Response
     {
-        return $this->render('@Strut/preview_export/impress.html', [
-            'presentation' => $presentation
+		/** @var \Strut\SlideBundle\Entity\Presentation $presentationEntity */
+		$presentationEntity = $this->get('strut.slides.mapper')
+			->setPresentation($presentation)
+			->mapper();
+
+        return $this->render('default/slides/render.html.twig', [
+            'presentation' => $presentationEntity
         ]);
     }
 
