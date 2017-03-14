@@ -42,6 +42,7 @@ class PresentationMapper {
 
 		$mapper->setLogger($this->logger);
 		$mapper->classMap['scale'] = 'Scale';
+		$mapper->bStrictNullTypes = false;
 		$this->logger->info('Mapping to classes');
 		$presentationEntity = $mapper->map($presentationJson, new PresentationEntity());
 
