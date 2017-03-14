@@ -6,6 +6,7 @@ use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Strut\StrutBundle\Entity\Picture;
+use Strut\StrutBundle\Entity\Presentation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,22 +17,44 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PictureController extends Controller
 {
-    /**
-     * @Route("/picture", name="new-picture")
+	/**
+	 * @Route("/picture", name="new-picture")
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function uploadPictureAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		if (!$request->files->has('file')) {
+			return new JsonResponse(['error' => 'File not passed'], 400);
+		}
+		$pictureFile = $request->files->get('file');
+
+		$picture = new Picture();
+
+		$extension = $pictureFile->guessExtension();
+		$picture->setExtension($extension);
+		$picture->setFileName($pictureFile->getClientOriginalName());
+
+		$pictureFile->move($this->getParameter('pictures_directory'), $picture->getUuid() . '.' . $picture->getExtension());
+
+		$em->persist($picture);
+		$em->flush();
+
+		$json = $this->get('jms_serializer')->serialize($picture, 'json');
+		return (new JsonResponse())->setJson($json);
+	}
+
+
+	/**
+     * @Route("/picture/{Presentation}", name="new-picture")
      * @param Request $request
      * @return JsonResponse
      */
-    public function uploadPictureAction(Request $request)
+    public function uploadPictureFromPresentationAction(Request $request, Presentation $presentation)
     {
-        $presentationTitle = $request->get('presentation');
-
         $em = $this->getDoctrine()->getManager();
-
-        $repository = $this->get('strut.presentation_repository');
-        $presentation = $repository->findOneBy([
-            'user' => $this->getUser(),
-            'title' => $presentationTitle
-        ]);
 
         if (!$request->files->has('file')) {
             return new JsonResponse(['error' => 'File not passed'], 400);
