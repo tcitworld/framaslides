@@ -137,7 +137,7 @@ class TemplateController extends Controller
 
 			$em->flush();
 
-			return $this->redirectToRoute('app', ['_fragment' => $presentation->getTitle()]);
+			return $this->redirectToRoute('app', ['_fragment' => $presentation->getId()]);
 
 		}
 		return $this->render('default/forms/fork.html.twig', [
