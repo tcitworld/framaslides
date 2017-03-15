@@ -10,6 +10,7 @@ use JMS\Serializer\Annotation\Exclude;
  *
  * @ORM\Entity(repositoryClass="Strut\StrutBundle\Repository\PictureRepository")
  * @ORM\Table(name="`picture`")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Picture
 {

@@ -94,9 +94,8 @@ config:
     save: Save
   reset:
     title: Reset your account
-    description: Resetting your account will delete all your presentations (public models and group shares included)
+    description: Reset your account <b>will delete all your presentations</b> (including public models and presentations shared with your groups) as well as <b>all your pictures</b> and <b>all of the groups</b> of which you are the only administrator.
     confirm: Confirm the deletion of all your presentations
-    presentations: Delete all my presentations
 
 
 
@@ -156,6 +155,7 @@ flashes:
   config:
     notice:
       config_saved: The configuration was saved
+      presentation_reset: Your account was reset. All presentations, pictures and groups related to your account are deleted.
 
 preview:
   needlogin: You will need to login to edit this presentation

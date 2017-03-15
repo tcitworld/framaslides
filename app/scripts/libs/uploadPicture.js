@@ -90,7 +90,11 @@ define(function() {
 			form.append('presentation', this.title);
 
 			var xhr = new XMLHttpRequest();
-			xhr.open('POST', this.address);
+			if (this.title != 'new-prez') {
+        xhr.open('POST', this.address + '/new/' + this.title);
+      } else {
+        xhr.open('POST', this.address + '/new');
+      }
 
 			var handler = new UploadHandler(xhr);
 
