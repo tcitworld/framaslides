@@ -114,9 +114,8 @@ config:
       button: Supprimer mon compte
       confirm: Confirmez la suppression du compte ?
   reset:
-    title: Réinitaliser votre compte
-    description: Réinitialiser votre compte supprimera toutes vos présentations (modèles publics inclus).
-    presentations: Supprimer toutes mes présentations
+    title: Réinitaliser mon compte
+    description: Réinitialiser votre compte <b>supprimera toutes vos présentations</b> (modèles publics et présentations partagées avec des groupes inclus) ainsi que <b>toutes vos images</b> et <b>tous les groupes</b> dont vous êtes le seul administrateur.
     confirm: Confirmer la suppression de toutes vos présentations ?
   form_password:
     description: Vous voulez modifier votre mot de passe ?
@@ -188,7 +187,7 @@ flashes:
       config_saved: La configuration a été sauvegardée
       password_updated: Le mot de passe a été mis à jour
       user_updated: L'utilisateur a été mis à jour
-      presentation_reset: L'utilisateur a été remis à zéro
+      presentation_reset: Votre compte a été remis à zéro. Toutes les présentations, images et groupes liés à votre compte sont supprimés.
   group:
     notice:
       password:

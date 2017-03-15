@@ -48,13 +48,13 @@ class Presentation
     /**
      * @var PersistentCollection
      * @ORM\OrderBy({"updatedAt" = "DESC"})
-     * @ORM\OneToMany(targetEntity="Version", mappedBy="presentation", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Version", mappedBy="presentation", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $versions;
 
     /**
      * @var PersistentCollection
-     * @ORM\OneToMany(targetEntity="Picture", mappedBy="presentation", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="Picture", mappedBy="presentation", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $pictures;
 

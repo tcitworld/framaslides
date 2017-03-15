@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 class PictureController extends Controller
 {
 	/**
-	 * @Route("/picture", name="new-picture")
+	 * @Route("/picture/new", name="new-picture")
 	 * @param Request $request
 	 * @return JsonResponse
 	 */
@@ -48,7 +48,7 @@ class PictureController extends Controller
 
 
 	/**
-     * @Route("/picture/{Presentation}", name="new-picture")
+     * @Route("/picture/new/{presentation}", name="new-picture-with-prez", requirements={"presentation" = "\d+"})
      * @param Request $request
      * @return JsonResponse
      */

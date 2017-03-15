@@ -5,6 +5,7 @@ namespace Strut\GroupBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use FOS\UserBundle\Model\Group as BaseGroup;
 use Doctrine\ORM\Mapping as ORM;
+use Strut\UserBundle\Entity\User;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
@@ -82,7 +83,7 @@ class Group extends BaseGroup
     protected $presentations;
 
     /**
-     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="group", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="group", cascade={"persist", "remove"})
      */
     protected $users;
 
@@ -198,4 +199,18 @@ class Group extends BaseGroup
         }
         return $invited;
     }
+
+	/**
+	 * @return ArrayCollection<User>
+	 */
+	public function getAdmins(): ArrayCollection
+	{
+		$admins = new ArrayCollection();
+		foreach ($this->users as $userGroup) { /** @var UserGroup $userGroup */
+			if ($userGroup->getRole() == self::ROLE_ADMIN) {
+				$admins->add($userGroup->getUser());
+			}
+		}
+		return $admins;
+	}
 }

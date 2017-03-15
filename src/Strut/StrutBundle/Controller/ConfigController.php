@@ -3,6 +3,8 @@
 namespace Strut\StrutBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Strut\GroupBundle\Entity\Group;
+use Strut\GroupBundle\Entity\UserGroup;
 use Strut\StrutBundle\Form\Type\ChangePasswordType;
 use Strut\UserBundle\Form\Type\UserInformationType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -151,11 +153,29 @@ class ConfigController extends Controller
      *
      * @return RedirectResponse
      */
-    public function resetAction($type)
+    public function resetAction(): Response
     {
-        $this->getDoctrine()
-            ->getRepository('Strut:Presentation')
-            ->removeAllByUser($this->getUser());
+    	$em = $this->getDoctrine()->getManager();
+        $presentations = $this->getUser()->getPresentations();
+        $userGroups = $this->getUser()->getUserGroups();
+
+        foreach ($presentations as $presentation) {
+        	$em->remove($presentation);
+		}
+
+		foreach ($userGroups as $userGroup) {
+        	/** @var UserGroup $userGroup */
+        	if ($userGroup->getRole() == Group::ROLE_ADMIN) {
+        		$group = $userGroup->getGroup();
+        		if ($group->getAdmins()->count() === 1) {
+        			$em->remove($group);
+				}
+
+			}
+			$em->remove($userGroup);
+		}
+
+		$em->flush();
 
         $this->get('session')->getFlashBag()->add(
             'notice',
