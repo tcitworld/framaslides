@@ -305,7 +305,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("presentation/share/{id}", requirements={"id" = "\d+"}, name="share")
+     * @Route("presentation/share/{presentation}", requirements={"presentation" = "\d+"}, name="share")
      *
      * @return Response
      */
@@ -331,7 +331,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("presentation/share/delete/{id}", requirements={"id" = "\d+"}, name="delete_share")
+     * @Route("presentation/share/delete/{presentation}", requirements={"presentation" = "\d+"}, name="delete_share")
      *
      * @return Response
      */

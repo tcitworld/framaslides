@@ -83,7 +83,7 @@
                         {% endif %}
                         <a class="fork" href="{{ path('create-from-template', {'template': presentation.id}) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'templates.fork.newpresentation.desc' | trans }}">content_copy</i></a>
                         {% if presentation.rendered %}
-                        <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
+                        <a class="share" href="{{ path('share', {'presentation': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
                         <a class="play right" href="{{ path('slide-preview', {'presentation': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.preview.desc' | trans }}">slideshow</i></a>{% endif %}
                         {% if presentation.userCanManage(app.user) %}
                             <a href="{{ path('delete-presentation-id', { 'presentation': presentation.id }) }}" class="delete pull-right" data-presentation="{{ presentation.title }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.delete.desc' | trans }}">delete</i></a>

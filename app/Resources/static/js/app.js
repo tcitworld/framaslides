@@ -86,7 +86,7 @@ $(() => {
 
   $('#deleteshare').on('click', () => {
     const shareModal = $('#shareModal');
-    fetch(`share/delete/${shareModal.attr('data-presentation')}`, {
+    fetch(`presentation/share/delete/${shareModal.attr('data-presentation')}`, {
       credentials: 'same-origin',
     }).then((response) => {
       if (response.ok) {
