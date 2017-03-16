@@ -2,6 +2,7 @@
 
 namespace Tests\Strut\StrutBundle\Event\Listener;
 
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Strut\StrutBundle\Event\Listener\LocaleListener;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class LocaleListenerTest extends \PHPUnit_Framework_TestCase
+class LocaleListenerTest extends WebTestCase
 {
     private function getEvent(Request $request)
     {

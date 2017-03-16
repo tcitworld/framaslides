@@ -5,13 +5,14 @@ namespace Tests\Strut\StrutBundle\Event\Listener;
 use Strut\StrutBundle\Entity\Config;
 use Strut\StrutBundle\Event\Listener\UserLocaleListener;
 use Strut\UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
-class UserLocaleListenerTest extends \PHPUnit_Framework_TestCase
+class UserLocaleListenerTest extends WebTestCase
 {
     public function testWithLanguage()
     {
