@@ -198,6 +198,7 @@ flashes:
       edited: Groupe %group% mis à jour
       invite_cancelled: L'invitation a été annulée
       invite_accepted: L'invitation a été acceptée. Vous faites maintenant partie du groupe %group%.
+      deleted: Le groupe a été supprimé
     error:
       already_in: L'utilisateur fait déjà partie du groupe ou a déjà reçu une invitation
       no_such_user: Il n'existe pas d'utilisateur avec ce nom
