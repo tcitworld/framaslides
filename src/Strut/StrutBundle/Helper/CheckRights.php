@@ -24,11 +24,6 @@ class CheckRights {
 	 */
 	public function checkUserPresentationAction(User $user, Presentation $presentation)
 	{
-		if (null === $user) {
-			$this->logger->info('user is null');
-			throw new AccessDeniedException("Can't find user for this presentation");
-		}
-
 		if ($user->getId() != $presentation->getUser()->getId() && $presentation->getGroupShares()->isEmpty()) {
 			$this->logger->info('user ' . $user->getUsername() . ' has no rights on presentation ' . $presentation->getTitle() . ' which belongs to ' . $presentation->getUser()->getUsername());
 			throw new AccessDeniedException("You don't have the rights to access this presentation.");
