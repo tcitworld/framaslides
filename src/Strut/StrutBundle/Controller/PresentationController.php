@@ -209,38 +209,6 @@ class PresentationController extends Controller
     }
 
     /**
-     * @Route("/preview/{presentation}/", name="preview", requirements={"presentation": "\d+"})
-     * @param Presentation $presentation
-     * @param $type
-     * @return Response
-     */
-    public function previewPresentationAction(Presentation $presentation, string $type = "impress"): Response
-    {
-
-		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
-        switch ($type) {
-            case 'impress':
-                return $this->render('@Strut/preview_export/impress.html', [
-                    'presentation' => $presentation
-                ]);
-
-            case 'bespoke':
-                return $this->render('@Strut/preview_export/bespoke.html', [
-                    'presentation' => $presentation
-                ]);
-
-            case 'handouts':
-                return $this->render('@Strut/preview_export/handouts.html', [
-                    'presentation' => $presentation
-                ]);
-
-            default:
-                return new JsonResponse(null, 406);
-        }
-    }
-
-
-    /**
      * @Route("/versions/purge/{presentation}", name="purge-version")
      * @param Presentation $presentation
      * @return JsonResponse

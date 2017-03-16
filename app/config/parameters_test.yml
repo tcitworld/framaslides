@@ -1,0 +1,9 @@
+parameters:
+    test_database_driver: pdo_sqlite
+    test_database_host: localhost
+    test_database_port:
+    test_database_name: ~
+    test_database_user: ~
+    test_database_password: ~
+    test_database_path: "%kernel.root_dir%/../data/db/framaslides_test.sqlite"
+    test_database_charset: utf8
