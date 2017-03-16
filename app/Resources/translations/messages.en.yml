@@ -50,7 +50,9 @@ presentations:
   bookmark:
     desc: Manage the presentation
   download:
-    desc: Download the presentation
+    title: Download the presentation
+    desc: "Download the presentation in different formats : the format json allows importing your presentation while the zip format allows viewing your presentation offline"
+    zip.notavailable: It's not yet possible to export as a Zip file
   preview:
     desc: View the presentation
 
