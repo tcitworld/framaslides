@@ -135,7 +135,7 @@
                                         {% endif %}
                                         <a class="fork" href="{{ path('create-from-template', {'template': presentation.id}) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'templates.fork.newpresentation.desc' | trans }}">content_copy</i></a>
                                         {% if presentation.rendered %}
-                                            <a class="share" href="{{ path('share', {'id': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
+                                            <a class="share" href="{{ path('share', {'presentation': presentation.id }) }}"><i class="material-icons" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.share.title' | trans }}">share</i></a>
                                         {% endif %}</td>
                                 </tr>
                             {% endfor %}
