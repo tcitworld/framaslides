@@ -51,6 +51,7 @@
         <p>
             <em>{{ 'presentations.download.desc' | trans }}</em>
         </p>
+        <p class="alert alert-info">{{ 'presentations.download.zip.notavailable' | trans }}</p>
         <div class="btn-group" role="group" aria-label="downloads">
             <a href="{{ path('export-presentation', {'presentation': presentation.id }) }}" class="btn btn-primary"><i class="material-icons vertical-align-middle">file_download</i> JSON</a>
             <a href="#" class="btn btn-primary disabled"><i class="material-icons vertical-align-middle">file_download</i> HTML (Zip)</a>

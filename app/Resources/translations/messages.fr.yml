@@ -62,6 +62,7 @@ presentations:
   download:
     title: Télécharger la présentation
     desc: "Télécharger la présentation en différents formats : le format json permet de la réimporter dans une autre instance strut et le format HTML (Zip) permet de visualiser la présentation hors-ligne"
+    zip.notavailable: Il n'est pas encore possible d'exporter en Zip
   preview:
     desc: Voir la présentation
     opening:
