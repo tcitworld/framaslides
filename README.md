@@ -11,6 +11,10 @@ Si vous souhaitez travailler avec nous, **forkez-nous sur [framagit.org](https:/
 
 An online presentation editor service [https://framaslides.org](https://framaslides.org)
 
+[![build status](https://framagit.org/framasoft/framaslides/badges/master/build.svg)](https://framagit.org/framasoft/framaslides/commits/master)
+[![coverage report](https://framagit.org/framasoft/framaslides/badges/master/coverage.svg)](https://framagit.org/framasoft/framaslides/commits/master)
+
+
 
 ## Installation
 * Server nginx or Apache (lighttpd should work)
