@@ -19,3 +19,4 @@ test:7.1:
 cache:
   paths:
   - vendor/
+  - node_modules/
