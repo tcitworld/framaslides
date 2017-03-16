@@ -5,6 +5,7 @@
 <div class="modal-body" style="overflow: hidden">
     {{#if_eq tag 'video'}}
         <div class='alert alert-success'>{{#lang 'video_info'}}{{/lang}}</div>
+        <div class='alert alert-info'>{{#lang 'video_doc'}}{{/lang}}</div>
     {{/if_eq}}
     {{#if_eq tag 'img'}}
         <div class='alert alert-success'>{{#lang 'picture_info'}}{{/lang}}</div>
