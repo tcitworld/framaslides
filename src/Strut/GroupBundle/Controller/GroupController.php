@@ -211,6 +211,11 @@ class GroupController extends Controller
                 $em->remove($user->getUserGroupFromGroup($group));
             }
             $em->remove($group);
+
+			$this->get('session')->getFlashBag()->add(
+				'notice',
+				$this->get('translator')->trans('flashes.group.notice.deleted', ['%group%' => $group->getName()])
+			);
         }
 
         $em->flush();
@@ -279,7 +284,7 @@ class GroupController extends Controller
             $em->persist($groupUser);
             $em->flush();
 
-            return $this->redirectToRoute('groups');
+            return $this->redirectToRoute('group-manage', ['group' => $group->getId()]);
         }
 
         return $this->render('default/forms/new_group_form.html.twig', [

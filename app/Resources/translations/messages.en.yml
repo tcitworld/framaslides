@@ -156,6 +156,9 @@ flashes:
     notice:
       config_saved: The configuration was saved
       presentation_reset: Your account was reset. All presentations, pictures and groups related to your account are deleted.
+  group:
+    notice:
+      deleted: The group was deleted
 
 preview:
   needlogin: You will need to login to edit this presentation
