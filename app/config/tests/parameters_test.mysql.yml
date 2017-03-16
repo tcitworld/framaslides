@@ -1,0 +1,9 @@
+parameters:
+    test_database_driver: pdo_mysql
+    test_database_host: localhost
+    test_database_port: 3306
+    test_database_name: framaslides_test
+    test_database_user: root
+    test_database_password: ~
+    test_database_path: ~
+    test_database_charset: utf8mb4
