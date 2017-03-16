@@ -69,6 +69,6 @@ class DefaultControllerTest extends StrutTestCase
 		$client->request('GET', '/template/' . $content->getId());
 
 		$this->assertEquals(200, $client->getResponse()->getStatusCode());
-		$this->assertContains('Modifier la présentation ' . $content->getTitle(), $client->getResponse()->getContent());
+		$this->assertContains('templates.title', $client->getResponse()->getContent());
 	}
 }
