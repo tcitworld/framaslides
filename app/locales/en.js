@@ -39,6 +39,7 @@ define({
   preview: 'Preview',
   upload: 'Upload',
   video_info: 'Supports <strong>webm & YouTube</strong>.<br/>Try: http://www.youtube.com/watch?v=vHUsdkmr-SM',
+  video_doc: 'Read <a href="https://docs.framasoft.org/fr/strut/videos.html#d%C3%A9placer-une-vid%C3%A9o" target="_blank">the documentation</a> on how to move videos',
   picture_info: "Click on <strong>\"upload\"</strong> to choose a picture on your computer, or <strong>copy paste</strong> directly the adress of a picture online.",
   website_info: "<strong>Be warned</strong>, that a lot of websites will not allow being integrated like this. It's therefore possible that you won't get anything.",
   saveWarning: 'You need to save the presentation before viewing it.\nTo do so, go to the main menu by clicking on the top left button.',
