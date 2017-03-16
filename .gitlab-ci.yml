@@ -1,20 +1,20 @@
 before_script:
 # Install composer dependencies
-  - bash ci/docker_install.sh
+  - bash ci/docker_install.sh >> /dev/null
 
 # We test PHP7.0
 test:7.0:
   image: php:7.0
   script:
   - ant prepare-sqlite
-  - phpunit -v --colors
+  - phpunit -v --colors --coverage-text
 
 # We test PHP7.1
 test:7.1:
   image: php:7.1
   script:
   - ant prepare-sqlite
-  - phpunit -v --colors
+  - phpunit -v --colors --coverage-text
 
 cache:
   paths:

@@ -20,7 +20,7 @@ npm i grunt-cli
 ./node_modules/grunt-cli/bin/grunt build
 
 # Compile PHP, include these extensions.
-docker-php-ext-install mbstring mcrypt pdo_sqlite curl json intl gd xml zip bz2 opcache
+docker-php-ext-install mbstring mcrypt pdo_sqlite curl json intl gd xml zip bz2 opcache xdebug
 
 wget https://composer.github.io/installer.sig -O - -q | tr -d '\n' > installer.sig
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"

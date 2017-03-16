@@ -74,7 +74,7 @@ abstract class StrutTestCase extends WebTestCase
      *
      * @return int
      */
-    public function getLoggedInUserId()
+    public function getLoggedInUserId(): int
     {
         $token = static::$kernel->getContainer()->get('security.token_storage')->getToken();
 
@@ -91,7 +91,7 @@ abstract class StrutTestCase extends WebTestCase
 	 *
 	 * @return int
 	 */
-	public function getLoggedInUser()
+	public function getLoggedInUser(): User
 	{
 		$token = static::$kernel->getContainer()->get('security.token_storage')->getToken();
 

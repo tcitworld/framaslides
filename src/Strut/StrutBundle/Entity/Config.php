@@ -50,7 +50,7 @@ class Config
     public function __construct(UserInterface $user)
     {
         $this->user = $user;
-        $this->lang = 'fr';
+        $this->lang = '';
     }
 
     /**
