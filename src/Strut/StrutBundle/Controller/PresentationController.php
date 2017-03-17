@@ -9,6 +9,7 @@ use Pagerfanta\Exception\OutOfRangeCurrentPageException;
 use Pagerfanta\Pagerfanta;
 use Patchwork\Utf8;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Strut\GroupBundle\Entity\Group;
 use Strut\StrutBundle\Entity\Presentation;
 use Strut\StrutBundle\Form\Type\SearchEntryType;
@@ -242,6 +243,7 @@ class PresentationController extends Controller
         );
 
         $response->headers->set('Content-Disposition', $disposition);
+        $response->headers->set('Content-Type', 'application/json');
         return $response;
     }
 
@@ -273,7 +275,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("presentation/share/{presentation}", requirements={"presentation" = "\d+"}, name="share")
+     * @Route("share/{presentation}", requirements={"presentation" = "\d+"}, name="share")
      *
      * @return Response
      */
@@ -299,7 +301,7 @@ class PresentationController extends Controller
      *
      * @param Presentation $presentation
      *
-     * @Route("presentation/share/delete/{presentation}", requirements={"presentation" = "\d+"}, name="delete_share")
+     * @Route("share/delete/{presentation}", requirements={"presentation" = "\d+"}, name="delete_share")
      *
      * @return Response
      */
@@ -324,6 +326,7 @@ class PresentationController extends Controller
      * @param Presentation $presentation
      *
      * @Route("/share/{uuid}", requirements={"uuid" = ".+"}, name="share_presentation")
+	 * @Cache(maxage="25200", smaxage="25200", public=true)
      *
      * @return Response
      */

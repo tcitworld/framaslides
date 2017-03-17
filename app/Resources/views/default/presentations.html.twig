@@ -44,7 +44,7 @@
         {% if listMode == 0 %}
             {% for presentation in presentations %}
                 <div class="col-xs-12 col-sm-4">
-                    <div class="card thumbnail" data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
+                    <div class="card thumbnail presentation" data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" data-template="{{ presentation.isTemplate ? '1' : '0' }}" data-public="{{ presentation.isPublic ? '1' : '0' }}">
                         <div class="card-block">
                             <div class="media">
                                 <div class="media-body">
@@ -108,7 +108,7 @@
                         </thead>
                         <tbody>
                             {% for presentation in presentations %}
-                                <tr data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}">
+                                <tr data-presentation="{{ presentation.id }}" data-presentation-title="{{ presentation.title }}" class="presentation">
                                     <td>
                                         <a href="{{ path('app', {'_fragment': presentation.id }) }}" class="edit" data-presentation="{{ presentation.title }}"><i class="material-icons vertical-align-middle" data-toggle="tooltip" data-placement="bottom" title="{{ 'presentations.edit.desc' | trans }}">edit</i></a>
                                         {% if presentation.rendered %}

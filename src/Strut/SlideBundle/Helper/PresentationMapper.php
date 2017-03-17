@@ -16,6 +16,9 @@ class PresentationMapper {
 	/** @var LoggerInterface */
 	private $logger;
 
+	/** @var Presentation */
+	private $presentation;
+
 
 	public function __construct(LoggerInterface $logger)
 	{
@@ -25,12 +28,14 @@ class PresentationMapper {
 	public function setPresentation(Presentation $presentation): PresentationMapper
 	{
 		$this->content = $presentation->getLastVersion()->getContent();
+		$this->presentation = $presentation;
 		return $this;
 	}
 
 	public function setVersion(Version $version): PresentationMapper
 	{
 		$this->content = $version->getContent();
+		$this->presentation = $version->getPresentation();
 		return $this;
 	}
 
@@ -45,6 +50,7 @@ class PresentationMapper {
 		$mapper->bStrictNullTypes = false;
 		$this->logger->info('Mapping to classes');
 		$presentationEntity = $mapper->map($presentationJson, new PresentationEntity());
+		$presentationEntity->setPresentation($this->presentation);
 
 		return $presentationEntity;
 	}
