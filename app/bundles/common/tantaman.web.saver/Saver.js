@@ -18,7 +18,7 @@ define(function() {
 			// var identifier = exportable.identifier();
 			this.exportables.forEach(function(exportable) {
 				var data = exportable.export();
-				var identifier = this.model.getBackendId();
+				var identifier = this.model.getBackendId() || this.model.fileName();
 				this.storageInterface.savePresentation(identifier, data, null, false, this.model);
 			}, this);
 		},

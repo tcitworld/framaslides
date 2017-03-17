@@ -44,10 +44,15 @@ define(['libs/backbone',
 				var savers = this.registry.getBest('tantaman.web.saver.AutoSavers');
 				if (savers) {
 					this.storageInterface = this.registry.getBest('strut.StorageInterface');
-					this.storageInterface = adaptStorageInterfaceForSavers(this.storageInterface);
+					//this.storageInterface = adaptStorageInterfaceForSavers(this.storageInterface);
 					this._exitSaver = savers.exitSaver(this.exportable, this.storageInterface, this);
 					this._timedSaver = savers.timedSaver(this.exportable, 60000, this.storageInterface, this);
 				}
+
+				this.on('launch:preview', function () {
+          console.log('event catched !');
+          this.storageInterface.savePresentation(this.fileName(), this.exportPresentation(this.fileName()), null, true, this);
+        });
 
 				this.clipboard = new Clipboard();
 				this._createMode();
