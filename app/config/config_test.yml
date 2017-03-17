@@ -8,8 +8,6 @@ framework:
         storage_id: session.storage.mock_file
     profiler:
         collect: false
-    translator:
-        enabled: false
 
 web_profiler:
     toolbar: false

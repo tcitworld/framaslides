@@ -39,6 +39,9 @@ class Presentation {
 	/** @var int */
 	private $overviewY;
 
+	/** @var \Strut\StrutBundle\Entity\Presentation */
+	private $presentation;
+
 	/**
 	 * @return Slide[]
 	 */
@@ -223,5 +226,21 @@ class Presentation {
 	public function setSurface($surface)
 	{
 		$this->surface = $surface;
+	}
+
+	/**
+	 * @return \Strut\StrutBundle\Entity\Presentation
+	 */
+	public function getPresentation(): \Strut\StrutBundle\Entity\Presentation
+	{
+		return $this->presentation;
+	}
+
+	/**
+	 * @param \Strut\StrutBundle\Entity\Presentation $presentation
+	 */
+	public function setPresentation(\Strut\StrutBundle\Entity\Presentation $presentation)
+	{
+		$this->presentation = $presentation;
 	}
 }

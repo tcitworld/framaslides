@@ -83,6 +83,8 @@ class CheckRightsTest extends StrutTestCase
 		$admin->addAGroup($group, Group::ROLE_ADMIN);
 
 		$checkRights->checkUserPresentationAction($admin, $presentation);
+
+		$admin->removeGroup($group);
 	}
 
 	public function testRightsForPresentationSharedWithGroupWithUserOut()
@@ -92,7 +94,7 @@ class CheckRightsTest extends StrutTestCase
 
 		$checkRights = new CheckRights($logger);
 
-		$group = new Group('group');
+		$group = new Group('group2');
 
 		/** @var User $bob */
 		$bob = $this->getClient()->getContainer()
@@ -113,5 +115,7 @@ class CheckRightsTest extends StrutTestCase
 			->findUserBy(['username' => 'admin']);
 
 		$checkRights->checkUserPresentationAction($admin, $presentation);
+
+		$bob->removeGroup($group);
 	}
 }

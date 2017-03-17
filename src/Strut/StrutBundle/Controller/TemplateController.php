@@ -23,9 +23,7 @@ class TemplateController extends Controller
      */
     public function templateFormAction(Presentation $presentation, Request $request): Response
     {
-        if (!$presentation->getGroupShares()->isEmpty() && !empty(array_intersect($this->getUser()->getGroups()->toArray(), $presentation->getGroupShares()->toArray())) && $this->getUser() != $presentation->getUser() && $presentation->maxRightsForUser($this->getUser()) < Group::ROLE_MANAGE_PREZ) {
-            throw $this->createAccessDeniedException();
-        }
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         $form = $this->createForm(TemplateType::class, $presentation, ['attr' => ['user' => $this->getUser()]]);
         $form->handleRequest($request);
@@ -80,7 +78,7 @@ class TemplateController extends Controller
      */
     public function makeTemplateAction(Request $request, Presentation $presentation): JsonResponse
     {
-        $this->checkUserPresentationAction($presentation);
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $presentation);
 
         $em = $this->getDoctrine()->getManager();
         $template = $request->get('template', false) === 'true';
@@ -102,6 +100,8 @@ class TemplateController extends Controller
      */
     public function createCopyFromTemplateAction(Request $request, Presentation $template): Response
     {
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $template);
+
     	$presentation = new Presentation($this->getUser());
 
     	$form = $this->createForm(ForkType::class, $presentation);
@@ -144,15 +144,5 @@ class TemplateController extends Controller
 			'form' => $form->createView(),
 			'presentation' => $presentation,
 		]);
-    }
-
-    /**
-     * @param Presentation $presentation
-     */
-    private function checkUserPresentationAction(Presentation $presentation)
-    {
-        if (null === $this->getUser() || $this->getUser()->getId() != $presentation->getUser()->getId()) {
-            throw $this->createAccessDeniedException('You can not access this presentation.');
-        }
     }
 }
