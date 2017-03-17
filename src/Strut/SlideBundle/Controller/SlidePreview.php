@@ -30,7 +30,7 @@ class SlidePreview extends Controller {
 	 */
 	public function previewSlidesVersionAction(Version $version): Response
 	{
-		$this->get('')->checkUserPresentationAction($version->getPresentation());
+		$this->get('strut.check_rights')->checkUserPresentationAction($this->getUser(), $version->getPresentation());
 
 		/** @var \Strut\SlideBundle\Entity\Presentation $presentationEntity */
 		$presentationEntity = $this->get('strut.slides.mapper')

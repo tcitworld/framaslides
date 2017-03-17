@@ -15,11 +15,6 @@ define(function() {
 			this._editorModel.trigger('launch:preview', null);
 			var editorModel = this._editorModel;
 
-			var previewStr = generator.generate(this._editorModel.deck());
-			var previewConfig = JSON.stringify({
-        surface: this._editorModel.deck().get('surface')
-      });
-
 			if (!openWindow) {
           window.previewWind = window.open(
             '/slides/preview/' + editorModel.fileName() + generator.getSlideHash(editorModel),
