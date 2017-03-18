@@ -62,12 +62,11 @@ class ManageControllerTest extends StrutTestCase
         // Check the element contains an attribute with value equals "Foo User"
         $this->assertGreaterThan(0, $crawler->filter('[value="testuser"]')->count(), 'Missing element [value="testuser"]');
 
-        $crawler = $client->request('GET', '/users');
-        $crawler = $client->click($crawler->filter('a.edit-user')->last()->link());
+		$crawler = $client->request('GET','/users/' . $user->getId() . '/edit');
 
         // Delete the user
         $client->submit($crawler->filter('.btn.btn-danger')->form());
-        $crawler = $client->followRedirect();
+        $client->followRedirect();
 
         // Check the user has been delete on the list
         $this->assertNotRegExp('/^((?!testuser).)*$/s', $client->getResponse()->getContent());
