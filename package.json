@@ -67,11 +67,17 @@
     "postcss-flexboxfixer": "0.0.5",
     "postcss-gradientfixer": "0.0.6",
     "postcss-unprefix": "^1.2.0",
-    "twig-loader": "^0.2.3"
+    "twig-loader": "^0.2.3",
+    "snyk": "^1.47.0"
   },
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://framagit.org/framasoft/framaslides/"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
